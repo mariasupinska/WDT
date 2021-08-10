@@ -3,6 +3,7 @@ package pakoswdt.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import pakoswdt.MainApp;
+import pakoswdt.model.Data;
 
 public class StartingViewController {
     private MainApp mainApp;
@@ -17,6 +18,7 @@ public class StartingViewController {
 
     @FXML
     private void handleNewWDT() {
+        Data.createNewWDT();
         mainApp.showSellerOverview();
     }
 

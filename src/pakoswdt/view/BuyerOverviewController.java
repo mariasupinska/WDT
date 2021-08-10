@@ -13,7 +13,7 @@ public class BuyerOverviewController {
 
     @FXML
     public void initialize() {
-       // Data.seller.getName().setValue("XD");
+       // Data.getSeller().getName().setValue("XD");
     }
 
     @FXML

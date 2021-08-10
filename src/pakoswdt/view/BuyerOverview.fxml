@@ -99,8 +99,8 @@
       </GridPane>
       <ButtonBar layoutX="700.0" layoutY="423.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="100.0">
         <buttons>
-          <Button mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" />
-            <Button mnemonicParsing="false" onAction="#handleNext" text="Dalej" />
+          <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" />
+            <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleNext" text="Dalej" />
         </buttons>
       </ButtonBar>
    </children>
