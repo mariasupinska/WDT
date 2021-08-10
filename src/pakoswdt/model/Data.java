@@ -21,6 +21,14 @@ public class Data {
         return Data.invoice.getSeller();
     }
 
+    public static Vehicle getTransport() {
+        return Data.invoice.getTransport();
+    }
+
+    public static void setTransport(Vehicle vehicle) {
+        Data.getInvoice().setTransport(vehicle);
+    }
+
     private static Seller createSeller() {
         ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
         vehicles.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));

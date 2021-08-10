@@ -1,16 +1,9 @@
 package pakoswdt.model;
-        /*
-        nowy branch w githubie
-        git pull
-        zmiana brancha na nowo utowrzony
-        commity i push
-        merge request
-        link do A
-         */
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 @Builder
 @Getter
@@ -26,6 +19,11 @@ public class Vehicle {
         this.brand = new SimpleStringProperty(brand);
         this.number = new SimpleStringProperty(number);
     }
+
+    public boolean isEmpty() {
+        return StringUtils.isAllEmpty(brand.get(), number.get());
+    }
+
     @Override
     public String toString() {
         return brand.getValue() + " " + number.getValue();

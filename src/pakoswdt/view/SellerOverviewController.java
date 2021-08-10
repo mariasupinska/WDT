@@ -90,6 +90,9 @@ public class SellerOverviewController {
     private void handleDeleteVehicle() {
         int selectedIndex = vehicles.getSelectionModel().getSelectedIndex();
         if ( selectedIndex >= 0 ) {
+            Vehicle vehicle = vehicles.getItems().get(selectedIndex);
+            if ( vehicle.isEmpty() ) return; //TODO: przed przejściem do produktu czy oba vehicle nie są puste
+            Data.setTransport(null);
             vehicles.getItems().remove(selectedIndex);
         } else {
             //Nothing selected.
