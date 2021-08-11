@@ -22,5 +22,4 @@ public class Business {
     protected StringProperty country;
     protected StringProperty nip;
     protected ListProperty<Vehicle> vehicles;
-   //??? protected ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
 }

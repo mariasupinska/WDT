@@ -32,16 +32,24 @@ public class Data {
     private static Seller createSeller() {
         ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
         vehicles.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Mercedes"), new SimpleStringProperty("BI 0331F")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Renault"), new SimpleStringProperty("BI 127AP")));
+        vehicles.add(new Vehicle(new SimpleStringProperty("Renault"), new SimpleStringProperty("BI 12345")));
+        vehicles.add(new Vehicle(new SimpleStringProperty("Mercedes"), new SimpleStringProperty("BI 98765")));
+        FXCollections.sort(vehicles);
 
-        Seller seller = Seller.builder().name(new SimpleStringProperty("INTERPAKOS Zbigniew Supiński")).
-                street(new SimpleStringProperty("Handlowa 3")).
+        ObservableList<String> employees = FXCollections.observableArrayList();
+        employees.add("Jan Kowalski");
+        employees.add("Adam Nowak");
+        employees.add("Andrzej Dąbrowski");
+        FXCollections.sort(employees);
+
+        Seller seller = Seller.builder().name(new SimpleStringProperty("")).
+                street(new SimpleStringProperty("Zielona 0")).
                 city(new SimpleStringProperty("Białystok")).
-                postalCode(new SimpleStringProperty("15-399")).
+                postalCode(new SimpleStringProperty("99-2137")).
                 country(new SimpleStringProperty("Polska")).
-                nip(new SimpleStringProperty("PL 9660631964")).
-                vehicles(new SimpleListProperty<>(vehicles)).build();
+                nip(new SimpleStringProperty("PL 123456789")).
+                vehicles(new SimpleListProperty<>(vehicles)).
+                employees(new SimpleListProperty<>(employees)).build();
 
         return seller;
     }
