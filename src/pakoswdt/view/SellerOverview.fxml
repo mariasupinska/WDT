@@ -35,7 +35,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Nazwa (firmy)" />
@@ -46,12 +45,10 @@
             <Label text="NIP UE" GridPane.rowIndex="5" />
             <Label text="Data wystawienia faktury" GridPane.rowIndex="6" />
             <Label text="Numer faktury" GridPane.rowIndex="7" />
-            <Label text="Twórca specyfikacji" GridPane.rowIndex="8" />
-            <Label text="Miejsce wydania" GridPane.rowIndex="9" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <DatePicker prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Miejsce wydania" GridPane.rowIndex="8" />
+            <TextField fx:id="invoiceNumber" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="place" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <DatePicker fx:id="invoiceCreationDate" prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="name" GridPane.columnIndex="1" />
             <TextField fx:id="street" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="city" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -68,22 +65,31 @@
       </ButtonBar>
       <ButtonBar layoutX="735.0" layoutY="360.0" prefHeight="30.0" prefWidth="220.0" AnchorPane.rightAnchor="45.0">
         <buttons>
-          <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddVehicle" text="Dodaj pojazd" />
-            <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleDeleteVehicle" text="Usuń pojazd" />
+          <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddVehicle" prefWidth="100.0" text="Dodaj pojazd" />
+            <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleDeleteVehicle" prefWidth="100.0" text="Usuń pojazd" />
         </buttons>
       </ButtonBar>
-      <GridPane layoutX="45.0" layoutY="360.0" prefHeight="30.0" prefWidth="685.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="270.0">
+      <GridPane layoutX="45.0" layoutY="330.0" prefHeight="60.0" prefWidth="685.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="270.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="325.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <CheckBox mnemonicParsing="false" text="Zapewnia transport" />
-            <ChoiceBox fx:id="vehicles" prefHeight="25.0" prefWidth="230.0" GridPane.columnIndex="1" />
+            <CheckBox mnemonicParsing="false" text="Zapewnia transport" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="vehicles" prefHeight="25.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Twórca specyfikacji" />
+            <ChoiceBox fx:id="employees" prefHeight="25.0" prefWidth="230.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
+      <ButtonBar layoutX="735.0" layoutY="330.0" prefHeight="30.0" prefWidth="220.0" AnchorPane.rightAnchor="45.0">
+         <buttons>
+            <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleAddPerson" prefWidth="100.0" text="Dodaj osobę" />
+            <Button minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleDeletePerson" prefWidth="100.0" text="Usuń osobę" />
+         </buttons>
+      </ButtonBar>
    </children>
 </AnchorPane>

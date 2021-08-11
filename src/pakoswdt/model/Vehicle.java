@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Vehicle {
+public class Vehicle implements Comparable<Vehicle> {
     private StringProperty brand;
     private StringProperty number;
 
@@ -27,5 +27,10 @@ public class Vehicle {
     @Override
     public String toString() {
         return brand.getValue() + " " + number.getValue();
+    }
+
+    @Override
+    public int compareTo(Vehicle o) {
+        return brand.get().compareTo(o.getBrand().get());
     }
 }
