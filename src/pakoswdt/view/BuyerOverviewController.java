@@ -1,15 +1,19 @@
 package pakoswdt.view;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import pakoswdt.MainApp;
 import pakoswdt.model.Buyer;
 import pakoswdt.model.Data;
 import pakoswdt.model.Vehicle;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class BuyerOverviewController {
     private MainApp mainApp;
@@ -57,7 +61,7 @@ public class BuyerOverviewController {
 
         buyers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if(newValue != null ) {
+                    if (newValue != null ) {
                         if ( oldValue != null ) {
                             name.textProperty().unbindBidirectional(Data.getBuyer().getName());
                             street.textProperty().unbindBidirectional(Data.getBuyer().getStreet());
@@ -81,7 +85,7 @@ public class BuyerOverviewController {
 
                         vehicles.getSelectionModel().selectedItemProperty().addListener(
                                 (observableVehicle, oldValueVehicle, newValueVehicle) -> {
-                                    if(newValueVehicle != null ) {
+                                    if (newValueVehicle != null ) {
                                         Data.getInvoice().setTransport(newValueVehicle);
                                     }
                                 } );
@@ -104,12 +108,62 @@ public class BuyerOverviewController {
 
     @FXML
     private void handleAddVehicle() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/NewVehicleDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Nowy pojazd");
+        dialogStage.initOwner(mainApp.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        NewVehicleDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+
+        dialogStage.showAndWait();
+
+        Vehicle vehicle = controller.getVehicle();
+        if ( vehicle != null ) {
+            Data.getBuyer().getVehicles().add(vehicle);
+            FXCollections.sort(Data.getBuyer().getVehicles());
+            vehicles.getSelectionModel().select(vehicle);
+        }
     }
 
     @FXML
     private void handleDeleteVehicle() {
+        int selectedIndex = vehicles.getSelectionModel().getSelectedIndex();
+        if ( selectedIndex >= 0 ) {
+            Vehicle vehicle = vehicles.getItems().get(selectedIndex);
+            if ( vehicle.isEmpty() ) return;                                //TODO: przed przejściem do produktu czy oba vehicle nie są puste
 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setHeaderText("Usuwanie pojazdu");
+            alert.setContentText("Czy na pewno chcesz usunąć wybrany pojazd?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if( result.get() == ButtonType.OK ) {
+                Data.setTransport(null);
+                vehicles.getItems().remove(selectedIndex);
+            } else if ( result.get() == ButtonType.CANCEL ) {
+                return;
+            }
+
+        } else {
+            //Nothing selected.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Brak zaznaczenia");
+            alert.setHeaderText("Nie wybrano żadnego pojazdu");
+            alert.setContentText("Aby usunąć pojazd należy go najpierw wybrać z listy.");
+            alert.showAndWait();
+        }
     }
 
     @FXML

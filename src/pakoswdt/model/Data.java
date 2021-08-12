@@ -50,6 +50,18 @@ public class Data {
         vehicles.add(new Vehicle(new SimpleStringProperty("Porsche"), new SimpleStringProperty("BI 98765")));
         FXCollections.sort(vehicles);
 
+        ObservableList<Vehicle> vehiclesTwo = FXCollections.observableArrayList();
+        vehiclesTwo.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
+        vehiclesTwo.add(new Vehicle(new SimpleStringProperty("Lamborghini"), new SimpleStringProperty("BI 12345")));
+        vehiclesTwo.add(new Vehicle(new SimpleStringProperty("Tesla"), new SimpleStringProperty("BI 98765")));
+        FXCollections.sort(vehiclesTwo);
+
+        ObservableList<Vehicle> vehiclesThree = FXCollections.observableArrayList();
+        vehiclesThree.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
+        vehiclesThree.add(new Vehicle(new SimpleStringProperty("Bentley"), new SimpleStringProperty("BI 12345")));
+        vehiclesThree.add(new Vehicle(new SimpleStringProperty("Ferrari"), new SimpleStringProperty("BI 98765")));
+        FXCollections.sort(vehiclesThree);
+
         Buyer buyerOne = Buyer.builder().name(new SimpleStringProperty("Buyer nr 1")).
                 street(new SimpleStringProperty("Biała 1")).
                 city(new SimpleStringProperty("Warszawa")).
@@ -64,7 +76,7 @@ public class Data {
                 postalCode(new SimpleStringProperty("12-345")).
                 country(new SimpleStringProperty("Polska")).
                 nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehicles)).build();
+                vehicles(new SimpleListProperty<>(vehiclesTwo)).build();
 
         Buyer buyerThree = Buyer.builder().name(new SimpleStringProperty("Buyer nr 3")).
                 street(new SimpleStringProperty("Biała 3")).
@@ -72,7 +84,7 @@ public class Data {
                 postalCode(new SimpleStringProperty("12-345")).
                 country(new SimpleStringProperty("Polska")).
                 nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehicles)).build();
+                vehicles(new SimpleListProperty<>(vehiclesThree)).build();
 
         ObservableList<Buyer> buyers = FXCollections.observableArrayList();
         buyers.add(buyerOne);
