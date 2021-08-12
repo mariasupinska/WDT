@@ -43,22 +43,22 @@
             <Label text="Państwo" GridPane.rowIndex="4" />
             <Label text="NIP UE" GridPane.rowIndex="5" />
             <CheckBox mnemonicParsing="false" text="Zapewnia transport" GridPane.rowIndex="7" />
-            <ComboBox prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <ComboBox fx:id="vehicles" prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Label text="Data odbioru towaru" GridPane.rowIndex="6" />
-            <DatePicker prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <DatePicker fx:id="cargoDeliveryDate" prefHeight="25.0" prefWidth="460.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="name" GridPane.columnIndex="1" />
+            <TextField fx:id="street" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="city" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="postalCode" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="country" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="nip" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <ComboBox layoutX="45.0" layoutY="49.0" prefHeight="25.0" prefWidth="425.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="60.0" />
+      <ComboBox fx:id="buyers" layoutX="45.0" layoutY="49.0" prefHeight="25.0" prefWidth="425.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="60.0" />
       <ButtonBar layoutX="470.0" layoutY="53.0" prefHeight="40.0" prefWidth="270.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="53.0">
         <buttons>
-          <Button minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Dodaj firmę" />
-            <Button mnemonicParsing="false" text="Usuń firmę" />
+          <Button minWidth="100.0" mnemonicParsing="false" onAction="#handleAddCompany" prefWidth="100.0" text="Dodaj firmę" />
+            <Button mnemonicParsing="false" onAction="#handleDeleteCompany" text="Usuń firmę" />
         </buttons>
       </ButtonBar>
       <GridPane layoutX="500.0" layoutY="105.0" prefHeight="300.0" prefWidth="425.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0">
@@ -87,12 +87,12 @@
             <Label text="Państwo" GridPane.rowIndex="4" />
             <Label text="Osoba odbierająca" GridPane.rowIndex="5" />
             <Label text="Osoba potwierdzająca" GridPane.rowIndex="6" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="deliveryStreet" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="deliveryCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="deliveryPostalCode" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="deliveryCountry" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="personRetrieving" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="personConfirming" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
       <ButtonBar layoutX="700.0" layoutY="423.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="45.0">
@@ -101,7 +101,7 @@
             <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleNext" text="Dalej" />
         </buttons>
       </ButtonBar>
-      <Button layoutX="751.0" layoutY="61.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Dodaj pojazd" />
-      <Button layoutX="859.0" layoutY="61.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Usuń pojazd" />
+      <Button layoutX="751.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleAddVehicle" prefHeight="25.0" prefWidth="100.0" text="Dodaj pojazd" />
+      <Button layoutX="859.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleDeleteVehicle" prefHeight="25.0" prefWidth="100.0" text="Usuń pojazd" />
    </children>
 </AnchorPane>
