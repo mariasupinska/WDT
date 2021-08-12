@@ -1,11 +1,14 @@
 package pakoswdt.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import pakoswdt.MainApp;
 import pakoswdt.model.Buyer;
+import pakoswdt.model.Data;
 import pakoswdt.model.Vehicle;
 
 public class BuyerOverviewController {
@@ -44,14 +47,49 @@ public class BuyerOverviewController {
     @FXML
     private TextField personConfirming;
 
-
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
     @FXML
     public void initialize() {
+        buyers.setItems(Data.getBuyers());
 
+        buyers.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if(newValue != null ) {
+                        if ( oldValue != null ) {
+                            name.textProperty().unbindBidirectional(Data.getBuyer().getName());
+                            street.textProperty().unbindBidirectional(Data.getBuyer().getStreet());
+                            city.textProperty().unbindBidirectional(Data.getBuyer().getCity());
+                            postalCode.textProperty().unbindBidirectional(Data.getBuyer().getPostalCode());
+                            country.textProperty().unbindBidirectional(Data.getBuyer().getCountry());
+                            nip.textProperty().unbindBidirectional(Data.getBuyer().getNip());
+                            cargoDeliveryDate.valueProperty().unbindBidirectional(Data.getInvoice().getDeliveryDate());
+                            vehicles.itemsProperty().unbindBidirectional(Data.getBuyer().getVehicles());
+                        }
+
+                        Data.getInvoice().setBuyer(newValue);
+                        name.textProperty().bindBidirectional(Data.getBuyer().getName());
+                        street.textProperty().bindBidirectional(Data.getBuyer().getStreet());
+                        city.textProperty().bindBidirectional(Data.getBuyer().getCity());
+                        postalCode.textProperty().bindBidirectional(Data.getBuyer().getPostalCode());
+                        country.textProperty().bindBidirectional(Data.getBuyer().getCountry());
+                        nip.textProperty().bindBidirectional(Data.getBuyer().getNip());
+                        cargoDeliveryDate.valueProperty().bindBidirectional(Data.getInvoice().getDeliveryDate());
+                        vehicles.itemsProperty().bindBidirectional(Data.getBuyer().getVehicles());
+
+                        vehicles.getSelectionModel().selectedItemProperty().addListener(
+                                (observableVehicle, oldValueVehicle, newValueVehicle) -> {
+                                    if(newValueVehicle != null ) {
+                                        Data.getInvoice().setTransport(newValueVehicle);
+                                    }
+                                } );
+                    }
+                } );
+
+        buyers.setValue(Data.getInvoice().getBuyer());
+        vehicles.setValue(Data.getInvoice().getTransport());
     }
 
     @FXML
