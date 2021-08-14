@@ -1,11 +1,13 @@
 package pakoswdt.view;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pakoswdt.MainApp;
 import pakoswdt.model.Buyer;
@@ -13,6 +15,7 @@ import pakoswdt.model.Data;
 import pakoswdt.model.Vehicle;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class BuyerOverviewController {
@@ -58,37 +61,27 @@ public class BuyerOverviewController {
     @FXML
     public void initialize() {
         buyers.setItems(Data.getBuyers());
-
+        
+        cargoDeliveryDate.valueProperty().bindBidirectional(Data.getInvoice().getDeliveryDate());
+        
         buyers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null ) {
                         if ( oldValue != null ) {
-                            name.textProperty().unbindBidirectional(Data.getBuyer().getName());
-                            street.textProperty().unbindBidirectional(Data.getBuyer().getStreet());
-                            city.textProperty().unbindBidirectional(Data.getBuyer().getCity());
-                            postalCode.textProperty().unbindBidirectional(Data.getBuyer().getPostalCode());
-                            country.textProperty().unbindBidirectional(Data.getBuyer().getCountry());
-                            nip.textProperty().unbindBidirectional(Data.getBuyer().getNip());
-                            cargoDeliveryDate.valueProperty().unbindBidirectional(Data.getInvoice().getDeliveryDate());
-                            vehicles.itemsProperty().unbindBidirectional(Data.getBuyer().getVehicles());
+                            unbindOldValues(oldValue);
                         }
-
                         Data.getInvoice().setBuyer(newValue);
-                        name.textProperty().bindBidirectional(Data.getBuyer().getName());
-                        street.textProperty().bindBidirectional(Data.getBuyer().getStreet());
-                        city.textProperty().bindBidirectional(Data.getBuyer().getCity());
-                        postalCode.textProperty().bindBidirectional(Data.getBuyer().getPostalCode());
-                        country.textProperty().bindBidirectional(Data.getBuyer().getCountry());
-                        nip.textProperty().bindBidirectional(Data.getBuyer().getNip());
-                        cargoDeliveryDate.valueProperty().bindBidirectional(Data.getInvoice().getDeliveryDate());
-                        vehicles.itemsProperty().bindBidirectional(Data.getBuyer().getVehicles());
+                        
+                        bindNewValues(newValue);
+                    } else {
+                        clearBuyerFields();
+                    }
+                } );
 
-                        vehicles.getSelectionModel().selectedItemProperty().addListener(
-                                (observableVehicle, oldValueVehicle, newValueVehicle) -> {
-                                    if (newValueVehicle != null ) {
-                                        Data.getInvoice().setTransport(newValueVehicle);
-                                    }
-                                } );
+        vehicles.getSelectionModel().selectedItemProperty().addListener(
+                (observableVehicle, oldValueVehicle, newValueVehicle) -> {
+                    if (newValueVehicle != null ) {
+                        Data.getInvoice().setTransport(newValueVehicle);
                     }
                 } );
 
@@ -96,14 +89,95 @@ public class BuyerOverviewController {
         vehicles.setValue(Data.getInvoice().getTransport());
     }
 
+    private void clearBuyerFields() {
+        name.clear();
+        street.clear();
+        city.clear();
+        postalCode.clear();
+        country.clear();
+        nip.clear();
+        vehicles.setItems(new SimpleListProperty<>());
+    }
+
+    private void unbindOldValues(Buyer buyer) {
+        name.textProperty().unbindBidirectional(buyer.getName());
+        street.textProperty().unbindBidirectional(buyer.getStreet());
+        city.textProperty().unbindBidirectional(buyer.getCity());
+        postalCode.textProperty().unbindBidirectional(buyer.getPostalCode());
+        country.textProperty().unbindBidirectional(buyer.getCountry());
+        nip.textProperty().unbindBidirectional(buyer.getNip());
+        vehicles.itemsProperty().unbindBidirectional(buyer.getVehicles());
+    }
+
+    private void bindNewValues(Buyer buyer) {
+        name.textProperty().bindBidirectional(buyer.getName());
+        street.textProperty().bindBidirectional(buyer.getStreet());
+        city.textProperty().bindBidirectional(buyer.getCity());
+        postalCode.textProperty().bindBidirectional(buyer.getPostalCode());
+        country.textProperty().bindBidirectional(buyer.getCountry());
+        nip.textProperty().bindBidirectional(buyer.getNip());
+        vehicles.itemsProperty().bindBidirectional(buyer.getVehicles());
+    }
+
     @FXML
     private void handleAddCompany() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/NewBuyerDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Nowa firma");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(mainApp.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        NewBuyerDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+
+        dialogStage.showAndWait();
+
+        Buyer buyer = controller.getBuyer();
+        if ( buyer != null ) {
+            Data.getBuyers().add(buyer);
+            FXCollections.sort(Data.getBuyers());
+            buyers.getSelectionModel().select(buyer);
+        }
 
     }
 
     @FXML
     private void handleDeleteCompany() {
+        int selectedIndex = buyers.getSelectionModel().getSelectedIndex();
+        if ( selectedIndex >= 0 ) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setHeaderText("Usuwanie firmy");
+            alert.setContentText("Czy na pewno chcesz usunąć wybraną firmę?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if( result.get() == ButtonType.OK ) {
+                Buyer removed = buyers.getItems().remove(selectedIndex);
+                buyers.setValue(null);
+                unbindOldValues(removed);
+                Data.getInvoice().setBuyer(null);
+            } else if ( result.get() == ButtonType.CANCEL ) {
+                return;
+            }
 
+        } else {
+            //Nothing selected.
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Brak zaznaczenia");
+            alert.setHeaderText("Nie wybrano żadnej firmy");
+            alert.setContentText("Aby usunąć firmę należy ją najpierw wybrać z listy.");
+            alert.showAndWait();
+        }
     }
 
     @FXML
