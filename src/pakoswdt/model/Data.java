@@ -68,7 +68,13 @@ public class Data {
                 postalCode(new SimpleStringProperty("12-345")).
                 country(new SimpleStringProperty("Polska")).
                 nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehicles)).build();
+                vehicles(new SimpleListProperty<>(vehicles)).
+                deliveryStreet(new SimpleStringProperty("")).
+                deliveryCity(new SimpleStringProperty("")).
+                deliveryPostalCode(new SimpleStringProperty("")).
+                deliveryCountry(new SimpleStringProperty("")).
+                personRetrieving(new SimpleStringProperty("")).
+                personConfirming(new SimpleStringProperty("")).build();
 
         Buyer buyerTwo = Buyer.builder().name(new SimpleStringProperty("Buyer nr 2")).
                 street(new SimpleStringProperty("Biała 2")).
@@ -76,7 +82,13 @@ public class Data {
                 postalCode(new SimpleStringProperty("12-345")).
                 country(new SimpleStringProperty("Polska")).
                 nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehiclesTwo)).build();
+                vehicles(new SimpleListProperty<>(vehiclesTwo)).
+                deliveryStreet(new SimpleStringProperty("")).
+                deliveryCity(new SimpleStringProperty("")).
+                deliveryPostalCode(new SimpleStringProperty("")).
+                deliveryCountry(new SimpleStringProperty("")).
+                personRetrieving(new SimpleStringProperty("")).
+                personConfirming(new SimpleStringProperty("")).build();
 
         Buyer buyerThree = Buyer.builder().name(new SimpleStringProperty("Buyer nr 3")).
                 street(new SimpleStringProperty("Biała 3")).
@@ -84,7 +96,13 @@ public class Data {
                 postalCode(new SimpleStringProperty("12-345")).
                 country(new SimpleStringProperty("Polska")).
                 nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehiclesThree)).build();
+                vehicles(new SimpleListProperty<>(vehiclesThree)).
+                deliveryStreet(new SimpleStringProperty("")).
+                deliveryCity(new SimpleStringProperty("")).
+                deliveryPostalCode(new SimpleStringProperty("")).
+                deliveryCountry(new SimpleStringProperty("")).
+                personRetrieving(new SimpleStringProperty("")).
+                personConfirming(new SimpleStringProperty("")).build();
 
         ObservableList<Buyer> buyers = FXCollections.observableArrayList();
         buyers.add(buyerOne);

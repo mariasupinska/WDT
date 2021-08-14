@@ -63,7 +63,7 @@ public class BuyerOverviewController {
         buyers.setItems(Data.getBuyers());
         
         cargoDeliveryDate.valueProperty().bindBidirectional(Data.getInvoice().getDeliveryDate());
-        
+
         buyers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null ) {
@@ -97,6 +97,14 @@ public class BuyerOverviewController {
         country.clear();
         nip.clear();
         vehicles.setItems(new SimpleListProperty<>());
+
+        deliveryStreet.clear();
+        deliveryCity.clear();
+        deliveryPostalCode.clear();
+        deliveryCountry.clear();
+
+        personRetrieving.clear();
+        personConfirming.clear();
     }
 
     private void unbindOldValues(Buyer buyer) {
@@ -107,6 +115,14 @@ public class BuyerOverviewController {
         country.textProperty().unbindBidirectional(buyer.getCountry());
         nip.textProperty().unbindBidirectional(buyer.getNip());
         vehicles.itemsProperty().unbindBidirectional(buyer.getVehicles());
+
+        deliveryStreet.textProperty().unbindBidirectional(buyer.getDeliveryStreet());
+        deliveryCity.textProperty().unbindBidirectional(buyer.getDeliveryCity());
+        deliveryPostalCode.textProperty().unbindBidirectional(buyer.getDeliveryPostalCode());
+        deliveryCountry.textProperty().unbindBidirectional(buyer.getDeliveryCountry());
+
+        personRetrieving.textProperty().unbindBidirectional(buyer.getPersonRetrieving());
+        personConfirming.textProperty().unbindBidirectional(buyer.getPersonConfirming());
     }
 
     private void bindNewValues(Buyer buyer) {
@@ -117,6 +133,14 @@ public class BuyerOverviewController {
         country.textProperty().bindBidirectional(buyer.getCountry());
         nip.textProperty().bindBidirectional(buyer.getNip());
         vehicles.itemsProperty().bindBidirectional(buyer.getVehicles());
+
+        deliveryStreet.textProperty().bindBidirectional(buyer.getDeliveryStreet());
+        deliveryCity.textProperty().bindBidirectional(buyer.getDeliveryCity());
+        deliveryPostalCode.textProperty().bindBidirectional(buyer.getDeliveryPostalCode());
+        deliveryCountry.textProperty().bindBidirectional(buyer.getDeliveryCountry());
+
+        personRetrieving.textProperty().bindBidirectional(buyer.getPersonRetrieving());
+        personConfirming.textProperty().bindBidirectional(buyer.getPersonConfirming());
     }
 
     @FXML

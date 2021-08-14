@@ -14,6 +14,10 @@ import lombok.experimental.SuperBuilder;
 @Setter
 
 public class Buyer extends Business implements Comparable<Buyer> {
+    private StringProperty deliveryStreet = new SimpleStringProperty("");
+    private StringProperty deliveryCity = new SimpleStringProperty("");
+    private StringProperty deliveryPostalCode = new SimpleStringProperty("");
+    private StringProperty deliveryCountry = new SimpleStringProperty("");
     private StringProperty personRetrieving = new SimpleStringProperty("");
     private StringProperty personConfirming = new SimpleStringProperty("");
 
