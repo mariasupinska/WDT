@@ -20,5 +20,5 @@ public class Invoice {
     private StringProperty number = new SimpleStringProperty("");
     private StringProperty placeOfExtradition = new SimpleStringProperty("Białystok");
     private ObjectProperty<LocalDate> creationDate = new SimpleObjectProperty<>(LocalDate.now());
-
+    private ObjectProperty<LocalDate> deliveryDate = new SimpleObjectProperty<>(LocalDate.now());
 }
