@@ -48,6 +48,12 @@ public class SellerOverviewController {
 
     @FXML
     private void initialize() {
+        bind();
+        addListeners();
+        setValues();
+    }
+
+    private void bind() {
         name.textProperty().bindBidirectional(Data.getSeller().getName());
         street.textProperty().bindBidirectional(Data.getSeller().getStreet());
         city.textProperty().bindBidirectional(Data.getSeller().getCity());
@@ -59,7 +65,9 @@ public class SellerOverviewController {
         place.textProperty().bindBidirectional(Data.getInvoice().getPlaceOfExtradition());
         vehicles.itemsProperty().bindBidirectional(Data.getSeller().getVehicles());
         employees.itemsProperty().bindBidirectional(Data.getSeller().getEmployees());
+    }
 
+    private void addListeners() {
         vehicles.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if(newValue != null ) {
@@ -67,15 +75,16 @@ public class SellerOverviewController {
                     }
                 } );
 
-        vehicles.setValue(Data.getInvoice().getTransport()); //TODO: sprawdzić czzy działa gdy pojazd Sellera w Widoku Buyera lub vice versa
-
         employees.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if(newValue != null ) {
                         Data.getInvoice().setCreator(newValue);
                     }
                 } );
+    }
 
+    private void setValues() {
+        vehicles.setValue(Data.getInvoice().getTransport());
         employees.setValue(Data.getInvoice().getCreator());
     }
 
