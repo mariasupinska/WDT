@@ -10,9 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pakoswdt.MainApp;
-import pakoswdt.model.Buyer;
-import pakoswdt.model.Data;
-import pakoswdt.model.Vehicle;
+import pakoswdt.model.*;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -179,11 +177,7 @@ public class BuyerOverviewController {
     private void handleDeleteCompany() {
         int selectedIndex = buyers.getSelectionModel().getSelectedIndex();
         if ( selectedIndex >= 0 ) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setHeaderText("Usuwanie firmy");
-            alert.setContentText("Czy na pewno chcesz usunąć wybraną firmę?");
-            Optional<ButtonType> result = alert.showAndWait();
+            Optional<ButtonType> result = new Alerts(AlertEnum.DELETING_BUYER, mainApp.getPrimaryStage()).display();
             if( result.get() == ButtonType.OK ) {
                 Buyer removed = buyers.getItems().remove(selectedIndex);
                 buyers.setValue(null);
@@ -194,13 +188,7 @@ public class BuyerOverviewController {
             }
 
         } else {
-            //Nothing selected.
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("Brak zaznaczenia");
-            alert.setHeaderText("Nie wybrano żadnej firmy");
-            alert.setContentText("Aby usunąć firmę należy ją najpierw wybrać z listy.");
-            alert.showAndWait();
+            new Alerts(AlertEnum.NO_BUYER_SELECTED, mainApp.getPrimaryStage()).display();
         }
     }
 
@@ -241,11 +229,7 @@ public class BuyerOverviewController {
             Vehicle vehicle = vehicles.getItems().get(selectedIndex);
             if ( vehicle.isEmpty() ) return;                                //TODO: przed przejściem do produktu czy oba vehicle nie są puste
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setHeaderText("Usuwanie pojazdu");
-            alert.setContentText("Czy na pewno chcesz usunąć wybrany pojazd?");
-            Optional<ButtonType> result = alert.showAndWait();
+            Optional<ButtonType> result = new Alerts(AlertEnum.DELETING_VEHICLE, mainApp.getPrimaryStage()).display();
             if( result.get() == ButtonType.OK ) {
                 Data.setTransport(null);
                 vehicles.getItems().remove(selectedIndex);
@@ -254,13 +238,7 @@ public class BuyerOverviewController {
             }
 
         } else {
-            //Nothing selected.
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("Brak zaznaczenia");
-            alert.setHeaderText("Nie wybrano żadnego pojazdu");
-            alert.setContentText("Aby usunąć pojazd należy go najpierw wybrać z listy.");
-            alert.showAndWait();
+            new Alerts(AlertEnum.NO_VEHICLE_SELECTED, mainApp.getPrimaryStage()).display();
         }
     }
 
