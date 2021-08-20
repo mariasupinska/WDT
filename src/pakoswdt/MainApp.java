@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pakoswdt.model.Product;
 import pakoswdt.view.BuyerOverviewController;
+import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
 
@@ -19,6 +21,7 @@ public class MainApp extends Application {
     private StartingViewController startingViewController;
     private SellerOverviewController sellerOverviewController;
     private BuyerOverviewController buyerOverviewController;
+    private ProductsOverviewController productsOverviewController;
 
 
     @Override
@@ -29,7 +32,6 @@ public class MainApp extends Application {
         initRootLayout();
 
         showStartingView();
-        //showPersonOverview();
     }
 
     /**
@@ -105,6 +107,24 @@ public class MainApp extends Application {
             BuyerOverviewController controller = loader.getController();
             controller.setMainApp(this);
             buyerOverviewController = controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showProductsOverview() {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ProductsOverview.fxml"));
+            AnchorPane productsOverview = (AnchorPane) loader.load();
+
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(productsOverview);
+
+            ProductsOverviewController controller = loader.getController();
+            controller.setMainApp(this);
+            productsOverviewController = controller;
         } catch (IOException e) {
             e.printStackTrace();
         }

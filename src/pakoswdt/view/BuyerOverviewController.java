@@ -5,7 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,7 +16,6 @@ import pakoswdt.MainApp;
 import pakoswdt.model.*;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Optional;
 
 public class BuyerOverviewController {
@@ -243,7 +245,7 @@ public class BuyerOverviewController {
     }
 
     @FXML
-    private void handleNext() {}
+    private void handleNext() { mainApp.showProductsOverview(); }
 
     @FXML
     private void handlePrevious() {
