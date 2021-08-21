@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.ProductsOverviewController">
    <children>
-      <Button layoutX="455.0" layoutY="238.0" mnemonicParsing="false" onAction="#ReadCsvFile" text="Load csv file" />
+      <Button layoutX="630.0" layoutY="44.0" mnemonicParsing="false" onAction="#readCsvFile" text="Otwórz..." />
+      <Label layoutX="448.0" layoutY="14.0" text="Dane z Pliku">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="filePath" layoutX="366.0" layoutY="44.0" prefWidth="250.0" />
+      <TableView fx:id="productsTableView" layoutX="400.0" layoutY="104.0" prefHeight="300.0" prefWidth="970.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="141.0" text="Nazwa produktu" />
+          <TableColumn fx:id="amount" prefWidth="72.0" text="Ilość" />
+            <TableColumn fx:id="unit" prefWidth="75.0" text="Jedn. miary" />
+            <TableColumn fx:id="unitWeight" prefWidth="75.0" text="Waga jednostki" />
+            <TableColumn fx:id="nettoWeight" prefWidth="75.0" text="Waga netto [kg]" />
+            <TableColumn fx:id="packageType" prefWidth="75.0" text="Rodzaj op." />
+            <TableColumn fx:id="packagesAmount" prefWidth="75.0" text="Ilość op." />
+            <TableColumn fx:id="packageUnitWeight" prefWidth="75.0" text="Waga 1 op." />
+            <TableColumn fx:id="packagesTotalWeight" prefWidth="75.0" text="Razem" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
 </AnchorPane>
