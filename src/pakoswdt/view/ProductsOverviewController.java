@@ -1,31 +1,81 @@
 package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.exceptions.CsvException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import pakoswdt.MainApp;
 import pakoswdt.model.Product;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductsOverviewController {
     private MainApp mainApp;
+
+    @FXML
+    private TextField filePath;
+    @FXML
+    private TableView<Product> productsTableView;
+    @FXML
+    private TableColumn<Product, String> name;
+    @FXML
+    private TableColumn<Product, String> amount;
+    @FXML
+    private TableColumn<Product, String> unit;
+    @FXML
+    private TableColumn<Product, String> unitWeight;
+    @FXML
+    private TableColumn<Product, String> nettoWeight;
+    @FXML
+    private TableColumn<Product, String> packageType;
+    @FXML
+    private TableColumn<Product, String> packagesAmount;
+    @FXML
+    private TableColumn<Product, String> packageUnitWeight;
+    @FXML
+    private TableColumn<Product, String> packagesTotalWeight;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
     @FXML
-    private void ReadCsvFile() throws IOException, CsvException {
-        String fileName = "/home/marysia/Downloads/031dar.csv";
+    public void initialize() {
+        name.setCellValueFactory(cellData -> cellData.getValue().getName());
+        amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
+        unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
 
-        List<Product> products = new CsvToBeanBuilder(new FileReader(fileName))
-                .withType(Product.class)
-                .build()
-                .parse();
+    }
 
-        products.forEach(System.out::println);
+    @FXML
+    private void readCsvFile() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter csvExtFilter = new FileChooser.ExtensionFilter("Csv files (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(csvExtFilter);
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if ( file != null && file.exists() ) {
+            filePath.setText(file.getPath());
+            List<Product> products = new CsvToBeanBuilder<Product>(new FileReader(file))
+                    .withType(Product.class)
+                    .build()
+                    .parse()
+                    .stream()
+                    .filter(product -> !product.shouldBeIgnored())
+                    .collect(Collectors.toList());
+
+            ObservableList<Product> observableProducts = FXCollections.observableArrayList(products); //TODO: dalej rozwinąć
+
+            productsTableView.setItems(observableProducts);
+        }
     }
 }
