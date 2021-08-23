@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 
 public class Data {
     private static Invoice invoice;
-    private static ObservableList<Buyer> buyers = createBuyers();
+    private static ObservableList<Buyer> buyers;
 
     public Data() {
 
@@ -122,6 +122,10 @@ public class Data {
 
     public static ObservableList<Buyer> getBuyers() {
         return Data.buyers;
+    }
+
+    public static void setBuyers(ObservableList<Buyer> buyers) {
+        Data.buyers = buyers;
     }
 
     public static Vehicle getTransport() {
