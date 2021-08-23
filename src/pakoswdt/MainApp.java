@@ -1,18 +1,39 @@
 package pakoswdt;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.application.Application;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pakoswdt.model.Buyer;
+import pakoswdt.model.Data;
 import pakoswdt.model.Product;
+import pakoswdt.model.Vehicle;
+import pakoswdt.model.legacy.LegacyBuyer;
+import pakoswdt.model.legacy.LegacyData;
+import pakoswdt.model.legacy.LegacyVehicle;
 import pakoswdt.view.BuyerOverviewController;
 import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
+
+import javax.crypto.spec.GCMParameterSpec;
 
 public class MainApp extends Application {
 
@@ -29,9 +50,58 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("WDT");
 
+        loadData();
+
         initRootLayout();
 
         showStartingView();
+    }
+
+    private void loadData() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        String filePath = "/home/marysia/Downloads/CokolwiekPoprawne.json";
+
+        String content = readFile(filePath);
+
+        LegacyData data = gson.fromJson(content, LegacyData.class);
+
+        List<Buyer> buyers = data.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+        Data.setBuyers(FXCollections.observableArrayList(buyers));
+    }
+
+    private Buyer convert(LegacyBuyer legacyBuyer) {
+        return Buyer.builder().name(new SimpleStringProperty(legacyBuyer.getName())).
+                street(new SimpleStringProperty(legacyBuyer.getAddress().getStreet())).
+                city(new SimpleStringProperty(legacyBuyer.getAddress().getCity())).
+                postalCode(new SimpleStringProperty(legacyBuyer.getAddress().getPostcode())).
+                country(new SimpleStringProperty(legacyBuyer.getAddress().getCountry())).
+                nip(new SimpleStringProperty(legacyBuyer.getNip())).
+                vehicles(new SimpleListProperty<>(convert(legacyBuyer.getVehicles()))).
+                deliveryStreet(new SimpleStringProperty(legacyBuyer.getDeliveryAddress().getStreet())).
+                deliveryCity(new SimpleStringProperty(legacyBuyer.getDeliveryAddress().getCity())).
+                deliveryPostalCode(new SimpleStringProperty(legacyBuyer.getDeliveryAddress().getPostcode())).
+                deliveryCountry(new SimpleStringProperty(legacyBuyer.getDeliveryAddress().getCountry())).
+                personRetrieving(new SimpleStringProperty(legacyBuyer.getPersonRetrieving())).
+                personConfirming(new SimpleStringProperty(legacyBuyer.getPersonConfirming())).build();
+    }
+
+    private ObservableList<Vehicle> convert(List<LegacyVehicle> vehicles) {
+        ObservableList<Vehicle> newVehicles = FXCollections.observableArrayList();
+        vehicles.forEach(vehicle -> {
+            newVehicles.add(new Vehicle(new SimpleStringProperty(vehicle.getBrand()), new SimpleStringProperty(vehicle.getRegistrationNumber())));
+        });
+        return newVehicles;
+    }
+
+    private String readFile(String path) {
+        byte[] encoded = new byte[0];
+        try {
+            encoded = Files.readAllBytes(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String(encoded);
     }
 
     /**
