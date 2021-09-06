@@ -1,11 +1,13 @@
 package pakoswdt;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -60,14 +62,16 @@ public class MainApp extends Application {
     private void loadData() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        String filePath = "/home/marysia/Downloads/CokolwiekPoprawne.json";
+        String filePath = "/home/marysia/Downloads/NoweCokolwiek.json";
 
         String content = readFile(filePath);
 
-        LegacyData data = gson.fromJson(content, LegacyData.class);
+        LegacyData legacyData = gson.fromJson(content, LegacyData.class);
 
-        List<Buyer> buyers = data.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+        List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+
         Data.setBuyers(FXCollections.observableArrayList(buyers));
+        Data.setProducts(legacyData.getProducts());
     }
 
     private Buyer convert(LegacyBuyer legacyBuyer) {

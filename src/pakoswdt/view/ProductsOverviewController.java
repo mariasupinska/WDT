@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import pakoswdt.MainApp;
+import pakoswdt.model.Data;
 import pakoswdt.model.Product;
 
 import java.io.File;
@@ -28,13 +29,13 @@ public class ProductsOverviewController {
     @FXML
     private TableColumn<Product, String> name;
     @FXML
-    private TableColumn<Product, String> amount;
+    private TableColumn<Product, Number> amount;
     @FXML
     private TableColumn<Product, String> unit;
     @FXML
-    private TableColumn<Product, String> unitWeight;
+    private TableColumn<Product, Number> unitWeight;
     @FXML
-    private TableColumn<Product, String> nettoWeight;
+    private TableColumn<Product, Number> netWeight;
     @FXML
     private TableColumn<Product, String> packageType;
     @FXML
@@ -53,7 +54,8 @@ public class ProductsOverviewController {
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
         amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
         unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
-
+        unitWeight.setCellValueFactory(cellData -> cellData.getValue().getUnitWeight());
+        netWeight.setCellValueFactory(cellData -> cellData.getValue().getNetWeight());
     }
 
     @FXML
@@ -67,10 +69,12 @@ public class ProductsOverviewController {
             filePath.setText(file.getPath());
             List<Product> products = new CsvToBeanBuilder<Product>(new FileReader(file))
                     .withType(Product.class)
+                    .withSkipLines(1)
                     .build()
                     .parse()
                     .stream()
                     .filter(product -> !product.shouldBeIgnored())
+                    .map(product -> product.enrich(Data.getProducts()))
                     .collect(Collectors.toList());
 
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products); //TODO: dalej rozwinąć

@@ -23,7 +23,7 @@
           <TableColumn fx:id="amount" prefWidth="72.0" text="Ilość" />
             <TableColumn fx:id="unit" prefWidth="75.0" text="Jedn. miary" />
             <TableColumn fx:id="unitWeight" prefWidth="75.0" text="Waga jednostki" />
-            <TableColumn fx:id="nettoWeight" prefWidth="75.0" text="Waga netto [kg]" />
+            <TableColumn fx:id="netWeight" prefWidth="75.0" text="Waga netto [kg]" />
             <TableColumn fx:id="packageType" prefWidth="75.0" text="Rodzaj op." />
             <TableColumn fx:id="packagesAmount" prefWidth="75.0" text="Ilość op." />
             <TableColumn fx:id="packageUnitWeight" prefWidth="75.0" text="Waga 1 op." />

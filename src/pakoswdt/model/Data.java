@@ -5,9 +5,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 public class Data {
     private static Invoice invoice;
     private static ObservableList<Buyer> buyers;
+    private static Map<String, BigDecimal> products;
 
     public Data() {
 
@@ -126,6 +130,14 @@ public class Data {
 
     public static void setBuyers(ObservableList<Buyer> buyers) {
         Data.buyers = buyers;
+    }
+
+    public static Map<String, BigDecimal> getProducts() {
+        return products;
+    }
+
+    public static void setProducts(Map<String, BigDecimal> products) {
+        Data.products = products;
     }
 
     public static Vehicle getTransport() {
