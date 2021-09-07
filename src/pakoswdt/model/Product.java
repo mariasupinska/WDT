@@ -51,4 +51,8 @@ public class Product {
 
         return this;
     }
+
+    public void setName(String newValue) {
+        name.setValue(newValue);
+    }
 }
