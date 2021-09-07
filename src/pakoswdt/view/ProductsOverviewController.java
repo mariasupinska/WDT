@@ -1,14 +1,23 @@
 package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import pakoswdt.MainApp;
+import pakoswdt.model.Data;
 import pakoswdt.model.Product;
 
 import java.io.File;
@@ -28,13 +37,13 @@ public class ProductsOverviewController {
     @FXML
     private TableColumn<Product, String> name;
     @FXML
-    private TableColumn<Product, String> amount;
+    private TableColumn<Product, Number> amount;
     @FXML
     private TableColumn<Product, String> unit;
     @FXML
-    private TableColumn<Product, String> unitWeight;
+    private TableColumn<Product, Number> unitWeight;
     @FXML
-    private TableColumn<Product, String> nettoWeight;
+    private TableColumn<Product, Number> netWeight;
     @FXML
     private TableColumn<Product, String> packageType;
     @FXML
@@ -50,10 +59,42 @@ public class ProductsOverviewController {
 
     @FXML
     public void initialize() {
-        name.setCellValueFactory(cellData -> cellData.getValue().getName());
-        amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
-        unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
+        productsTableView.setEditable(true);
 
+        name.setCellValueFactory(cellData -> cellData.getValue().getName());
+        name.setCellFactory(TextFieldTableCell.forTableColumn());
+        name.setOnEditCommit(
+                event -> event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()).getName().setValue(event.getNewValue())
+        );
+
+        amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
+        amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        amount.setOnEditCommit(
+                event -> event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()).getAmount().setValue(event.getNewValue())
+        );
+
+        unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
+        unit.setCellFactory(TextFieldTableCell.forTableColumn());
+        unit.setOnEditCommit(
+                event -> event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()).getUnit().setValue(event.getNewValue())
+        );
+
+        unitWeight.setCellValueFactory(cellData -> cellData.getValue().getUnitWeight());
+        unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        unitWeight.setOnEditCommit(
+                event -> event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()).getUnitWeight().setValue(event.getNewValue())
+        );
+
+        netWeight.setCellValueFactory(cellData -> cellData.getValue().getNetWeight());
+        netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        netWeight.setOnEditCommit(
+                event -> event.getTableView().getItems().get(
+                        event.getTablePosition().getRow()).getNetWeight().setValue(event.getNewValue())
+        );
     }
 
     @FXML
@@ -67,10 +108,12 @@ public class ProductsOverviewController {
             filePath.setText(file.getPath());
             List<Product> products = new CsvToBeanBuilder<Product>(new FileReader(file))
                     .withType(Product.class)
+                    .withSkipLines(1)
                     .build()
                     .parse()
                     .stream()
                     .filter(product -> !product.shouldBeIgnored())
+                    .map(product -> product.enrich(Data.getProducts()))
                     .collect(Collectors.toList());
 
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products); //TODO: dalej rozwinąć
