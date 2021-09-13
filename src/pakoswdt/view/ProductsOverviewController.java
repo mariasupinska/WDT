@@ -2,6 +2,7 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import pakoswdt.MainApp;
 import pakoswdt.model.Data;
+import pakoswdt.model.Package;
 import pakoswdt.model.Product;
 
 import java.io.File;
@@ -42,11 +44,11 @@ public class ProductsOverviewController {
     @FXML
     private TableColumn<Product, String> packageType;
     @FXML
-    private TableColumn<Product, String> packagesAmount;
+    private TableColumn<Product, Number> packagesAmount;
     @FXML
-    private TableColumn<Product, String> packageUnitWeight;
+    private TableColumn<Product, Number> packageUnitWeight;
     @FXML
-    private TableColumn<Product, String> packagesTotalWeight;
+    private TableColumn<Product, Number> packagesTotalWeight;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -122,6 +124,59 @@ public class ProductsOverviewController {
                 }
         );
 
+        packageType.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getType());
+        packageType.setCellFactory(TextFieldTableCell.forTableColumn());
+        packageType.setOnEditCommit(
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
+
+                    if ( editedPackage.getType() == null ) {
+                        editedPackage.setType(new SimpleStringProperty());
+                    }
+
+                    editedPackage.getType().setValue(event.getNewValue());
+                }
+        );
+
+        packagesAmount.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getAmount());
+        packagesAmount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packagesAmount.setOnEditCommit(
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
+
+                    if ( editedPackage.getAmount() == null ) {
+                        editedPackage.setAmount(new SimpleDoubleProperty());
+                    }
+
+                    editedPackage.getAmount().setValue(event.getNewValue());
+                    productsTableView.refresh();
+                }
+        );
+
+        packageUnitWeight.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getWeight());
+        packageUnitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packageUnitWeight.setOnEditCommit(
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
+
+                    if ( editedPackage.getWeight() == null ) {
+                        editedPackage.setWeight(new SimpleDoubleProperty());
+                    }
+
+                    editedPackage.getWeight().setValue(event.getNewValue());
+                    productsTableView.refresh();
+                }
+        );
+
+        packagesTotalWeight.setCellValueFactory(cellData -> {
+            Package productPackage = cellData.getValue().getProductPackage();
+            return recalculateTotalWeight(productPackage);
+        });
+        packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packagesTotalWeight.setEditable(false);
 
     }
 
@@ -141,6 +196,14 @@ public class ProductsOverviewController {
         productsTableView.refresh();
     }
 
+    private SimpleDoubleProperty recalculateTotalWeight(Package editedPackage) {
+        if ( editedPackage.getAmount() != null && editedPackage.getWeight() != null ) {
+            BigDecimal amount = BigDecimal.valueOf(editedPackage.getAmount().get());
+            BigDecimal weight = BigDecimal.valueOf(editedPackage.getWeight().get());
+            BigDecimal result = amount.multiply(weight);
+            return new SimpleDoubleProperty(result.doubleValue());
+        } else return null;
+    }
 
     @FXML
     private void readCsvFile() throws IOException {

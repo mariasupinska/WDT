@@ -27,7 +27,7 @@
             <TableColumn fx:id="packageType" prefWidth="75.0" text="Rodzaj op." />
             <TableColumn fx:id="packagesAmount" prefWidth="75.0" text="Ilość op." />
             <TableColumn fx:id="packageUnitWeight" prefWidth="75.0" text="Waga 1 op." />
-            <TableColumn fx:id="packagesTotalWeight" prefWidth="75.0" text="Razem" />
+            <TableColumn fx:id="packagesTotalWeight" prefWidth="75.0" text="Waga op. razem" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

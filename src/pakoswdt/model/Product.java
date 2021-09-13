@@ -27,6 +27,8 @@ public class Product {
     private SimpleDoubleProperty unitWeight;
     private SimpleDoubleProperty netWeight;
 
+    private Package productPackage = new Package();
+
     private boolean isEmpty() {
         return StringUtils.isAllEmpty(name.get(), unit.get()) && amount == null;
     }
