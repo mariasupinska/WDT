@@ -4,18 +4,12 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.Data;
 import pakoswdt.model.Product;
@@ -23,7 +17,8 @@ import pakoswdt.model.Product;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,38 +59,88 @@ public class ProductsOverviewController {
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
         name.setCellFactory(TextFieldTableCell.forTableColumn());
         name.setOnEditCommit(
-                event -> event.getTableView().getItems().get(
-                        event.getTablePosition().getRow()).getName().setValue(event.getNewValue())
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
+                    editedProduct.getName().setValue(event.getNewValue());
+                }
         );
 
         amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
         amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         amount.setOnEditCommit(
-                event -> event.getTableView().getItems().get(
-                        event.getTablePosition().getRow()).getAmount().setValue(event.getNewValue())
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
+                    editedProduct.getAmount().setValue(event.getNewValue());
+
+                    if ( editedProduct.getUnitWeight() != null ) {
+                        recalculateNetWeight(editedProduct);
+                    }
+                }
         );
 
         unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
         unit.setCellFactory(TextFieldTableCell.forTableColumn());
         unit.setOnEditCommit(
-                event -> event.getTableView().getItems().get(
-                        event.getTablePosition().getRow()).getUnit().setValue(event.getNewValue())
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
+                    editedProduct.getUnit().setValue(event.getNewValue());
+                }
         );
 
         unitWeight.setCellValueFactory(cellData -> cellData.getValue().getUnitWeight());
         unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         unitWeight.setOnEditCommit(
-                event -> event.getTableView().getItems().get(
-                        event.getTablePosition().getRow()).getUnitWeight().setValue(event.getNewValue())
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
+
+                    if ( editedProduct.getUnitWeight() == null ) {
+                        editedProduct.setUnitWeight(new SimpleDoubleProperty());
+                    }
+                    editedProduct.getUnitWeight().setValue(event.getNewValue());
+
+                    recalculateNetWeight(editedProduct);
+                }
         );
 
         netWeight.setCellValueFactory(cellData -> cellData.getValue().getNetWeight());
         netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         netWeight.setOnEditCommit(
-                event -> event.getTableView().getItems().get(
-                        event.getTablePosition().getRow()).getNetWeight().setValue(event.getNewValue())
+                event -> {
+                    int rowNumber = event.getTablePosition().getRow();
+                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
+
+                    if ( editedProduct.getNetWeight() == null ) {
+                        editedProduct.setNetWeight(new SimpleDoubleProperty());
+                    }
+                    editedProduct.getNetWeight().setValue(event.getNewValue());
+
+                    recalculateUnitWeight(editedProduct);
+                }
         );
+
+
     }
+
+    private void recalculateUnitWeight(Product editedProduct) {
+        BigDecimal netWeight = BigDecimal.valueOf(editedProduct.getNetWeight().get());
+        BigDecimal amount = BigDecimal.valueOf(editedProduct.getAmount().get());
+        if ( editedProduct.getUnitWeight() == null ) editedProduct.setUnitWeight(new SimpleDoubleProperty());
+        editedProduct.getUnitWeight().setValue(netWeight.divide(amount, RoundingMode.HALF_EVEN).doubleValue());
+        productsTableView.refresh();
+    }
+
+    private void recalculateNetWeight(Product editedProduct) {
+        BigDecimal amount = BigDecimal.valueOf(editedProduct.getAmount().get());
+        BigDecimal unitWeight = BigDecimal.valueOf(editedProduct.getUnitWeight().get());
+        if ( editedProduct.getNetWeight() == null ) editedProduct.setNetWeight(new SimpleDoubleProperty());
+        editedProduct.getNetWeight().setValue(amount.multiply(unitWeight).doubleValue());
+        productsTableView.refresh();
+    }
+
 
     @FXML
     private void readCsvFile() throws IOException {
