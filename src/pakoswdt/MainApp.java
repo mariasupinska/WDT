@@ -1,19 +1,8 @@
 package pakoswdt;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.application.Application;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -25,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import pakoswdt.model.Buyer;
 import pakoswdt.model.Data;
-import pakoswdt.model.Product;
 import pakoswdt.model.Vehicle;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
@@ -35,7 +23,11 @@ import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
 
-import javax.crypto.spec.GCMParameterSpec;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainApp extends Application {
 
