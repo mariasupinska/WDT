@@ -11,7 +11,17 @@ import lombok.ToString;
 @ToString
 
 public class Package {
-    private SimpleStringProperty type;
+    private SimpleStringProperty type = new SimpleStringProperty("");
     private SimpleDoubleProperty amount;
     private SimpleDoubleProperty weight;
+
+    public SimpleDoubleProperty amount() {
+        if ( amount == null ) this.amount = new SimpleDoubleProperty();
+        return amount;
+    }
+
+    public SimpleDoubleProperty weight() {
+        if ( weight == null ) this.weight = new SimpleDoubleProperty();
+        return weight;
+    }
 }

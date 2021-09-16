@@ -6,22 +6,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import pakoswdt.MainApp;
-import pakoswdt.model.Data;
+import pakoswdt.model.*;
 import pakoswdt.model.Package;
-import pakoswdt.model.Product;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProductsOverviewController {
@@ -50,6 +50,8 @@ public class ProductsOverviewController {
     @FXML
     private TableColumn<Product, Number> packagesTotalWeight;
 
+    private ArrayList<String> packageTypes = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
@@ -57,6 +59,10 @@ public class ProductsOverviewController {
     @FXML
     public void initialize() {
         productsTableView.setEditable(true);
+
+        productsTableView.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
 
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
         name.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -224,9 +230,47 @@ public class ProductsOverviewController {
                     .map(product -> product.enrich(Data.getProducts()))
                     .collect(Collectors.toList());
 
-            ObservableList<Product> observableProducts = FXCollections.observableArrayList(products); //TODO: dalej rozwinąć
+            ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
 
             productsTableView.setItems(observableProducts);
         }
+    }
+
+    @FXML
+    private void handleSetPackage() {
+        String packageName;
+        ObservableList<Product> selectedProducts = productsTableView.getSelectionModel().getSelectedItems();
+
+        if ( selectedProducts.isEmpty() ) { //|| selectedProducts == null)
+            new Alerts(AlertEnum.NO_ITEMS_SELECTED, mainApp.getPrimaryStage()).display();
+            return;
+        }
+
+        Optional<String> result = showChoosePackageDialog(packageTypes);
+
+        if ( result.isPresent() ) {
+            packageName = result.get().trim();
+        } else return;
+
+        for ( Product p : selectedProducts ) {
+            p.getProductPackage().getType().setValue(packageName);
+
+            if ( "Brak".equals(packageName) ) {
+                p.getProductPackage().amount().setValue(new BigDecimal("0.0").setScale(0, RoundingMode.HALF_UP));
+                p.getProductPackage().weight().setValue(new BigDecimal("0.0").setScale(3, RoundingMode.HALF_UP));
+            }
+        }
+
+        productsTableView.refresh();
+    }
+
+    private static Optional<String> showChoosePackageDialog(List<String> optionsList) {
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(null, optionsList);
+        dialog.setTitle("Ustaw opakowanie");
+        dialog.setHeaderText("Wybór opakowania dla zaznaczonych przedmiotów");
+        dialog.setContentText("Wybierz typ opakowania, do którego zapakowane zostaną zaznaczone produkty.");
+        dialog.setResizable(false);
+
+        return dialog.showAndWait();
     }
 }
