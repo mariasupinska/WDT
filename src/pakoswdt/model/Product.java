@@ -54,7 +54,18 @@ public class Product {
         return this;
     }
 
-    public void setName(String newValue) {
-        name.setValue(newValue);
+    public SimpleDoubleProperty amount() {
+        if ( amount == null ) this.amount = new SimpleDoubleProperty();
+        return amount;
+    }
+
+    public SimpleDoubleProperty unitWeight() {
+        if ( unitWeight == null ) this.unitWeight = new SimpleDoubleProperty();
+        return unitWeight;
+    }
+
+    public SimpleDoubleProperty netWeight() {
+        if ( netWeight == null ) this.netWeight = new SimpleDoubleProperty();
+        return netWeight;
     }
 }

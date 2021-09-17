@@ -68,9 +68,7 @@ public class ProductsOverviewController {
         name.setCellFactory(TextFieldTableCell.forTableColumn());
         name.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
-                    editedProduct.getName().setValue(event.getNewValue());
+                    getProduct(event).getName().setValue(event.getNewValue());
                 }
         );
 
@@ -78,12 +76,10 @@ public class ProductsOverviewController {
         amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         amount.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
-                    editedProduct.getAmount().setValue(event.getNewValue());
+                    getProduct(event).amount().setValue(event.getNewValue());
 
-                    if ( editedProduct.getUnitWeight() != null ) {
-                        recalculateNetWeight(editedProduct);
+                    if ( getProduct(event).getUnitWeight() != null ) {
+                        recalculateNetWeight(getProduct(event));
                     }
                 }
         );
@@ -92,9 +88,7 @@ public class ProductsOverviewController {
         unit.setCellFactory(TextFieldTableCell.forTableColumn());
         unit.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
-                    editedProduct.getUnit().setValue(event.getNewValue());
+                    getProduct(event).getUnit().setValue(event.getNewValue());
                 }
         );
 
@@ -102,15 +96,8 @@ public class ProductsOverviewController {
         unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         unitWeight.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
-
-                    if ( editedProduct.getUnitWeight() == null ) {
-                        editedProduct.setUnitWeight(new SimpleDoubleProperty());
-                    }
-                    editedProduct.getUnitWeight().setValue(event.getNewValue());
-
-                    recalculateNetWeight(editedProduct);
+                    getProduct(event).unitWeight().setValue(event.getNewValue());
+                    recalculateNetWeight(getProduct(event));
                 }
         );
 
@@ -118,15 +105,8 @@ public class ProductsOverviewController {
         netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         netWeight.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Product editedProduct = event.getTableView().getItems().get(rowNumber);
-
-                    if ( editedProduct.getNetWeight() == null ) {
-                        editedProduct.setNetWeight(new SimpleDoubleProperty());
-                    }
-                    editedProduct.getNetWeight().setValue(event.getNewValue());
-
-                    recalculateUnitWeight(editedProduct);
+                    getProduct(event).netWeight().setValue(event.getNewValue());
+                    recalculateUnitWeight(getProduct(event));
                 }
         );
 
@@ -134,14 +114,7 @@ public class ProductsOverviewController {
         packageType.setCellFactory(TextFieldTableCell.forTableColumn());
         packageType.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
-
-                    if ( editedPackage.getType() == null ) {
-                        editedPackage.setType(new SimpleStringProperty());
-                    }
-
-                    editedPackage.getType().setValue(event.getNewValue());
+                    getProduct(event).getProductPackage().getType().setValue(event.getNewValue());
                 }
         );
 
@@ -149,14 +122,7 @@ public class ProductsOverviewController {
         packagesAmount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         packagesAmount.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
-
-                    if ( editedPackage.getAmount() == null ) {
-                        editedPackage.setAmount(new SimpleDoubleProperty());
-                    }
-
-                    editedPackage.getAmount().setValue(event.getNewValue());
+                    getProduct(event).getProductPackage().amount().setValue(event.getNewValue());
                     productsTableView.refresh();
                 }
         );
@@ -165,14 +131,7 @@ public class ProductsOverviewController {
         packageUnitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         packageUnitWeight.setOnEditCommit(
                 event -> {
-                    int rowNumber = event.getTablePosition().getRow();
-                    Package editedPackage = event.getTableView().getItems().get(rowNumber).getProductPackage();
-
-                    if ( editedPackage.getWeight() == null ) {
-                        editedPackage.setWeight(new SimpleDoubleProperty());
-                    }
-
-                    editedPackage.getWeight().setValue(event.getNewValue());
+                    getProduct(event).getProductPackage().weight().setValue(event.getNewValue());
                     productsTableView.refresh();
                 }
         );
@@ -184,6 +143,11 @@ public class ProductsOverviewController {
         packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         packagesTotalWeight.setEditable(false);
 
+    }
+
+    private Product getProduct(TableColumn.CellEditEvent<Product, ? extends Object> event) {
+        int rowNumber = event.getTablePosition().getRow();
+        return event.getTableView().getItems().get(rowNumber);
     }
 
     private void recalculateUnitWeight(Product editedProduct) {
