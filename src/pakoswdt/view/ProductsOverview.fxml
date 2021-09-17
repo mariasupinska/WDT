@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.ProductsOverviewController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.ProductsOverviewController">
    <children>
       <Button layoutX="324.0" layoutY="44.0" mnemonicParsing="false" onAction="#readCsvFile" text="Otwórz..." />
       <Label layoutX="122.0" layoutY="14.0" text="Dane z Pliku">
@@ -18,7 +18,7 @@
          </font>
       </Label>
       <TextField fx:id="filePath" layoutX="14.0" layoutY="44.0" prefWidth="300.0" />
-      <TableView fx:id="productsTableView" layoutX="400.0" layoutY="104.0" prefHeight="400.0" prefWidth="970.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
+      <TableView fx:id="productsTableView" layoutX="400.0" layoutY="104.0" prefHeight="330.0" prefWidth="970.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
         <columns>
           <TableColumn fx:id="name" prefWidth="141.0" text="Nazwa produktu" />
           <TableColumn fx:id="amount" prefWidth="72.0" text="Ilość" />
@@ -36,8 +36,8 @@
       </TableView>
       <Button layoutX="736.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleSetPackage" prefWidth="250.0" text="Ustaw opakowanie" />
       <Button layoutX="474.0" layoutY="44.0" mnemonicParsing="false" prefWidth="250.0" text="Utwórz nowe opakowanie zbiorcze" />
-      <CheckBox layoutX="15.0" layoutY="81.0" mnemonicParsing="false" text="Towar na palecie" />
-      <Label layoutX="186.0" layoutY="83.0" text="Waga palety:" />
+      <CheckBox layoutX="15.0" layoutY="81.0" mnemonicParsing="false" text="Palety" />
+      <Label layoutX="179.0" layoutY="83.0" text="Waga palet(y):" />
       <TextField layoutX="264.0" layoutY="78.0" prefWidth="50.0" />
       <Label layoutX="324.0" layoutY="83.0" text="[kg]" />
    </children>
