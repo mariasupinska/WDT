@@ -76,10 +76,11 @@ public class ProductsOverviewController {
         amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         amount.setOnEditCommit(
                 event -> {
-                    getProduct(event).amount().setValue(event.getNewValue());
+                    Product editedProduct = getProduct(event);
+                    editedProduct.amount().setValue(event.getNewValue());
 
-                    if ( getProduct(event).getUnitWeight() != null ) {
-                        recalculateNetWeight(getProduct(event));
+                    if ( editedProduct.getUnitWeight() != null ) {
+                        recalculateNetWeight(editedProduct);
                     }
                 }
         );
@@ -96,8 +97,9 @@ public class ProductsOverviewController {
         unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         unitWeight.setOnEditCommit(
                 event -> {
-                    getProduct(event).unitWeight().setValue(event.getNewValue());
-                    recalculateNetWeight(getProduct(event));
+                    Product editedProduct = getProduct(event);
+                    editedProduct.unitWeight().setValue(event.getNewValue());
+                    recalculateNetWeight(editedProduct);
                 }
         );
 
@@ -105,8 +107,9 @@ public class ProductsOverviewController {
         netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
         netWeight.setOnEditCommit(
                 event -> {
-                    getProduct(event).netWeight().setValue(event.getNewValue());
-                    recalculateUnitWeight(getProduct(event));
+                    Product editedProduct = getProduct(event);
+                    editedProduct.netWeight().setValue(event.getNewValue());
+                    recalculateUnitWeight(editedProduct);
                 }
         );
 
