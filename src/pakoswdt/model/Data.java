@@ -6,12 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Data {
     private static Invoice invoice;
     private static ObservableList<Buyer> buyers;
-    private static Map<String, BigDecimal> products;
+    private static Map<String, BigDecimal> products = new HashMap<>();
+    private static Map<String, BigDecimal> packages = new HashMap<>();
 
     public Data() {
 
@@ -47,75 +51,6 @@ public class Data {
         return seller;
     }
 
-    private static ObservableList<Buyer> createBuyers() {
-        ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
-        vehicles.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Audi"), new SimpleStringProperty("BI 12345")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Porsche"), new SimpleStringProperty("BI 98765")));
-        FXCollections.sort(vehicles);
-
-        ObservableList<Vehicle> vehiclesTwo = FXCollections.observableArrayList();
-        vehiclesTwo.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
-        vehiclesTwo.add(new Vehicle(new SimpleStringProperty("Lamborghini"), new SimpleStringProperty("BI 12345")));
-        vehiclesTwo.add(new Vehicle(new SimpleStringProperty("Tesla"), new SimpleStringProperty("BI 98765")));
-        FXCollections.sort(vehiclesTwo);
-
-        ObservableList<Vehicle> vehiclesThree = FXCollections.observableArrayList();
-        vehiclesThree.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
-        vehiclesThree.add(new Vehicle(new SimpleStringProperty("Bentley"), new SimpleStringProperty("BI 12345")));
-        vehiclesThree.add(new Vehicle(new SimpleStringProperty("Ferrari"), new SimpleStringProperty("BI 98765")));
-        FXCollections.sort(vehiclesThree);
-
-        Buyer buyerOne = Buyer.builder().name(new SimpleStringProperty("Buyer nr 1")).
-                street(new SimpleStringProperty("Biała 1")).
-                city(new SimpleStringProperty("Warszawa")).
-                postalCode(new SimpleStringProperty("12-345")).
-                country(new SimpleStringProperty("Polska")).
-                nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehicles)).
-                deliveryStreet(new SimpleStringProperty("")).
-                deliveryCity(new SimpleStringProperty("")).
-                deliveryPostalCode(new SimpleStringProperty("")).
-                deliveryCountry(new SimpleStringProperty("")).
-                personRetrieving(new SimpleStringProperty("")).
-                personConfirming(new SimpleStringProperty("")).build();
-
-        Buyer buyerTwo = Buyer.builder().name(new SimpleStringProperty("Buyer nr 2")).
-                street(new SimpleStringProperty("Biała 2")).
-                city(new SimpleStringProperty("Warszawa")).
-                postalCode(new SimpleStringProperty("12-345")).
-                country(new SimpleStringProperty("Polska")).
-                nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehiclesTwo)).
-                deliveryStreet(new SimpleStringProperty("")).
-                deliveryCity(new SimpleStringProperty("")).
-                deliveryPostalCode(new SimpleStringProperty("")).
-                deliveryCountry(new SimpleStringProperty("")).
-                personRetrieving(new SimpleStringProperty("")).
-                personConfirming(new SimpleStringProperty("")).build();
-
-        Buyer buyerThree = Buyer.builder().name(new SimpleStringProperty("Buyer nr 3")).
-                street(new SimpleStringProperty("Biała 3")).
-                city(new SimpleStringProperty("Warszawa")).
-                postalCode(new SimpleStringProperty("12-345")).
-                country(new SimpleStringProperty("Polska")).
-                nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehiclesThree)).
-                deliveryStreet(new SimpleStringProperty("")).
-                deliveryCity(new SimpleStringProperty("")).
-                deliveryPostalCode(new SimpleStringProperty("")).
-                deliveryCountry(new SimpleStringProperty("")).
-                personRetrieving(new SimpleStringProperty("")).
-                personConfirming(new SimpleStringProperty("")).build();
-
-        ObservableList<Buyer> buyers = FXCollections.observableArrayList();
-        buyers.add(buyerOne);
-        buyers.add(buyerTwo);
-        buyers.add(buyerThree);
-
-        return buyers;
-    }
-
     public static Seller getSeller() {
         return Data.invoice.getSeller();
     }
@@ -128,6 +63,10 @@ public class Data {
         return Data.buyers;
     }
 
+    public static List<Buyer> getBuyersAsList() {
+        return Data.getBuyers().stream().collect(Collectors.toList());
+    }
+
     public static void setBuyers(ObservableList<Buyer> buyers) {
         Data.buyers = buyers;
     }
@@ -138,6 +77,14 @@ public class Data {
 
     public static void setProducts(Map<String, BigDecimal> products) {
         Data.products = products;
+    }
+
+    public static Map<String, BigDecimal> getPackages() {
+        return packages;
+    }
+
+    public static void setPackages(Map<String, BigDecimal> packages) {
+        Data.packages = packages;
     }
 
     public static Vehicle getTransport() {

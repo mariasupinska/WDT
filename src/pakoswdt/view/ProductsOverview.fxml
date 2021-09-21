@@ -40,5 +40,6 @@
       <Label layoutX="179.0" layoutY="83.0" text="Waga palet(y):" />
       <TextField layoutX="264.0" layoutY="78.0" prefWidth="50.0" />
       <Label layoutX="324.0" layoutY="83.0" text="[kg]" />
+      <Button layoutX="472.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleSave" text="Zapisz" />
    </children>
 </AnchorPane>

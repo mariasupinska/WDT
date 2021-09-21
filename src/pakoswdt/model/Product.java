@@ -54,6 +54,13 @@ public class Product {
         return this;
     }
 
+    public String generateKeyWithPackage() {
+        String name = StringUtils.defaultIfBlank(this.getName().get(), "").trim();
+        String unit = StringUtils.defaultIfBlank(this.getUnit().get(), "").replace(".", "").trim();
+        String packageType = StringUtils.defaultIfBlank(this.getProductPackage().getType().get(), "").trim();
+        return name + " : " + unit + " : " + packageType;
+    }
+
     public SimpleDoubleProperty amount() {
         if ( amount == null ) this.amount = new SimpleDoubleProperty();
         return amount;
