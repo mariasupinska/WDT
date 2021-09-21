@@ -2,7 +2,6 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,8 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import pakoswdt.MainApp;
-import pakoswdt.model.*;
 import pakoswdt.model.Package;
+import pakoswdt.model.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -115,6 +114,7 @@ public class ProductsOverviewController {
 
         packageType.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getType());
         packageType.setCellFactory(TextFieldTableCell.forTableColumn());
+        packageType.setEditable(false);
         packageType.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().getType().setValue(event.getNewValue());
@@ -222,6 +222,11 @@ public class ProductsOverviewController {
         for ( Product p : selectedProducts ) {
             p.getProductPackage().getType().setValue(packageName);
 
+            BigDecimal lastPackageWeight = Data.getPackages().get(p.generateKeyWithPackage());
+            if ( lastPackageWeight != null ) {
+                p.getProductPackage().weight().setValue(lastPackageWeight);
+            }
+
             if ( "Brak".equals(packageName) ) {
                 p.getProductPackage().amount().setValue(new BigDecimal("0.0").setScale(0, RoundingMode.HALF_UP));
                 p.getProductPackage().weight().setValue(new BigDecimal("0.0").setScale(3, RoundingMode.HALF_UP));
@@ -239,5 +244,19 @@ public class ProductsOverviewController {
         dialog.setResizable(false);
 
         return dialog.showAndWait();
+    }
+
+    @FXML
+    private void handleSave() {
+        savePackagesUnitWeightMap();
+        mainApp.saveData();
+    }
+
+    private void savePackagesUnitWeightMap() {
+        for ( Product p: productsTableView.getItems() ) {
+            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null ) {
+                Data.getPackages().put(p.generateKeyWithPackage(), BigDecimal.valueOf(p.getProductPackage().getWeight().get()));
+            }
+        }
     }
 }

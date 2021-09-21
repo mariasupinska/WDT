@@ -1,7 +1,6 @@
 package pakoswdt;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.application.Application;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.hildan.fxgson.FxGson;
 import pakoswdt.model.Buyer;
 import pakoswdt.model.Data;
+import pakoswdt.model.DataStore;
 import pakoswdt.model.Vehicle;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
@@ -52,18 +53,45 @@ public class MainApp extends Application {
     }
 
     private void loadData() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-        String filePath = "/home/marysia/Downloads/NoweCokolwiek.json";
+        String fileName = "AfterMigration.json";
 
-        String content = readFile(filePath);
+        if ( fileName.equals("Migration.json") ) {
+            String migrationFilePath = "/home/marysia/Downloads/Migration.json"; //+ fileName
 
-        LegacyData legacyData = gson.fromJson(content, LegacyData.class);
+            String content = readFile(migrationFilePath);
 
-        List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+            LegacyData legacyData = gson.fromJson(content, LegacyData.class);
 
-        Data.setBuyers(FXCollections.observableArrayList(buyers));
-        Data.setProducts(legacyData.getProducts());
+            List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+
+            Data.setBuyers(FXCollections.observableArrayList(buyers));
+            Data.setProducts(legacyData.getProducts());
+
+        } else if ( fileName.equals("AfterMigration.json") ) {
+            String filePath = "/home/marysia/Downloads/AfterMigration.json";
+
+            String content = readFile(filePath);
+
+            DataStore storeData = gson.fromJson(content, DataStore.class);
+
+            Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
+            Data.setProducts(storeData.getProducts());
+            Data.setPackages(storeData.getPackages());
+        }
+    }
+
+    public void saveData() {
+        Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+        String filePath = "/home/marysia/Downloads/AfterMigration.json";
+
+        DataStore data = new DataStore(Data.getBuyersAsList(), Data.getProducts(), Data.getPackages());
+
+        String json = gson.toJson(data);
+
+        writeFile(filePath, json);
     }
 
     private Buyer convert(LegacyBuyer legacyBuyer) {
@@ -100,9 +128,14 @@ public class MainApp extends Application {
         return new String(encoded);
     }
 
-    /**
-     * Initializes the root layout.
-     */
+    private void writeFile(String path, String content) {
+        try {
+            Files.write(Paths.get(path), content.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initRootLayout() {
         try {
             // Load root layout from fxml file.
@@ -138,9 +171,6 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Shows the person overview inside the root layout.
-     */
     public void showSellerOverview() {
         try {
             // Load person overview.
