@@ -18,7 +18,7 @@
          </font>
       </Label>
       <TextField fx:id="filePath" layoutX="14.0" layoutY="44.0" prefWidth="300.0" />
-      <TableView fx:id="productsTableView" layoutX="400.0" layoutY="104.0" prefHeight="330.0" prefWidth="970.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
+      <TableView fx:id="productsTableView" layoutX="400.0" layoutY="104.0" prefHeight="390.0" prefWidth="970.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
         <columns>
           <TableColumn fx:id="name" prefWidth="141.0" text="Nazwa produktu" />
           <TableColumn fx:id="amount" prefWidth="72.0" text="Ilość" />
@@ -40,6 +40,6 @@
       <Label layoutX="179.0" layoutY="83.0" text="Waga palet(y):" />
       <TextField layoutX="264.0" layoutY="78.0" prefWidth="50.0" />
       <Label layoutX="324.0" layoutY="83.0" text="[kg]" />
-      <Button layoutX="472.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleSave" text="Zapisz" />
+      <Button layoutX="472.0" layoutY="513.0" mnemonicParsing="false" onAction="#handleSave" text="Generuj" />
    </children>
 </AnchorPane>

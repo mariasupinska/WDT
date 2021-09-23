@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Data {
     private static Invoice invoice;
-    private static ObservableList<Buyer> buyers;
+    private static ObservableList<Buyer> buyers = FXCollections.observableArrayList();
     private static Map<String, BigDecimal> products = new HashMap<>();
     private static Map<String, BigDecimal> packages = new HashMap<>();
 

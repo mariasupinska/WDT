@@ -12,10 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.hildan.fxgson.FxGson;
-import pakoswdt.model.Buyer;
-import pakoswdt.model.Data;
-import pakoswdt.model.DataStore;
-import pakoswdt.model.Vehicle;
+import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
 import pakoswdt.model.legacy.LegacyVehicle;
@@ -24,14 +21,17 @@ import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainApp extends Application {
-
     private Stage primaryStage;
     private BorderPane rootLayout;
     private StartingViewController startingViewController;
@@ -53,39 +53,51 @@ public class MainApp extends Application {
     }
 
     private void loadData() {
+        if ( checkFileExistence("src/resources/New.json")  ) {
+            loadNewData("src/resources/New.json");
+
+        } else if ( checkFileExistence("src/resources/Old.json") ) {
+            loadOldData("src/resources/Old.json");
+
+        } else {
+            new Alerts(AlertEnum.NO_FILE_FOUND, this.primaryStage.getOwner()).display();
+        }
+    }
+
+    private boolean checkFileExistence(String filePath) {
+        File file = new File(filePath);
+        return file.exists();
+    }
+
+    private void loadOldData(String filePath) {
         Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-        String fileName = "AfterMigration.json";
+        String content = readFile(filePath);
 
-        if ( fileName.equals("Migration.json") ) {
-            String migrationFilePath = "/home/marysia/Downloads/Migration.json"; //+ fileName
+        LegacyData legacyData = gson.fromJson(content, LegacyData.class);
 
-            String content = readFile(migrationFilePath);
+        List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
 
-            LegacyData legacyData = gson.fromJson(content, LegacyData.class);
+        Data.setBuyers(FXCollections.observableArrayList(buyers));
+        Data.setProducts(legacyData.getProducts());
+    }
 
-            List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
+    private void loadNewData(String filePath) {
+        Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-            Data.setBuyers(FXCollections.observableArrayList(buyers));
-            Data.setProducts(legacyData.getProducts());
+        String content = readFile(filePath);
 
-        } else if ( fileName.equals("AfterMigration.json") ) {
-            String filePath = "/home/marysia/Downloads/AfterMigration.json";
+        DataStore storeData = gson.fromJson(content, DataStore.class);
 
-            String content = readFile(filePath);
-
-            DataStore storeData = gson.fromJson(content, DataStore.class);
-
-            Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
-            Data.setProducts(storeData.getProducts());
-            Data.setPackages(storeData.getPackages());
-        }
+        Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
+        Data.setProducts(storeData.getProducts());
+        Data.setPackages(storeData.getPackages());
     }
 
     public void saveData() {
         Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-        String filePath = "/home/marysia/Downloads/AfterMigration.json";
+        String filePath = "src/resources/New.json";
 
         DataStore data = new DataStore(Data.getBuyersAsList(), Data.getProducts(), Data.getPackages());
 
@@ -129,8 +141,11 @@ public class MainApp extends Application {
     }
 
     private void writeFile(String path, String content) {
-        try {
-            Files.write(Paths.get(path), content.getBytes());
+        try(Writer writer = new FileWriter(path)) {
+
+            writer.write(content);
+            writer.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
