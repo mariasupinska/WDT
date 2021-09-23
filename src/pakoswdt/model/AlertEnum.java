@@ -15,7 +15,9 @@ public enum AlertEnum {
     NO_VEHICLE_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnego pojazdu", "Aby usunąć pojazd należy go najpierw wybrać z listy."),
     NO_BUYER_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnej firmy", "Aby usunąć firmę należy ją najpierw wybrać z listy."),
     NO_PERSON_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnej osoby", "Aby usunąć osobę należy ją najpierw wybrać z listy."),
-    NO_ITEMS_SELECTED(WARNING, "Brak zaznaczenia", "Nie zaznaczono żadnych produktów", "Aby ustawić opakowanie należy najpierw wybrać produkty z listy.");
+    NO_ITEMS_SELECTED(WARNING, "Brak zaznaczenia", "Nie zaznaczono żadnych produktów", "Aby ustawić opakowanie należy najpierw wybrać produkty z listy."),
+
+    NO_FILE_FOUND(WARNING, "Brak pliku", "Nie znaleziono pliku z danymi", "Upewnij się że posiadasz przynajmniej jedną wersję pliku z danymi.");
 
     private Alert.AlertType type;
     private String alertTitle;
