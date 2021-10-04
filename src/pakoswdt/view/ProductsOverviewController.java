@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
@@ -17,10 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductsOverviewController {
@@ -50,6 +48,9 @@ public class ProductsOverviewController {
     private TableColumn<Product, Number> packagesTotalWeight;
 
     private ArrayList<String> packageTypes = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
+    private ArrayList<String> packageChoices = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
+
+    private Map<String, Package> multipackages = new HashMap<>();
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -208,31 +209,39 @@ public class ProductsOverviewController {
         String packageName;
         ObservableList<Product> selectedProducts = productsTableView.getSelectionModel().getSelectedItems();
 
-        if ( selectedProducts.isEmpty() ) { //|| selectedProducts == null)
+        if ( selectedProducts.isEmpty() ) {
             new Alerts(AlertEnum.NO_ITEMS_SELECTED, mainApp.getPrimaryStage()).display();
             return;
         }
 
-        Optional<String> result = showChoosePackageDialog(packageTypes);
+        Optional<String> result = showChoosePackageDialog(packageChoices);
 
         if ( result.isPresent() ) {
-            packageName = result.get().trim();
+            packageName = result.get();
         } else return;
 
-        for ( Product p : selectedProducts ) {
-            p.getProductPackage().getType().setValue(packageName);
+        if ( multipackages.get(packageName) != null ) {
 
-            BigDecimal lastPackageWeight = Data.getPackages().get(p.generateKeyWithPackage());
-            if ( lastPackageWeight != null ) {
-                p.getProductPackage().weight().setValue(lastPackageWeight);
+            for (Product p : selectedProducts) {
+                p.setProductPackage(multipackages.get(packageName));
             }
 
-            if ( "Brak".equals(packageName) ) {
-                p.getProductPackage().amount().setValue(new BigDecimal("0.0").setScale(0, RoundingMode.HALF_UP));
-                p.getProductPackage().weight().setValue(new BigDecimal("0.0").setScale(3, RoundingMode.HALF_UP));
+        } else {
+
+            for (Product p : selectedProducts) {
+                p.getProductPackage().getType().setValue(packageName);
+
+                BigDecimal lastPackageWeight = Data.getPackages().get(p.generateKeyWithPackage());
+                if (lastPackageWeight != null) {
+                    p.getProductPackage().weight().setValue(lastPackageWeight);
+                }
+
+                if ("Brak".equals(packageName)) {
+                    p.getProductPackage().amount().setValue(new BigDecimal("0.0").setScale(0, RoundingMode.HALF_UP));
+                    p.getProductPackage().weight().setValue(new BigDecimal("0.0").setScale(3, RoundingMode.HALF_UP));
+                }
             }
         }
-
         productsTableView.refresh();
     }
 
@@ -241,6 +250,56 @@ public class ProductsOverviewController {
         dialog.setTitle("Ustaw opakowanie");
         dialog.setHeaderText("Wybór opakowania dla zaznaczonych przedmiotów");
         dialog.setContentText("Wybierz typ opakowania, do którego zapakowane zostaną zaznaczone produkty.");
+        dialog.setResizable(false);
+
+        return dialog.showAndWait();
+    }
+
+    @FXML
+    private void handleSetMultiPackage() {
+        String packageName;
+        ObservableList<Product> selectedProducts = productsTableView.getSelectionModel().getSelectedItems();
+
+        if ( selectedProducts.isEmpty() ) {
+            new Alerts(AlertEnum.NO_ITEMS_SELECTED, mainApp.getPrimaryStage()).display();
+            return;
+        }
+
+        Optional<String> packageResult = showChoosePackageDialog(packageTypes);
+
+        if ( packageResult.isPresent() ) {
+            packageName = packageResult.get();
+        } else return;
+
+        String weightResult = showMultiPackageWeightDialog().filter(val -> !StringUtils.isBlank(val)).orElse("0");
+        BigDecimal weight = BigDecimal.valueOf(Double.parseDouble(weightResult)).setScale(3, RoundingMode.HALF_UP);
+
+        int multipackageNumber = 0;
+        for ( String packageType : packageChoices) {
+            if ( packageType.contains(".") ) multipackageNumber++;
+        }
+
+        packageName = packageName + " " + (multipackageNumber+1) + ".";
+
+        Package newPackage = new Package();
+        newPackage.getType().setValue(packageName);
+        newPackage.weight().setValue(weight);
+        newPackage.amount().setValue(1);
+
+        packageChoices.add(packageName);
+        multipackages.put(packageName, newPackage);
+
+        for ( Product p : selectedProducts ) {
+            p.setProductPackage(newPackage);
+        }
+
+        productsTableView.refresh();
+    }
+
+    private static Optional<String> showMultiPackageWeightDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setHeaderText("Podaj wagę tworzonego opakowania zbiorczego");
+        dialog.setContentText("Podaj wagę tworzonego opakowania zbiorczego");
         dialog.setResizable(false);
 
         return dialog.showAndWait();
