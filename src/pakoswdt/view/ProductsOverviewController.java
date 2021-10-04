@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
@@ -216,7 +217,7 @@ public class ProductsOverviewController {
         Optional<String> result = showChoosePackageDialog(packageChoices);
 
         if ( result.isPresent() ) {
-            packageName = result.get().trim();
+            packageName = result.get();
         } else return;
 
         if ( multipackages.get(packageName) != null ) {
@@ -267,10 +268,10 @@ public class ProductsOverviewController {
         Optional<String> packageResult = showChoosePackageDialog(packageTypes);
 
         if ( packageResult.isPresent() ) {
-            packageName = packageResult.get().trim();
+            packageName = packageResult.get();
         } else return;
 
-        String weightResult = showMultiPackageWeightDialog().map(String::trim).orElse("");
+        String weightResult = showMultiPackageWeightDialog().filter(val -> !StringUtils.isBlank(val)).orElse("0");
         BigDecimal weight = BigDecimal.valueOf(Double.parseDouble(weightResult)).setScale(3, RoundingMode.HALF_UP);
 
         int multipackageNumber = 0;
@@ -283,7 +284,7 @@ public class ProductsOverviewController {
         Package newPackage = new Package();
         newPackage.getType().setValue(packageName);
         newPackage.weight().setValue(weight);
-        newPackage.amount().setValue(1); //CHECK THAT 1
+        newPackage.amount().setValue(1);
 
         packageChoices.add(packageName);
         multipackages.put(packageName, newPackage);
