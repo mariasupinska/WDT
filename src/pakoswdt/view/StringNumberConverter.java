@@ -4,11 +4,23 @@ import javafx.util.StringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.text.DecimalFormat;
+
 public class StringNumberConverter extends StringConverter<Number> {
+    private final int precision;
+    public StringNumberConverter (int precision) {
+        this.precision = precision;
+    }
+
     @Override
     public String toString(Number object) {
         if ( object == null ) return "";
-        return object.toString();
+        DecimalFormat myFormatter = new DecimalFormat("##0.000");
+        if ( precision == 0 ) myFormatter.applyPattern("##0");
+        if ( precision == 2 ) myFormatter.applyPattern("##0.00");
+        if ( precision == 3 ) myFormatter.applyPattern("##0.000");
+        String output = myFormatter.format(object);
+        return output;
     }
 
     @Override

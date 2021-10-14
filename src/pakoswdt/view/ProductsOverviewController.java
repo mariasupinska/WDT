@@ -73,7 +73,7 @@ public class ProductsOverviewController {
         );
 
         amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
-        amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(0)));
         amount.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -94,7 +94,7 @@ public class ProductsOverviewController {
         );
 
         unitWeight.setCellValueFactory(cellData -> cellData.getValue().getUnitWeight());
-        unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(3)));
         unitWeight.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -104,7 +104,7 @@ public class ProductsOverviewController {
         );
 
         netWeight.setCellValueFactory(cellData -> cellData.getValue().getNetWeight());
-        netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(2)));
         netWeight.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -123,7 +123,7 @@ public class ProductsOverviewController {
         );
 
         packagesAmount.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getAmount());
-        packagesAmount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packagesAmount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(0)));
         packagesAmount.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().amount().setValue(event.getNewValue());
@@ -132,7 +132,7 @@ public class ProductsOverviewController {
         );
 
         packageUnitWeight.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getWeight());
-        packageUnitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packageUnitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(3)));
         packageUnitWeight.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().weight().setValue(event.getNewValue());
@@ -144,7 +144,7 @@ public class ProductsOverviewController {
             Package productPackage = cellData.getValue().getProductPackage();
             return recalculateTotalWeight(productPackage);
         });
-        packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter()));
+        packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(2)));
         packagesTotalWeight.setEditable(false);
 
     }
