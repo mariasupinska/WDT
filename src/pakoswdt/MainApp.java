@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.hildan.fxgson.FxGson;
 import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
@@ -31,6 +32,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -231,6 +233,7 @@ public class MainApp extends Application {
             AnchorPane productsOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
+            primaryStage.setMinHeight(800);
             rootLayout.setCenter(productsOverview);
 
             ProductsOverviewController controller = loader.getController();
