@@ -11,15 +11,36 @@ import pakoswdt.model.Seller;
 import java.util.Comparator;
 import java.util.List;
 
-import static pakoswdt.file.ExcelWriter.*;
-
 public abstract class ExcelCommonMethods {
     protected final HSSFWorkbook hssfWorkbook;
     protected final Invoice invoice;
     protected final List<Product> products;
+
     protected final Comparator<Product> productPackageComparator = Comparator.comparing(Product::productPackageType)
             .thenComparing(Product::productPackageAmount)
             .thenComparing(Product::productPackageWeight);
+
+    static final int SUBHEADER_ROW = 2;
+    static final int NAME_ROW = 5;
+    static final int ADDRESS_ROW = 6;
+    static final int ADDRESS_2_ROW = 7;
+
+    static final int SELLER_COL_START = 1;
+    static final int BUYER_COL_START = 6;
+    static final int LEFT_SUBHEADER_COL_START = 0;
+    static final int RIGHT_SUBHEADER_COL_START = 8;
+
+    static final CellRangeAddress HEADER_REGION = new CellRangeAddress(0, 1, 0, 11);
+    static final CellRangeAddress LEFT_SUBHEADER_REGION = new CellRangeAddress(2, 2, LEFT_SUBHEADER_COL_START, RIGHT_SUBHEADER_COL_START - 1);
+    static final CellRangeAddress RIGHT_SUBHEADER_REGION = new CellRangeAddress(2, 2, RIGHT_SUBHEADER_COL_START, 11);
+
+    static final CellRangeAddress SELLER_NAME_REGION = new CellRangeAddress(NAME_ROW, NAME_ROW, 1, 4);
+    static final CellRangeAddress SELLER_ADDRESS_REGION = new CellRangeAddress(ADDRESS_ROW, ADDRESS_ROW, 1, 4);
+    static final CellRangeAddress SELLER_ADDRESS_2_REGION = new CellRangeAddress(ADDRESS_2_ROW, ADDRESS_2_ROW, 1, 4);
+
+    static final CellRangeAddress BUYER_NAME_REGION = new CellRangeAddress(NAME_ROW, NAME_ROW, 6, 10);
+    static final CellRangeAddress BUYER_ADDRESS_REGION = new CellRangeAddress(ADDRESS_ROW, ADDRESS_ROW, 6, 10);
+    static final CellRangeAddress BUYER_ADDRESS_2_REGION = new CellRangeAddress(ADDRESS_2_ROW, ADDRESS_2_ROW, 6, 10);
 
     protected ExcelCommonMethods(HSSFWorkbook hssfWorkbook, Invoice invoice, List<Product> products) {
         this.hssfWorkbook = hssfWorkbook;
