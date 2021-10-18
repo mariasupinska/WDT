@@ -34,7 +34,7 @@ public class Product {
     }
 
     public boolean shouldBeIgnored() {
-        return name.get().trim().equals("Nazwa produktu") || this.isEmpty();
+        return this.isEmpty() || name.get().trim().equals("Nazwa produktu");
     }
 
     public String generateKey() {
@@ -74,5 +74,17 @@ public class Product {
     public SimpleDoubleProperty netWeight() {
         if ( netWeight == null ) this.netWeight = new SimpleDoubleProperty();
         return netWeight;
+    }
+
+    public String productPackageType() {
+        return getProductPackage().getType().get();
+    }
+
+    public double productPackageAmount() {
+        return getProductPackage().amount().get();
+    }
+
+    public double productPackageWeight() {
+        return getProductPackage().amount().get();
     }
 }
