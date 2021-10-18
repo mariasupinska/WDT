@@ -10,6 +10,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
+import pakoswdt.file.ExcelWriter;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
 
@@ -306,9 +307,11 @@ public class ProductsOverviewController {
     }
 
     @FXML
-    private void handleSave() {
+    private void handleGenerate() {
         savePackagesUnitWeightMap();
         mainApp.saveData();
+        ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
+        excelWriter.createExcelFile();
     }
 
     private void savePackagesUnitWeightMap() {

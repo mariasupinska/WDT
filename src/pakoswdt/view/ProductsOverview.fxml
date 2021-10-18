@@ -11,20 +11,20 @@
 
 <AnchorPane minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.ProductsOverviewController">
    <children>
-      <Label layoutX="177.0" layoutY="41.0" text="DANE z PLIKU CSV">
+      <Label layoutX="177.0" layoutY="14.0" text="DANE z PLIKU CSV">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="filePath" editable="false" layoutX="86.0" layoutY="65.0" prefHeight="25.0" prefWidth="301.0" />
-      <Button layoutX="398.0" layoutY="65.0" mnemonicParsing="false" onAction="#readCsvFile" text="Otwórz..." />
-      <CheckBox layoutX="86.0" layoutY="105.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Palety" />
-      <Label layoutX="218.0" layoutY="107.0" prefHeight="15.0" prefWidth="88.0" text="Waga palet(y):" />
-      <TextField layoutX="306.0" layoutY="102.0" prefWidth="50.0" />
-      <Label layoutX="366.0" layoutY="107.0" text="[kg]" />
-      <Button layoutX="602.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSetMultiPackage" prefWidth="250.0" text="Utwórz nowe opakowanie zbiorcze" />
-      <Button layoutX="602.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleSetPackage" prefWidth="250.0" text="Ustaw opakowanie" />
-      <TableView fx:id="productsTableView" editable="true" layoutX="24.0" layoutY="194.0" prefHeight="516.0" prefWidth="870.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="150.0">
+      <TextField fx:id="filePath" editable="false" layoutX="87.0" layoutY="41.0" prefHeight="25.0" prefWidth="301.0" />
+      <Button layoutX="398.0" layoutY="41.0" mnemonicParsing="false" onAction="#readCsvFile" text="Otwórz..." />
+      <CheckBox layoutX="87.0" layoutY="78.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Palety" />
+      <Label layoutX="218.0" layoutY="80.0" prefHeight="15.0" prefWidth="88.0" text="Waga palet(y):" />
+      <TextField layoutX="306.0" layoutY="75.0" prefHeight="25.0" prefWidth="58.0" />
+      <Label layoutX="367.0" layoutY="80.0" text="[kg]" />
+      <Button layoutX="602.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleSetMultiPackage" prefWidth="250.0" text="Utwórz nowe opakowanie zbiorcze" />
+      <Button layoutX="602.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSetPackage" prefWidth="250.0" text="Ustaw opakowanie" />
+      <TableView fx:id="productsTableView" editable="true" layoutX="24.0" layoutY="194.0" prefHeight="516.0" prefWidth="870.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="120.0">
          <columns>
             <TableColumn fx:id="name" minWidth="200.0" prefWidth="241.0" text="Nazwa produktu" />
             <TableColumn fx:id="amount" minWidth="7.0" prefWidth="51.0" text="Ilość" />
@@ -37,6 +37,6 @@
             <TableColumn fx:id="packagesTotalWeight" minWidth="7.0" prefWidth="73.0" text="Razem" />
          </columns>
       </TableView>
-      <Button defaultButton="true" layoutX="450.0" layoutY="719.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="37.0" prefWidth="100.0" text="Generuj" />
+      <Button defaultButton="true" layoutX="450.0" layoutY="719.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="37.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="70.0" />
    </children>
 </AnchorPane>

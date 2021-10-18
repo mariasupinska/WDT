@@ -24,4 +24,8 @@ public class Package {
         if ( weight == null ) this.weight = new SimpleDoubleProperty();
         return weight;
     }
+
+    public boolean isMultiPackage() {
+        return type.get().contains(".");
+    }
 }
