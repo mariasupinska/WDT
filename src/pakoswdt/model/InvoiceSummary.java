@@ -21,27 +21,25 @@ public class InvoiceSummary{
     private BigDecimal palettesWeight = new BigDecimal(0.0);
 
     public InvoiceSummary(List<Product> products, BigDecimal palettes) {
-        this.netWeight = netWeightSummary(products);
-        this.packagesWeight = packagesWeightSummary(products);
-        this.packagesAmount = packagesAmountSummary(products);
-        this.grossWeight = grossWeightSummary();
+        netWeightSummary(products);
+        packagesWeightSummary(products);
+        packagesAmountSummary(products);
+        grossWeightSummary();
         Map<String, BigDecimal> packagesWeightPerType = countWeight(products);
         this.paperWeight = packagesWeightPerType.getOrDefault("Karton", BigDecimal.ZERO).add(packagesWeightPerType.getOrDefault("Papier", BigDecimal.ZERO));
         this.foilWeight = packagesWeightPerType.getOrDefault("Folia", BigDecimal.ZERO);
         this.palettesWeight = palettes;
     }
 
-    private BigDecimal netWeightSummary(List<Product> products) {
+    private void netWeightSummary(List<Product> products) {
         for (Product p : products) {
             netWeight = netWeight.add(BigDecimal.valueOf(p.getNetWeight().doubleValue()));
         }
-        return netWeight;
     }
 
-    private BigDecimal packagesWeightSummary(List<Product> products) {
+    private void packagesWeightSummary(List<Product> products) {
         Set<Package> productPackages = products
                 .stream()
-                .filter(product -> product.getProductPackage() != null)
                 .map(Product::getProductPackage)
                 .collect(Collectors.toSet());
 
@@ -49,16 +47,14 @@ public class InvoiceSummary{
             BigDecimal multipliedWeight = BigDecimal.valueOf(productPackage.getWeight().doubleValue()).multiply(BigDecimal.valueOf(productPackage.getAmount().doubleValue()));
             packagesWeight = packagesWeight.add(multipliedWeight);
         }
-        return packagesWeight;
     }
 
-    private BigDecimal grossWeightSummary() {
+    private void grossWeightSummary() {
         grossWeight = grossWeight.add(netWeight);
         grossWeight = grossWeight.add(packagesWeight);
-        return grossWeight;
     }
 
-    private BigDecimal packagesAmountSummary(List<Product> products) {
+    private void packagesAmountSummary(List<Product> products) {
         List<BigDecimal> amounts = products.stream()
                 .filter(product -> product.getProductPackage() != null)
                 .map(Product::getProductPackage)
@@ -69,8 +65,6 @@ public class InvoiceSummary{
         for(BigDecimal amount : amounts) {
             packagesAmount = packagesAmount.add(amount);
         }
-
-        return packagesAmount;
     }
 
     private Map<String, BigDecimal> countWeight(List<Product> products) {

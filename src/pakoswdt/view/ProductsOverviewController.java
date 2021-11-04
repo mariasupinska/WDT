@@ -2,8 +2,6 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,9 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.BigDecimalStringConverter;
-import jfxtras.labs.internal.scene.control.skin.BigDecimalFieldSkin;
-import jfxtras.labs.scene.control.BigDecimalField;
-import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
