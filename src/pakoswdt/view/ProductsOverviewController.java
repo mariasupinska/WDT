@@ -2,12 +2,18 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.util.converter.BigDecimalStringConverter;
+import jfxtras.labs.internal.scene.control.skin.BigDecimalFieldSkin;
+import jfxtras.labs.scene.control.BigDecimalField;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
@@ -47,6 +53,8 @@ public class ProductsOverviewController {
     private TableColumn<Product, Number> packageUnitWeight;
     @FXML
     private TableColumn<Product, Number> packagesTotalWeight;
+    @FXML
+    private TextField palettesWeight;
 
     private ArrayList<String> packageTypes = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
     private ArrayList<String> packageChoices = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
@@ -148,6 +156,7 @@ public class ProductsOverviewController {
         packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(2)));
         packagesTotalWeight.setEditable(false);
 
+        palettesWeight.textProperty().bindBidirectional(Data.getInvoice().getPalettes());
     }
 
     private Product getProduct(TableColumn.CellEditEvent<Product, ? extends Object> event) {
@@ -308,17 +317,24 @@ public class ProductsOverviewController {
 
     @FXML
     private void handleGenerate() {
-        savePackagesUnitWeightMap();
         mainApp.saveData();
+        savePackagesUnitWeightMap();
+        InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
+        Data.getInvoice().setSummary(invoiceSummary);
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
     }
 
     private void savePackagesUnitWeightMap() {
         for ( Product p: productsTableView.getItems() ) {
-            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null ) {
+            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null ) {//TODO: & isNotMultiPackage
                 Data.getPackages().put(p.generateKeyWithPackage(), BigDecimal.valueOf(p.getProductPackage().getWeight().get()));
             }
         }
+    }
+
+    @FXML
+    private void handlePrevious() {
+        mainApp.showBuyerOverview();
     }
 }

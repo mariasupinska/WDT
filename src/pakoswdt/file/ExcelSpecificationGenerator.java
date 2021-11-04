@@ -244,7 +244,7 @@ public class ExcelSpecificationGenerator extends ExcelCommonMethods {
         BigDecimal totalWeight = BigDecimal.valueOf(product.getProductPackage().getWeight().doubleValue())
                 .multiply(BigDecimal.valueOf(product.getProductPackage().getAmount().doubleValue()));
         row.createCell(10).setCellValue(totalWeight.setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace(".", ","));
-        row.createCell(11).setCellValue(BigDecimal.valueOf(product.getAmount().get()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+        row.createCell(11).setCellValue(BigDecimal.valueOf(product.getProductPackage().getAmount().get()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 
         sheet.getRow(rowNumber + 10).getCell(0).setCellStyle(centeredCellStyle);
         sheet.getRow(rowNumber + 10).getCell(1).setCellStyle(leftAlignedCellStyle);

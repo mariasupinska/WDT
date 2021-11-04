@@ -1,9 +1,6 @@
 package pakoswdt.model;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +18,6 @@ public class Invoice {
     private StringProperty placeOfExtradition = new SimpleStringProperty("Białystok");
     private ObjectProperty<LocalDate> creationDate = new SimpleObjectProperty<>(LocalDate.now());
     private ObjectProperty<LocalDate> deliveryDate = new SimpleObjectProperty<>(LocalDate.now());
-    private InvoiceSummary summary = new InvoiceSummary();
+    private StringProperty palettes = new SimpleStringProperty("");
+    private InvoiceSummary summary;
 }
