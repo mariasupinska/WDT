@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.hildan.fxgson.FxGson;
 import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
@@ -26,8 +27,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -143,11 +145,9 @@ public class MainApp extends Application {
     }
 
     private void writeFile(String path, String content) {
-        try(Writer writer = new FileWriter(path)) {
-
-            writer.write(content);
-            writer.flush();
-
+        File target = new File(path);
+        try {
+            FileUtils.write(target, content, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,6 +215,8 @@ public class MainApp extends Application {
             AnchorPane buyerOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
+            primaryStage.setMinHeight(530);
+            primaryStage.setHeight(530);
             rootLayout.setCenter(buyerOverview);
 
             BuyerOverviewController controller = loader.getController();

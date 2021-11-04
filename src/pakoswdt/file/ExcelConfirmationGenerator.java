@@ -51,7 +51,7 @@ public class ExcelConfirmationGenerator extends ExcelCommonMethods {
     }
 
     private void setListData(Sheet sheet) {
-        Collections.sort(products, productPackageComparator); //TODO: TEST IT
+        Collections.sort(products, productPackageComparator);
 
         for (int i = 0; i < products.size(); i++) {
             putBasicPackage(sheet, i);

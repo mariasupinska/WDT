@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Arrays;
+
 @Getter
 @Setter
 @ToString
@@ -27,5 +29,12 @@ public class Package {
 
     public boolean isMultiPackage() {
         return type.get().contains(".");
+    }
+
+    public String getJustType() {
+        if ( !this.isMultiPackage() ) return type.get();
+        String[] split = type.get().split(" ");
+        String[] shortened = Arrays.copyOf(split, split.length - 1);
+        return String.join("", shortened);
     }
 }
