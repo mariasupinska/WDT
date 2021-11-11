@@ -23,10 +23,7 @@ import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -141,7 +138,7 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String(encoded);
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     private void writeFile(String path, String content) {
