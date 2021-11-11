@@ -69,7 +69,7 @@ public class ExcelSpecificationGenerator extends ExcelCommonMethods {
         }
     }
 
-    private void setSummaryData(Sheet sheet) { //TODO: PRZED WYGENEROWANIEM TRZEBA NAJPIERW OBLICZYĆ SUMMARY
+    private void setSummaryData(Sheet sheet) {
         CellStyle cellStyle = createCenteredCellStyle().bold(true).build();
         CellStyle cellStyleTopBorder = createCenteredCellStyle().borderTop().build();
         CellStyle cellStyleBordered = createCenteredCellStyle().bold(true).borderAll().build();
