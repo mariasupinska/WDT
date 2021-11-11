@@ -152,6 +152,8 @@ public class ProductsOverviewController {
         packagesTotalWeight.setEditable(false);
 
         palettesWeight.textProperty().bindBidirectional(Data.getInvoice().getPalettes());
+
+        productsTableView.setItems(Data.getTableProducts());
     }
 
     private Product getProduct(TableColumn.CellEditEvent<Product, ? extends Object> event) {
@@ -204,6 +206,8 @@ public class ProductsOverviewController {
                     .collect(Collectors.toList());
 
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
+
+            Data.setTableProducts(observableProducts);
 
             productsTableView.setItems(observableProducts);
         }
