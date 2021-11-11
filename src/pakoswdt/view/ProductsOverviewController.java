@@ -312,8 +312,9 @@ public class ProductsOverviewController {
 
     @FXML
     private void handleGenerate() {
-        mainApp.saveData();
         savePackagesUnitWeightMap();
+        saveProductsWeightMap();
+        mainApp.saveData();
         InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
         Data.getInvoice().setSummary(invoiceSummary);
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
@@ -322,9 +323,15 @@ public class ProductsOverviewController {
 
     private void savePackagesUnitWeightMap() {
         for ( Product p: productsTableView.getItems() ) {
-            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null ) {//TODO: & isNotMultiPackage
+            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null && !p.getProductPackage().isMultiPackage() ) {
                 Data.getPackages().put(p.generateKeyWithPackage(), BigDecimal.valueOf(p.getProductPackage().getWeight().get()));
             }
+        }
+    }
+
+    private void saveProductsWeightMap() {
+        for ( Product p: productsTableView.getItems() ) {
+            Data.getProducts().put(p.generateKey(), BigDecimal.valueOf(p.getUnitWeight().get()));
         }
     }
 
