@@ -12,6 +12,7 @@ import javafx.util.converter.BigDecimalStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
+import pakoswdt.file.JsonWriter;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
 
@@ -319,8 +320,13 @@ public class ProductsOverviewController {
         savePackagesUnitWeightMap();
         saveProductsWeightMap();
         mainApp.saveData();
+
         InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
         Data.getInvoice().setSummary(invoiceSummary);
+
+        JsonWriter jsonWriter = new JsonWriter();
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary());
+
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
     }
