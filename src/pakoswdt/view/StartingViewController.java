@@ -1,9 +1,15 @@
 package pakoswdt.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pakoswdt.MainApp;
 import pakoswdt.model.Data;
+
+import java.io.IOException;
 
 public class StartingViewController {
     private MainApp mainApp;
@@ -23,16 +29,36 @@ public class StartingViewController {
     }
 
     @FXML
-    private void handleEditWDT() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("No Edit Feature");
-        alert.setHeaderText("Not Possible Yet");
-        alert.setContentText("Please be patient.");
+    private void handleGenerateYearlyReport() {
 
-        alert.showAndWait();
     }
-    @FXML //AM I RIGHT
+
+    @FXML
+    private void handleSetDefaultSavePath() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/SetInvoiceSummaryPathDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ścieżka do zapisu dokumentów");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(mainApp.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        SetInvoiceSummaryPathDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(mainApp);
+        controller.setPath();
+        dialogStage.showAndWait();
+    }
+
+    @FXML
     private void handleExit() {
         System.exit(0);
     }
