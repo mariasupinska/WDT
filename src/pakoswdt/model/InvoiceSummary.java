@@ -28,7 +28,8 @@ public class InvoiceSummary{
         Map<String, BigDecimal> packagesWeightPerType = countWeight(products);
         this.paperWeight = packagesWeightPerType.getOrDefault("Karton", BigDecimal.ZERO).add(packagesWeightPerType.getOrDefault("Papier", BigDecimal.ZERO));
         this.foilWeight = packagesWeightPerType.getOrDefault("Folia", BigDecimal.ZERO);
-        this.palettesWeight = palettes;
+        if ( palettes == null ) this.palettesWeight = BigDecimal.valueOf(0.0);
+        else this.palettesWeight = palettes;
     }
 
     private void netWeightSummary(List<Product> products) {

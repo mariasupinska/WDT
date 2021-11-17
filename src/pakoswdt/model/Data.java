@@ -16,10 +16,10 @@ public class Data {
     private static ObservableList<Buyer> buyers = FXCollections.observableArrayList();
     private static Map<String, BigDecimal> products = new HashMap<>();
     private static Map<String, BigDecimal> packages = new HashMap<>();
+    private static ObservableList<Product> tableProducts = FXCollections.observableArrayList();
+    private static String defaultInvoiceSummaryPath = "";
 
-    public Data() {
-
-    }
+    public Data() {}
 
     public static void createNewWDT() {
         Data.invoice = new Invoice();
@@ -97,5 +97,21 @@ public class Data {
 
     public static Invoice getInvoice() {
         return invoice;
+    }
+
+    public static ObservableList<Product> getTableProducts() {
+        return tableProducts;
+    }
+
+    public static void setTableProducts(ObservableList<Product> tableProducts) {
+        Data.tableProducts = tableProducts;
+    }
+
+    public static String getDefaultInvoiceSummaryPath() {
+        return defaultInvoiceSummaryPath;
+    }
+
+    public static void setDefaultInvoiceSummaryPath(String defaultInvoiceSummaryPath) {
+        Data.defaultInvoiceSummaryPath = defaultInvoiceSummaryPath;
     }
 }

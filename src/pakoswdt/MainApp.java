@@ -23,11 +23,7 @@ import pakoswdt.view.ProductsOverviewController;
 import pakoswdt.view.SellerOverviewController;
 import pakoswdt.view.StartingViewController;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.Charset;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -96,6 +92,7 @@ public class MainApp extends Application {
         Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
         Data.setProducts(storeData.getProducts());
         Data.setPackages(storeData.getPackages());
+        Data.setDefaultInvoiceSummaryPath(storeData.getDefaultInvoiceSummaryPath());
     }
 
     public void saveData() {
@@ -103,7 +100,7 @@ public class MainApp extends Application {
 
         String filePath = "src/resources/New.json";
 
-        DataStore data = new DataStore(Data.getBuyersAsList(), Data.getProducts(), Data.getPackages());
+        DataStore data = new DataStore(Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath());
 
         String json = gson.toJson(data);
 
@@ -141,7 +138,7 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String(encoded);
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     private void writeFile(String path, String content) {

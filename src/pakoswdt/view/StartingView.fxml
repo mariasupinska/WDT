@@ -7,22 +7,27 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.StartingViewController">
    <children>
-      <Label layoutX="298.0" layoutY="14.0" text="Kreator specyfikacji WDT" textAlignment="CENTER" AnchorPane.topAnchor="20.0">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="298.0" layoutY="43.0" text="Kreator specyfikacji WDT" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button layoutX="359.0" layoutY="148.0" mnemonicParsing="false" onAction="#handleNewWDT" prefWidth="300.0" text="Nowe zestawienie">
+      <Button layoutX="359.0" layoutY="148.0" mnemonicParsing="false" onAction="#handleNewWDT" prefWidth="300.0" text="Nowe zestawienie" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="150.0">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="359.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleEditWDT" prefWidth="300.0" text="Edytuj istniejące zestawienie">
+      <Button layoutX="359.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleGenerateYearlyReport" prefWidth="300.0" text="Generuj roczne zestawienie" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="220.0">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="359.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleExit" prefWidth="300.0" text="Wyjście">
+      <Button layoutX="359.0" layoutY="367.0" mnemonicParsing="false" onAction="#handleExit" prefWidth="300.0" text="Wyjście" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="360.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="359.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSetDefaultSavePath" prefWidth="300.0" text="Ustaw ścieżkę do zapisu podsumowań" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="290.0">
          <font>
             <Font size="20.0" />
          </font>

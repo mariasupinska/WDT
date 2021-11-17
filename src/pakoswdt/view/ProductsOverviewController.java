@@ -12,6 +12,7 @@ import javafx.util.converter.BigDecimalStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
+import pakoswdt.file.JsonWriter;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
 
@@ -152,6 +153,8 @@ public class ProductsOverviewController {
         packagesTotalWeight.setEditable(false);
 
         palettesWeight.textProperty().bindBidirectional(Data.getInvoice().getPalettes());
+
+        productsTableView.setItems(Data.getTableProducts());
     }
 
     private Product getProduct(TableColumn.CellEditEvent<Product, ? extends Object> event) {
@@ -204,6 +207,8 @@ public class ProductsOverviewController {
                     .collect(Collectors.toList());
 
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
+
+            Data.setTableProducts(observableProducts);
 
             productsTableView.setItems(observableProducts);
         }
@@ -312,19 +317,31 @@ public class ProductsOverviewController {
 
     @FXML
     private void handleGenerate() {
-        mainApp.saveData();
         savePackagesUnitWeightMap();
+        saveProductsWeightMap();
+        mainApp.saveData();
+
         InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
         Data.getInvoice().setSummary(invoiceSummary);
+
+        JsonWriter jsonWriter = new JsonWriter();
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary());
+
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
     }
 
     private void savePackagesUnitWeightMap() {
         for ( Product p: productsTableView.getItems() ) {
-            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null ) {//TODO: & isNotMultiPackage
+            if ( p.getProductPackage().getType() != null && p.getProductPackage().getWeight() != null && !p.getProductPackage().isMultiPackage() ) {
                 Data.getPackages().put(p.generateKeyWithPackage(), BigDecimal.valueOf(p.getProductPackage().getWeight().get()));
             }
+        }
+    }
+
+    private void saveProductsWeightMap() {
+        for ( Product p: productsTableView.getItems() ) {
+            Data.getProducts().put(p.generateKey(), BigDecimal.valueOf(p.getUnitWeight().get()));
         }
     }
 

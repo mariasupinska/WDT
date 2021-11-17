@@ -8,6 +8,7 @@ import pakoswdt.model.Invoice;
 import pakoswdt.model.Product;
 import pakoswdt.model.Seller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public abstract class ExcelCommonMethods {
     protected ExcelCommonMethods(HSSFWorkbook hssfWorkbook, Invoice invoice, List<Product> products) {
         this.hssfWorkbook = hssfWorkbook;
         this.invoice = invoice;
-        this.products = products;
+        this.products = new ArrayList<>(products);
     }
 
     void setPrintSetup(Sheet sheet) {
