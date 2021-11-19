@@ -61,6 +61,8 @@ public class ProductsOverviewController {
         this.mainApp = mainApp;
     }
 
+
+    //TODO: NIE ZAPISUJE ŚCIEŻKI WCZYTYWANEGO PLIKU PO PRZEJŚCIU WSTECZ
     @FXML
     public void initialize() {
         productsTableView.setEditable(true);
@@ -325,7 +327,7 @@ public class ProductsOverviewController {
         Data.getInvoice().setSummary(invoiceSummary);
 
         JsonWriter jsonWriter = new JsonWriter();
-        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary());
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
 
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
