@@ -32,6 +32,8 @@ public class Data {
         Data.seller = seller;
     }
 
+    public static void setInvoiceSeller(Seller seller) { Data.invoice.setSeller(seller); }
+
     public static Buyer getBuyer() {
         return Data.invoice.getBuyer();
     }

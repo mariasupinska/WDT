@@ -53,6 +53,7 @@ public class SellerOverviewController {
         bind();
         addListeners();
         setValues();
+        Data.setInvoiceSeller(Data.getSeller());
     }
 
     private void bind() {
