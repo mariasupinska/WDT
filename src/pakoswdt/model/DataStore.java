@@ -16,6 +16,7 @@ import java.util.Map;
 @AllArgsConstructor
 
 public class DataStore {
+    private Seller seller;
     private List<Buyer> buyers;
     private Map<String, BigDecimal> products = new HashMap<>();
     private Map<String, BigDecimal> packages = new HashMap<>();

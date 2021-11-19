@@ -17,6 +17,7 @@ import org.hildan.fxgson.FxGson;
 import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
+import pakoswdt.model.legacy.LegacySeller;
 import pakoswdt.model.legacy.LegacyVehicle;
 import pakoswdt.view.BuyerOverviewController;
 import pakoswdt.view.ProductsOverviewController;
@@ -78,6 +79,7 @@ public class MainApp extends Application {
 
         List<Buyer> buyers = legacyData.getBuyers().stream().map(this::convert).collect(Collectors.toList());
 
+        Data.setSeller(convert(legacyData.getSeller()));
         Data.setBuyers(FXCollections.observableArrayList(buyers));
         Data.setProducts(legacyData.getProducts());
     }
@@ -89,6 +91,7 @@ public class MainApp extends Application {
 
         DataStore storeData = gson.fromJson(content, DataStore.class);
 
+        Data.setSeller(storeData.getSeller());
         Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
         Data.setProducts(storeData.getProducts());
         Data.setPackages(storeData.getPackages());
@@ -100,11 +103,23 @@ public class MainApp extends Application {
 
         String filePath = "src/resources/New.json";
 
-        DataStore data = new DataStore(Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath());
+        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath());
 
         String json = gson.toJson(data);
 
         writeFile(filePath, json);
+    }
+
+    private Seller convert(LegacySeller legacySeller) {
+        return Seller.builder().name(new SimpleStringProperty(legacySeller.getName())).
+                street(new SimpleStringProperty(legacySeller.getAddress().getStreet())).
+                city(new SimpleStringProperty(legacySeller.getAddress().getCity())).
+                postalCode(new SimpleStringProperty(legacySeller.getAddress().getPostcode())).
+                country(new SimpleStringProperty(legacySeller.getAddress().getCountry())).
+                nip(new SimpleStringProperty(legacySeller.getNip())).
+                vehicles(new SimpleListProperty<>(convert(legacySeller.getVehicles()))).
+                employees(new SimpleListProperty<>(FXCollections.observableArrayList())).build();
+
     }
 
     private Buyer convert(LegacyBuyer legacyBuyer) {

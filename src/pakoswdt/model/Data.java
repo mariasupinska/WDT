@@ -1,7 +1,5 @@
 package pakoswdt.model;
 
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class Data {
     private static Invoice invoice;
+    private static Seller seller;
     private static ObservableList<Buyer> buyers = FXCollections.observableArrayList();
     private static Map<String, BigDecimal> products = new HashMap<>();
     private static Map<String, BigDecimal> packages = new HashMap<>();
@@ -23,36 +22,14 @@ public class Data {
 
     public static void createNewWDT() {
         Data.invoice = new Invoice();
-        Data.invoice.setSeller(Data.createSeller());
-    }
-
-    private static Seller createSeller() {
-        ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
-        vehicles.add(new Vehicle(new SimpleStringProperty(""), new SimpleStringProperty("")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Renault"), new SimpleStringProperty("BI 12345")));
-        vehicles.add(new Vehicle(new SimpleStringProperty("Mercedes"), new SimpleStringProperty("BI 98765")));
-        FXCollections.sort(vehicles);
-
-        ObservableList<String> employees = FXCollections.observableArrayList();
-        employees.add("Person nr 1");
-        employees.add("Person nr 2");
-        employees.add("Person nr 3");
-        FXCollections.sort(employees);
-
-        Seller seller = Seller.builder().name(new SimpleStringProperty("Seller")).
-                street(new SimpleStringProperty("Zielona 0")).
-                city(new SimpleStringProperty("Białystok")).
-                postalCode(new SimpleStringProperty("99-2137")).
-                country(new SimpleStringProperty("Polska")).
-                nip(new SimpleStringProperty("PL 123456789")).
-                vehicles(new SimpleListProperty<>(vehicles)).
-                employees(new SimpleListProperty<>(employees)).build();
-
-        return seller;
     }
 
     public static Seller getSeller() {
-        return Data.invoice.getSeller();
+        return Data.seller;
+    }
+
+    public static void setSeller(Seller seller) {
+        Data.seller = seller;
     }
 
     public static Buyer getBuyer() {
