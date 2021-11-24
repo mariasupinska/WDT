@@ -1,12 +1,13 @@
 package pakoswdt.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
+import pakoswdt.model.AlertEnum;
+import pakoswdt.model.Alerts;
 import pakoswdt.model.Data;
 
 import java.io.File;
@@ -55,13 +56,6 @@ public class SetInvoiceSummaryPathDialogController {
             Data.setDefaultInvoiceSummaryPath(path.textProperty().get());
             mainApp.saveData();
             dialogStage.close();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Brak danych");
-            alert.setHeaderText("Nie wprowadzono prawidłowych danych");
-            alert.setContentText("Proszę wypełnić wszystkie pola.");
-            alert.showAndWait();
         }
     }
 
@@ -71,10 +65,19 @@ public class SetInvoiceSummaryPathDialogController {
     }
 
     private boolean isInputValid(String path) {
-        return StringUtils.isNoneBlank(path);
+        if ( StringUtils.isNoneBlank(path) ) return true;
+        else {
+            setPath();
+            new Alerts(AlertEnum.NO_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            return false;
+        }
     }
 
     private boolean isPathValid(String path) {
-        return Files.exists(Paths.get(path));
+        if ( Files.exists(Paths.get(path)) ) return true;
+        else {
+            new Alerts(AlertEnum.INVALID_PATH, mainApp.getPrimaryStage()).display();
+            return false;
+        }
     }
 }
