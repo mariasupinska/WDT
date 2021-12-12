@@ -30,7 +30,26 @@ public class StartingViewController {
 
     @FXML
     private void handleGenerateYearlyReport() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/GenerateReportDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Generowanie zestawienia rocznego WDT");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(mainApp.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        GenerateReportDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(mainApp);
+        dialogStage.showAndWait();
     }
 
     @FXML

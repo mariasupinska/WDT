@@ -1,6 +1,7 @@
 package pakoswdt.file;
 
 import com.google.gson.Gson;
+import pakoswdt.model.Data;
 import pakoswdt.model.InvoiceSummary;
 
 import java.io.File;
@@ -12,6 +13,8 @@ public class JsonWriter {
     private Gson gson = new Gson();
 
     public void exportInvoiceSummary(String invoiceNumber, InvoiceSummary invoiceSummary, String directory) {
+        invoiceSummary.setCreationDate(Data.getInvoice().getCreationDate().get());
+        invoiceSummary.setInvoiceNumber(invoiceNumber);
         String json = gson.toJson(invoiceSummary);
         String systemSeparator = getSystemSeparator();
 

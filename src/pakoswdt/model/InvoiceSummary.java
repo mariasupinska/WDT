@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,8 @@ public class InvoiceSummary{
     private BigDecimal paperWeight = new BigDecimal(0.0);
     private BigDecimal foilWeight = new BigDecimal(0.0);
     private BigDecimal palettesWeight = new BigDecimal(0.0);
+    private LocalDate creationDate;
+    private String invoiceNumber;
 
     public InvoiceSummary(List<Product> products, BigDecimal palettes) {
         netWeightSummary(products);
