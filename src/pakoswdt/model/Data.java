@@ -1,5 +1,7 @@
 package pakoswdt.model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,6 +19,7 @@ public class Data {
     private static Map<String, BigDecimal> packages = new HashMap<>();
     private static ObservableList<Product> tableProducts = FXCollections.observableArrayList();
     private static String defaultInvoiceSummaryPath = "";
+    private static StringProperty inputFilePath = new SimpleStringProperty("");
 
     public Data() {}
 
@@ -92,5 +95,13 @@ public class Data {
 
     public static void setDefaultInvoiceSummaryPath(String defaultInvoiceSummaryPath) {
         Data.defaultInvoiceSummaryPath = defaultInvoiceSummaryPath;
+    }
+
+    public static StringProperty inputFilePathProperty() {
+        return inputFilePath;
+    }
+
+    public static void setInputFilePath(String inputFilePath) {
+        Data.inputFilePath.set(inputFilePath);
     }
 }
