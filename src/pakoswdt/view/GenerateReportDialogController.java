@@ -79,7 +79,7 @@ public class GenerateReportDialogController {
     private boolean isInputValid() {
         if (dateFrom.getValue() != null && dateTo.getValue() != null) return true;
         else {
-            new Alerts(AlertEnum.NO_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
             return false;
         }
     }

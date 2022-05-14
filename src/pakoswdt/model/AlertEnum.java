@@ -19,7 +19,8 @@ public enum AlertEnum {
 
     INVALID_PATH(WARNING, "Nieprawidłowa ścieżka", "Nie znalezniono poprawnej ścieżki", "Proszę wybrać poprawną ścieżkę."),
     NO_FILE_FOUND(WARNING, "Brak pliku", "Nie znaleziono pliku z danymi", "Upewnij się że posiadasz przynajmniej jedną wersję pliku z danymi."),
-    NO_FILLED_FIELDS(WARNING, "Brak danych", "Nie wprowadzono prawidłowych danych", "Proszę wypełnić wszystkie pola."),
+    NOT_FILLED_FIELDS(WARNING, "Brak danych", "Nie wprowadzono prawidłowych danych", "Proszę wypełnić wszystkie pola."),
+    VEHICLE_NOT_CHOSEN(WARNING, "Brak danych", "Nie wybrano żadnego transportu", "Wybierz transport ze strony sprzedawcy lub nabywcy."),
 
     DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'.");
 

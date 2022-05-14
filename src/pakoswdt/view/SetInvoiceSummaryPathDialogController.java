@@ -68,7 +68,7 @@ public class SetInvoiceSummaryPathDialogController {
         if ( StringUtils.isNoneBlank(path) ) return true;
         else {
             setPath();
-            new Alerts(AlertEnum.NO_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
             return false;
         }
     }

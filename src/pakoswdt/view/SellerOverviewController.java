@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.AlertEnum;
 import pakoswdt.model.Alerts;
@@ -190,7 +191,24 @@ public class SellerOverviewController {
 
     @FXML
     private void handleNext() {
+        if ( !isInputValid() ) {
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            return;
+        }
         mainApp.showBuyerOverview();
+    }
+
+    private boolean isInputValid() {
+        return StringUtils.isNoneBlank(name.textProperty().get(),
+                street.textProperty().get(),
+                city.textProperty().get(),
+                postalCode.textProperty().get(),
+                country.textProperty().get(),
+                nip.textProperty().get(),
+                invoiceNumber.textProperty().get(),
+                place.textProperty().get())
+                && invoiceCreationDate.valueProperty().get() != null
+                && Data.getInvoice().getCreator() != null;
     }
 
     @FXML
