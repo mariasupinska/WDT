@@ -22,6 +22,8 @@ public enum AlertEnum {
     NOT_FILLED_FIELDS(WARNING, "Brak danych", "Nie wprowadzono prawidłowych danych", "Proszę wypełnić wszystkie pola."),
     VEHICLE_NOT_CHOSEN(WARNING, "Brak danych", "Nie wybrano żadnego transportu", "Wybierz transport ze strony sprzedawcy lub nabywcy."),
 
+    SUCCESSFUL_FILE_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano plik", "Wygenerowany plik znajduje się w wybranym katalogu."),
+
     DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'.");
 
     private Alert.AlertType type;
