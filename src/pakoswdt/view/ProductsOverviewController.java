@@ -2,6 +2,7 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -61,8 +62,11 @@ public class ProductsOverviewController {
         this.mainApp = mainApp;
     }
 
+
     @FXML
     public void initialize() {
+        filePath.setText(Data.inputFilePathProperty().get());
+
         productsTableView.setEditable(true);
 
         productsTableView.getSelectionModel().setSelectionMode(
@@ -209,8 +213,11 @@ public class ProductsOverviewController {
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
 
             Data.setTableProducts(observableProducts);
+            Data.setInputFilePath(file.getPath());
 
             productsTableView.setItems(observableProducts);
+
+            filePath.textProperty().bindBidirectional(Data.inputFilePathProperty());
         }
     }
 
@@ -325,7 +332,7 @@ public class ProductsOverviewController {
         Data.getInvoice().setSummary(invoiceSummary);
 
         JsonWriter jsonWriter = new JsonWriter();
-        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary());
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
 
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();

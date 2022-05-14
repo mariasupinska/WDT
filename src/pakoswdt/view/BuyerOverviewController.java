@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.*;
 
@@ -245,7 +246,35 @@ public class BuyerOverviewController {
     }
 
     @FXML
-    private void handleNext() { mainApp.showProductsOverview(); }
+    private void handleNext() {
+        if ( !isInputValid() ) {
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            return;
+        }
+        if ( !isTransportValid() ) {
+            new Alerts(AlertEnum.VEHICLE_NOT_CHOSEN, mainApp.getPrimaryStage()).display();
+            return;
+        }
+        mainApp.showProductsOverview();
+    }
+
+    private boolean isInputValid() {
+        return StringUtils.isNoneBlank(name.textProperty().get(),
+                street.textProperty().get(),
+                city.textProperty().get(),
+                postalCode.textProperty().get(),
+                country.textProperty().get(),
+                nip.textProperty().get(),
+                deliveryStreet.textProperty().get(),
+                deliveryCity.textProperty().get(),
+                deliveryPostalCode.textProperty().get(),
+                deliveryCountry.textProperty().get())
+                && cargoDeliveryDate.valueProperty().get() != null;
+    }
+
+    private boolean isTransportValid() {
+        return Data.getInvoice().getTransport() != null;
+    }
 
     @FXML
     private void handlePrevious() {
