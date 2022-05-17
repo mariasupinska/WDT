@@ -174,7 +174,7 @@ public class SellerOverviewController {
         int selectedIndex = vehicles.getSelectionModel().getSelectedIndex();
         if ( selectedIndex >= 0 ) {
             Vehicle vehicle = vehicles.getItems().get(selectedIndex);
-            if ( vehicle.isEmpty() ) return;                                //TODO: przed przejściem do produktu czy oba vehicle nie są puste
+            if ( vehicle.isEmpty() ) return;
 
             Optional<ButtonType> result = new Alerts(AlertEnum.DELETING_VEHICLE, mainApp.getPrimaryStage()).display();
                 if( result.get() == ButtonType.OK ) {
