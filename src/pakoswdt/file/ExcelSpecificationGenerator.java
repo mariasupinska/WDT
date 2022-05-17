@@ -131,7 +131,6 @@ public class ExcelSpecificationGenerator extends ExcelCommonMethods {
         row.createCell(8).setCellValue("Specyfikację sporządził: ");
         row.getCell(8).setCellStyle(cellStyle);
 
-        //odbiorca i miejsce na podpis
         row = sheet.createRow(sheet.getLastRowNum() + 3);
         for (int i = 0; i < 3; i++) {
             sheet.addMergedRegion(new CellRangeAddress(row.getRowNum() + i, row.getRowNum() + i, 1, 5));

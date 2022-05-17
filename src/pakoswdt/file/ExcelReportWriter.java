@@ -7,6 +7,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import pakoswdt.MainApp;
+import pakoswdt.model.AlertEnum;
+import pakoswdt.model.Alerts;
 import pakoswdt.model.InvoiceSummary;
 
 import java.io.File;
@@ -24,7 +27,14 @@ public class ExcelReportWriter {
     private String defaultFileExtension = ".xls";
     private String templateFile = "template.xls";
 
-    public ExcelReportWriter(Window window){
+    private MainApp mainApp;
+
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    public ExcelReportWriter(Window window, MainApp mainApp){
+        setMainApp(mainApp);
         this.workbook = new HSSFWorkbook();
         this.window = window;
     }
@@ -83,6 +93,8 @@ public class ExcelReportWriter {
             FileOutputStream out = new FileOutputStream(file);
             this.workbook.write(out);
             out.close();
+
+            new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -65,7 +65,7 @@ public class GenerateReportDialogController {
                 .sorted(Comparator.comparing(InvoiceSummary::getInvoiceNumber))
                 .collect(Collectors.toList());
 
-        new ExcelReportWriter(window).createExcel(summaries);
+        new ExcelReportWriter(window,mainApp).createExcel(summaries);
     }
 
     private boolean isBeforeOrEqual(LocalDate compared, LocalDate comparator) {

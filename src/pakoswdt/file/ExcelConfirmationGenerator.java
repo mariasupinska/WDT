@@ -81,20 +81,20 @@ public class ExcelConfirmationGenerator extends ExcelCommonMethods {
         row = sheet.createRow(sheet.getLastRowNum() + 3);
         sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 1, 4));
         sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 6, 10));
-        row.createCell(1).setCellValue(invoice.getBuyer().getDeliveryCity().get() + ", dn. " +
+        row.createCell(6).setCellValue(invoice.getBuyer().getDeliveryCity().get() + ", dn. " +
                 invoice.getDeliveryDate().get());
-        row.getCell(1).setCellStyle(borderedCenteredCellStyle);
-        row.createCell(6).setCellValue(invoice.getBuyer().getPersonConfirming().get());
         row.getCell(6).setCellStyle(borderedCenteredCellStyle);
+        row.createCell(1).setCellValue(invoice.getBuyer().getPersonConfirming().get());
+        row.getCell(1).setCellStyle(borderedCenteredCellStyle);
 
         row = sheet.createRow(sheet.getLastRowNum() + 1);
-        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 6, 10));
-        row.createCell(6).setCellValue("..........................................");
-        row.getCell(6).setCellStyle(centeredCellStyle);
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 1, 4));
+        row.createCell(1).setCellValue("..........................................");
+        row.getCell(1).setCellStyle(centeredCellStyle);
 
         row = sheet.createRow(sheet.getLastRowNum() + 1);
-        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 6, 10));
-        row.createCell(6).setCellValue("/ signature & stamp /");
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 1, 4));
+        row.createCell(1).setCellValue("/ signature & stamp /");
 
         Font font = createStandardFont();
         font.setFontHeightInPoints((short) 8);
@@ -103,7 +103,7 @@ public class ExcelConfirmationGenerator extends ExcelCommonMethods {
         smallCellStyle.setFont(font);
         smallCellStyle.setAlignment(CellStyle.ALIGN_CENTER);
 
-        row.getCell(6).setCellStyle(smallCellStyle);
+        row.getCell(1).setCellStyle(smallCellStyle);
     }
 
     private void setConfirmationTransport(Sheet sheet) {
