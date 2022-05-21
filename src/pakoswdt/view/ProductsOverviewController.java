@@ -331,9 +331,6 @@ public class ProductsOverviewController {
         InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
         Data.getInvoice().setSummary(invoiceSummary);
 
-        JsonWriter jsonWriter = new JsonWriter();
-        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
-
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
     }

@@ -7,10 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import pakoswdt.MainApp;
-import pakoswdt.model.AlertEnum;
-import pakoswdt.model.Alerts;
-import pakoswdt.model.Invoice;
-import pakoswdt.model.Product;
+import pakoswdt.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,11 +71,19 @@ public class ExcelWriter {
                 hssfWorkbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
+
+                saveInvoiceSummaryFile();
+
                 new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void saveInvoiceSummaryFile() {
+        JsonWriter jsonWriter = new JsonWriter();
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
     }
 }
