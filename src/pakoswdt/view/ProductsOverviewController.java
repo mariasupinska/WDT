@@ -2,7 +2,6 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +12,6 @@ import javafx.util.converter.BigDecimalStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
-import pakoswdt.file.JsonWriter;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
 
@@ -324,6 +322,11 @@ public class ProductsOverviewController {
 
     @FXML
     private void handleGenerate() {
+        if ( !isInputValid() ) {
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            return;
+        }
+
         savePackagesUnitWeightMap();
         saveProductsWeightMap();
         mainApp.saveData();
@@ -333,6 +336,23 @@ public class ProductsOverviewController {
 
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
+    }
+
+    private boolean isInputValid() {
+        ObservableList<Product> products = productsTableView.getItems();
+        return products.stream().allMatch(this::isProductInputValid);
+    }
+
+    private boolean isProductInputValid(Product product) {
+        return StringUtils.isNoneBlank(
+                product.getName().get(),
+                product.getUnit().get(),
+                product.productPackageType())
+                && product.getAmount().getValue() != null
+                && product.getUnitWeight().getValue() != null
+                && product.getNetWeight().getValue() != null
+                && product.getProductPackage().getAmount().getValue() != null
+                && product.getProductPackage().getWeight().getValue() != null;
     }
 
     private void savePackagesUnitWeightMap() {
