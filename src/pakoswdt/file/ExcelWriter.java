@@ -38,8 +38,7 @@ public class ExcelWriter {
 
         FileChooser fileChooser = new FileChooser();
 
-        //TODO: WYBRANA ŚCIEŻKA DO ZAPISU DOKUMENTÓW
-        String defaultSavePath = "target";
+        String defaultSavePath = Data.getDefaultInvoicePath();
         if (StringUtils.isNotEmpty(defaultSavePath)) {
             fileChooser.setInitialDirectory(new File(defaultSavePath));
         }
@@ -74,7 +73,7 @@ public class ExcelWriter {
 
                 saveInvoiceSummaryFile();
 
-                new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
+                new Alerts(AlertEnum.SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION, mainApp.getPrimaryStage()).display();
                 return;
             } catch (Exception e) {
                 e.printStackTrace();

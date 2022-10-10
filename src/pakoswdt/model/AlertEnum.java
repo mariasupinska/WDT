@@ -22,7 +22,8 @@ public enum AlertEnum {
     NOT_FILLED_FIELDS(WARNING, "Brak danych", "Nie wprowadzono prawidłowych danych", "Proszę wypełnić wszystkie pola."),
     VEHICLE_NOT_CHOSEN(WARNING, "Brak danych", "Nie wybrano żadnego transportu", "Wybierz transport ze strony sprzedawcy lub nabywcy."),
 
-    SUCCESSFUL_FILE_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano plik", "Wygenerowany plik znajduje się w wybranym katalogu."),
+    SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano fakturę i podsumowanie", "Pliki wygenerowano we wskazanych katalogach."),
+    SUCCESSFUL_REPORT_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano raport", "Plik wygenerowano w wybranym katalogu."),
 
     DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'.");
 

@@ -27,7 +27,12 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="359.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSetDefaultSavePath" prefWidth="300.0" text="Ustaw ścieżkę do zapisu podsumowań" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="290.0">
+      <Button layoutX="359.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSetDefaultSavePath" prefWidth="300.0" text="Ścieżka do zapisu podsumowań" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="290.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="661.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSetDefaultInvoiceSavePath" prefWidth="300.0" text="Ścieżka do zapisu faktur">
          <font>
             <Font size="20.0" />
          </font>

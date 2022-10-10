@@ -94,7 +94,7 @@ public class ExcelReportWriter {
             this.workbook.write(out);
             out.close();
 
-            new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
+            new Alerts(AlertEnum.SUCCESSFUL_REPORT_GENERATION, mainApp.getPrimaryStage()).display();
 
         } catch (Exception ex) {
             ex.printStackTrace();
