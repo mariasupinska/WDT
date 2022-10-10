@@ -15,12 +15,13 @@ public enum AlertEnum {
     NO_VEHICLE_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnego pojazdu", "Aby usunąć pojazd należy go najpierw wybrać z listy."),
     NO_BUYER_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnej firmy", "Aby usunąć firmę należy ją najpierw wybrać z listy."),
     NO_PERSON_SELECTED(WARNING, "Brak zaznaczenia", "Nie wybrano żadnej osoby", "Aby usunąć osobę należy ją najpierw wybrać z listy."),
-    NO_ITEMS_SELECTED(WARNING, "Brak zaznaczenia", "Nie zaznaczono żadnych produktów", "Aby ustawić opakowanie należy najpierw wybrać produkty z listy."),
+    NO_ITEMS_SELECTED(WARNING, "Brak zaznaczenia", "Nie zaznaczono żadnych produktów", "Aby ustawić opakowanie należy najpierw" + '\n' + "wybrać produkty z listy."),
 
     INVALID_PATH(WARNING, "Nieprawidłowa ścieżka", "Nie znalezniono poprawnej ścieżki", "Proszę wybrać poprawną ścieżkę."),
     NO_FILE_FOUND(WARNING, "Brak pliku", "Nie znaleziono pliku z danymi", "Upewnij się że posiadasz przynajmniej jedną wersję pliku z danymi."),
     NOT_FILLED_FIELDS(WARNING, "Brak danych", "Nie wprowadzono prawidłowych danych", "Proszę wypełnić wszystkie pola."),
     VEHICLE_NOT_CHOSEN(WARNING, "Brak danych", "Nie wybrano żadnego transportu", "Wybierz transport ze strony sprzedawcy lub nabywcy."),
+    INCORRECT_FILE_NAME(WARNING, "Nieprawidłowa nazwa", "Podano niepoprawną nazwę pliku", "Nazwa pliku nie może składać się" + '\n' + "wyłącznie z 'białych znaków'."),
 
     SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano fakturę i podsumowanie", "Pliki wygenerowano we wskazanych katalogach."),
     SUCCESSFUL_REPORT_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano raport", "Plik wygenerowano w wybranym katalogu."),
