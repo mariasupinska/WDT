@@ -80,7 +80,7 @@ public class StartingViewController {
     @FXML
     private void handleSetDefaultInvoiceSavePath() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("view/SetInvoicePathDialog.fxml"));
+        loader.setLocation(MainApp.class.getResource("view/SetInvoicePathDialogController.fxml"));
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
@@ -95,7 +95,7 @@ public class StartingViewController {
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        SetInvoicePathDialog controller = loader.getController();
+        SetInvoicePathDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
         controller.setMainApp(mainApp);
         controller.setPath();
