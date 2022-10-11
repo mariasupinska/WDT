@@ -20,6 +20,7 @@ public class DataStore {
     private List<Buyer> buyers;
     private Map<String, BigDecimal> products = new HashMap<>();
     private Map<String, BigDecimal> packages = new HashMap<>();
+    private String defaultDatabasePath = "";
     private String defaultInvoiceSummaryPath = "";
     private String defaultInvoicePath = "";
 }
