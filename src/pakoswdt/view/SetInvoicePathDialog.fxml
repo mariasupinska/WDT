@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.SetInvoicePathDialog">
+<AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.view.SetInvoicePathDialogController">
    <children>
-      <Label layoutX="162.0" layoutY="42.0" text="Ścieżka do zapisu faktur">
+      <Label layoutX="152.0" layoutY="40.0" text="Ścieżka do zapisu faktur" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="152.0">
          <font>
             <Font size="18.0" />
          </font>

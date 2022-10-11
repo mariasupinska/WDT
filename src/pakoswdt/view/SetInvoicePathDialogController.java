@@ -14,7 +14,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SetInvoicePathDialog {
+public class SetInvoicePathDialogController {
     @FXML
     private TextField path;
 
