@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,7 +20,7 @@ public class BuyerOverviewController {
     private MainApp mainApp;
 
     @FXML
-    private ChoiceBox<Buyer> buyers;
+    private ComboBox<Buyer> buyers;
 
     @FXML
     private TextField name;

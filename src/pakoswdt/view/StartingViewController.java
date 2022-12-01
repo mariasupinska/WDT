@@ -78,6 +78,31 @@ public class StartingViewController {
     }
 
     @FXML
+    private void handleSetDefaultInvoiceSavePath() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/SetInvoicePathDialogController.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ścieżka do zapisu faktur");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(mainApp.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        SetInvoicePathDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(mainApp);
+        controller.setPath();
+        dialogStage.showAndWait();
+    }
+
+    @FXML
     private void handleExit() {
         System.exit(0);
     }

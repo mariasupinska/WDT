@@ -2,20 +2,22 @@ package pakoswdt.view;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import javafx.util.converter.BigDecimalStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.file.ExcelWriter;
-import pakoswdt.file.JsonWriter;
 import pakoswdt.model.Package;
 import pakoswdt.model.*;
+import pakoswdt.tableCell.EditingNumberCell;
+import pakoswdt.tableCell.EditingNumberIntegerCell;
+import pakoswdt.tableCell.EditingStringCell;
 
 import java.io.File;
 import java.io.FileReader;
@@ -74,7 +76,7 @@ public class ProductsOverviewController {
         );
 
         name.setCellValueFactory(cellData -> cellData.getValue().getName());
-        name.setCellFactory(TextFieldTableCell.forTableColumn());
+        name.setCellFactory((TableColumn<Product, String> p) -> new EditingStringCell());
         name.setOnEditCommit(
                 event -> {
                     getProduct(event).getName().setValue(event.getNewValue());
@@ -82,7 +84,7 @@ public class ProductsOverviewController {
         );
 
         amount.setCellValueFactory(cellData -> cellData.getValue().getAmount());
-        amount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(0)));
+        amount.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberCell(0));
         amount.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -95,7 +97,7 @@ public class ProductsOverviewController {
         );
 
         unit.setCellValueFactory(cellData -> cellData.getValue().getUnit());
-        unit.setCellFactory(TextFieldTableCell.forTableColumn());
+        unit.setCellFactory((TableColumn<Product, String> p) -> new EditingStringCell());
         unit.setOnEditCommit(
                 event -> {
                     getProduct(event).getUnit().setValue(event.getNewValue());
@@ -103,7 +105,7 @@ public class ProductsOverviewController {
         );
 
         unitWeight.setCellValueFactory(cellData -> cellData.getValue().getUnitWeight());
-        unitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(3)));
+        unitWeight.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberCell(3));
         unitWeight.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -113,7 +115,7 @@ public class ProductsOverviewController {
         );
 
         netWeight.setCellValueFactory(cellData -> cellData.getValue().getNetWeight());
-        netWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(2)));
+        netWeight.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberCell(2));
         netWeight.setOnEditCommit(
                 event -> {
                     Product editedProduct = getProduct(event);
@@ -123,7 +125,7 @@ public class ProductsOverviewController {
         );
 
         packageType.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getType());
-        packageType.setCellFactory(TextFieldTableCell.forTableColumn());
+        packageType.setCellFactory((TableColumn<Product, String> p) -> new EditingStringCell());
         packageType.setEditable(false);
         packageType.setOnEditCommit(
                 event -> {
@@ -132,7 +134,7 @@ public class ProductsOverviewController {
         );
 
         packagesAmount.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getAmount());
-        packagesAmount.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(0)));
+        packagesAmount.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberIntegerCell(0));
         packagesAmount.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().amount().setValue(event.getNewValue());
@@ -141,7 +143,7 @@ public class ProductsOverviewController {
         );
 
         packageUnitWeight.setCellValueFactory(cellData -> cellData.getValue().getProductPackage().getWeight());
-        packageUnitWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(3)));
+        packageUnitWeight.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberCell(3));
         packageUnitWeight.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().weight().setValue(event.getNewValue());
@@ -153,7 +155,7 @@ public class ProductsOverviewController {
             Package productPackage = cellData.getValue().getProductPackage();
             return recalculateTotalWeight(productPackage);
         });
-        packagesTotalWeight.setCellFactory(TextFieldTableCell.forTableColumn(new StringNumberConverter(2)));
+        packagesTotalWeight.setCellFactory((TableColumn<Product, Number> p) -> new EditingNumberCell(2));
         packagesTotalWeight.setEditable(false);
 
         palettesWeight.textProperty().bindBidirectional(Data.getInvoice().getPalettes());
@@ -324,6 +326,11 @@ public class ProductsOverviewController {
 
     @FXML
     private void handleGenerate() {
+        if ( !isInputValid() ) {
+            new Alerts(AlertEnum.NOT_FILLED_FIELDS, mainApp.getPrimaryStage()).display();
+            return;
+        }
+
         savePackagesUnitWeightMap();
         saveProductsWeightMap();
         mainApp.saveData();
@@ -331,11 +338,25 @@ public class ProductsOverviewController {
         InvoiceSummary invoiceSummary = new InvoiceSummary(productsTableView.getItems(), new BigDecimalStringConverter().fromString(Data.getInvoice().getPalettes().get()));
         Data.getInvoice().setSummary(invoiceSummary);
 
-        JsonWriter jsonWriter = new JsonWriter();
-        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
-
         ExcelWriter excelWriter = new ExcelWriter(mainApp, Data.getInvoice(), productsTableView.getItems());
         excelWriter.createExcelFile();
+    }
+
+    private boolean isInputValid() {
+        ObservableList<Product> products = productsTableView.getItems();
+        return products.stream().allMatch(this::isProductInputValid);
+    }
+
+    private boolean isProductInputValid(Product product) {
+        return StringUtils.isNoneBlank(
+                product.getName().get(),
+                product.getUnit().get(),
+                product.productPackageType())
+                && product.getAmount().getValue() != null
+                && product.getUnitWeight().getValue() != null
+                && product.getNetWeight().getValue() != null
+                && product.getProductPackage().getAmount().getValue() != null
+                && product.getProductPackage().getWeight().getValue() != null;
     }
 
     private void savePackagesUnitWeightMap() {

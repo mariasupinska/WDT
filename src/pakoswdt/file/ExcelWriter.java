@@ -7,10 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import pakoswdt.MainApp;
-import pakoswdt.model.AlertEnum;
-import pakoswdt.model.Alerts;
-import pakoswdt.model.Invoice;
-import pakoswdt.model.Product;
+import pakoswdt.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,8 +38,7 @@ public class ExcelWriter {
 
         FileChooser fileChooser = new FileChooser();
 
-        //TODO: WYBRANA ŚCIEŻKA DO ZAPISU DOKUMENTÓW
-        String defaultSavePath = "target";
+        String defaultSavePath = Data.getDefaultInvoicePath();
         if (StringUtils.isNotEmpty(defaultSavePath)) {
             fileChooser.setInitialDirectory(new File(defaultSavePath));
         }
@@ -74,11 +70,19 @@ public class ExcelWriter {
                 hssfWorkbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
-                new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
+
+                saveInvoiceSummaryFile();
+
+                new Alerts(AlertEnum.SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION, mainApp.getPrimaryStage()).display();
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void saveInvoiceSummaryFile() {
+        JsonWriter jsonWriter = new JsonWriter();
+        jsonWriter.exportInvoiceSummary(Data.getInvoice().getNumber().get(), Data.getInvoice().getSummary(), Data.getDefaultInvoiceSummaryPath());
     }
 }

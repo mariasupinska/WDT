@@ -96,6 +96,7 @@ public class MainApp extends Application {
         Data.setProducts(storeData.getProducts());
         Data.setPackages(storeData.getPackages());
         Data.setDefaultInvoiceSummaryPath(storeData.getDefaultInvoiceSummaryPath());
+        Data.setDefaultInvoicePath(storeData.getDefaultInvoicePath());
     }
 
     public void saveData() {
@@ -103,7 +104,7 @@ public class MainApp extends Application {
 
         String filePath = "src/resources/New.json";
 
-        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath());
+        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath(), Data.getDefaultInvoicePath());
 
         String json = gson.toJson(data);
 

@@ -21,4 +21,5 @@ public class DataStore {
     private Map<String, BigDecimal> products = new HashMap<>();
     private Map<String, BigDecimal> packages = new HashMap<>();
     private String defaultInvoiceSummaryPath = "";
+    private String defaultInvoicePath = "";
 }

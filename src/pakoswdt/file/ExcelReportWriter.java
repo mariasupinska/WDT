@@ -2,6 +2,7 @@ package pakoswdt.file;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -78,24 +79,28 @@ public class ExcelReportWriter {
     private void save() {
         try {
             FileChooser fileChooser = new FileChooser();
+
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("XLS, ODS", "*.xls", "*.ods"));
+
             File file = fileChooser.showSaveDialog(window);
-            if(file == null) {
+
+            if (file == null || StringUtils.isBlank(file.getName())) {
+                new Alerts(AlertEnum.INCORRECT_FILE_NAME, mainApp.getPrimaryStage()).display();
                 return;
             }
 
             if (!file.getName().endsWith(".xls") && !file.getName().endsWith(".ods")) {
                 String name = file.getName();
-                file = new File(name + this.defaultFileExtension);
+                String path = file.getPath().replace(name, "");
+                file = new File(path + name + this.defaultFileExtension);
             }
 
             FileOutputStream out = new FileOutputStream(file);
             this.workbook.write(out);
             out.close();
 
-            new Alerts(AlertEnum.SUCCESSFUL_FILE_GENERATION, mainApp.getPrimaryStage()).display();
-
+            new Alerts(AlertEnum.SUCCESSFUL_REPORT_GENERATION, mainApp.getPrimaryStage()).display();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
