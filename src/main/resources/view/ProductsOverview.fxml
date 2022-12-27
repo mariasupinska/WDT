@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.controller.ProductsOverviewController">
+   <children>
+      <Label layoutX="177.0" layoutY="14.0" text="DANE z PLIKU CSV">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="filePath" editable="false" layoutX="87.0" layoutY="41.0" prefHeight="25.0" prefWidth="301.0" />
+      <Button layoutX="398.0" layoutY="41.0" mnemonicParsing="false" onAction="#readCsvFile" text="Otwórz..." />
+      <CheckBox layoutX="87.0" layoutY="78.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="71.0" text="Palety" />
+      <Label layoutX="218.0" layoutY="80.0" prefHeight="15.0" prefWidth="88.0" text="Waga palet(y):" />
+      <TextField fx:id="palettesWeight" layoutX="306.0" layoutY="75.0" prefHeight="25.0" prefWidth="58.0" />
+      <Label layoutX="367.0" layoutY="80.0" text="[kg]" />
+      <Button layoutX="602.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleSetMultiPackage" prefWidth="250.0" text="Utwórz nowe opakowanie zbiorcze" />
+      <Button layoutX="602.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSetPackage" prefWidth="250.0" text="Ustaw opakowanie" />
+      <TableView fx:id="productsTableView" editable="true" layoutX="24.0" layoutY="110.0" prefHeight="570.0" prefWidth="970.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
+         <columns>
+            <TableColumn fx:id="name" minWidth="200.0" prefWidth="241.0" text="Nazwa produktu" />
+            <TableColumn fx:id="amount" minWidth="7.0" prefWidth="51.0" text="Ilość" />
+            <TableColumn fx:id="unit" minWidth="15.0" prefWidth="92.0" text="Jedn. miary" />
+            <TableColumn fx:id="unitWeight" prefWidth="120.0" text="Waga jednostki" />
+            <TableColumn fx:id="netWeight" minWidth="45.0" prefWidth="130.0" text="Waga netto [kg]" />
+            <TableColumn fx:id="packageType" minWidth="20.0" prefWidth="86.0" text="Rodzaj op." />
+            <TableColumn fx:id="packagesAmount" minWidth="7.0" prefWidth="70.0" text="Ilość op." />
+            <TableColumn fx:id="packageUnitWeight" prefWidth="106.0" text="Waga 1 op." />
+            <TableColumn fx:id="packagesTotalWeight" minWidth="7.0" prefWidth="73.0" text="Razem" />
+         </columns>
+      </TableView>
+      <Button defaultButton="true" layoutX="517.0" layoutY="699.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="30.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="71.0" />
+      <Button layoutX="398.0" layoutY="699.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" />
+   </children>
+</AnchorPane>
