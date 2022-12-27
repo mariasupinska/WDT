@@ -2,6 +2,7 @@ package pakoswdt.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class LogFileDialogController {
+public class LogPathDialogController {
     @FXML
     private TextField path;
 
@@ -39,40 +40,21 @@ public class LogFileDialogController {
     }
 
     @FXML
-    private void handleSetLogFilePath() {
+    private void handleSetLogDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(path.getScene().getWindow());
         try {
-            FileChooser fileChooser = new FileChooser();
-
-            File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-
-            if (file == null || StringUtils.isBlank(file.getName())) {
-                new Alerts(AlertEnum.INCORRECT_FILE_NAME, mainApp.getPrimaryStage()).display();
-                return;
+            if (isPathValid(selectedDirectory.getAbsolutePath())) {
+                path.setText(selectedDirectory.getAbsolutePath());
             }
-
-//            if (!file.getName().endsWith(".json")) {
-//                String name = file.getName();
-//                String path = file.getPath().replace(name, "");
-//                file = new File(path + name + ".json");
-//            }
-
-            if (isPathValid(file)) {
-                path.setText(file.getAbsolutePath());
-            }
-
-            //FileOutputStream fileOut = new FileOutputStream(file);
-            //fileOut.flush();
-            //fileOut.close();
-
-            //new Alerts(AlertEnum.SUCCESSFUL_DATABASE_FILE_GENERATION, mainApp.getPrimaryStage()).display();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void handleOK() {
-        if (isInputValid(path.textProperty().get())) {
+        if (isInputValid(path.textProperty().get()) && isPathValid(path.textProperty().get())) {
             Data.setDefaultLogPath(path.textProperty().get());
             mainApp.saveData();
             dialogStage.close();
@@ -88,10 +70,8 @@ public class LogFileDialogController {
         }
     }
 
-    private boolean isPathValid(File file) {
-        String name = file.getName();
-        String path = file.getPath().replace(name, "");
-        if (Files.exists(Paths.get(path))) return true;
+    private boolean isPathValid(String path) {
+        if ( Files.exists(Paths.get(path)) ) return true;
         else {
             new Alerts(AlertEnum.INVALID_PATH, mainApp.getPrimaryStage()).display();
             return false;

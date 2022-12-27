@@ -139,7 +139,7 @@ public class MainApp extends Application {
 
     private void showLogFilePath() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("view/LogFileDialog.fxml"));
+        loader.setLocation(MainApp.class.getResource("view/LogPathDialog.fxml"));
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
@@ -154,7 +154,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        LogFileDialogController controller = loader.getController();
+        LogPathDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
         controller.setMainApp(this);
         dialogStage.showAndWait();
