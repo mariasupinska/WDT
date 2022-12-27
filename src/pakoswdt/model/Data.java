@@ -19,6 +19,7 @@ public class Data {
     private static Map<String, BigDecimal> packages = new HashMap<>();
     private static ObservableList<Product> tableProducts = FXCollections.observableArrayList();
     private static String defaultDatabasePath = "";
+    private static String defaultLogPath = "";
     private static String defaultInvoicePath = "";
     private static String defaultInvoiceSummaryPath = "";
     private static StringProperty inputFilePath = new SimpleStringProperty("");
@@ -113,6 +114,14 @@ public class Data {
 
     public static void setDefaultDatabasePath(String defaultDatabasePath) {
         Data.defaultDatabasePath = defaultDatabasePath;
+    }
+
+    public static String getDefaultLogPath() {
+        return defaultLogPath;
+    }
+
+    public static void setDefaultLogPath(String defaultLogPath) {
+        Data.defaultLogPath = defaultLogPath;
     }
 
     public static StringProperty inputFilePathProperty() {

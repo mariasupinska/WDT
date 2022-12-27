@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.hildan.fxgson.FxGson;
+import pakoswdt.file.DataFile;
 import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
@@ -64,6 +65,7 @@ public class MainApp extends Application {
             showOldDatabaseFilePath();
             loadOldData(oldDatabaseFilePath);
             showNewDatabaseFilePath();
+            showLogFilePath();
         }
 
         /*if ( !Data.getDefaultDatabasePath().isEmpty() ) {
@@ -135,6 +137,29 @@ public class MainApp extends Application {
         dialogStage.showAndWait();
     }
 
+    private void showLogFilePath() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/LogFileDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ścieżka do zapisu pliku z logami");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(this.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        LogFileDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(this);
+        dialogStage.showAndWait();
+    }
+
     //TODO: możliwe że niepotrzebne
     private boolean checkFileExistence(String filePath) {
         File file = new File(filePath);
@@ -167,6 +192,7 @@ public class MainApp extends Application {
         Data.setProducts(storeData.getProducts());
         Data.setPackages(storeData.getPackages());
         Data.setDefaultDatabasePath(storeData.getDefaultDatabasePath());
+        Data.setDefaultLogPath(storeData.getDefaultLogPath());
         Data.setDefaultInvoiceSummaryPath(storeData.getDefaultInvoiceSummaryPath());
         Data.setDefaultInvoicePath(storeData.getDefaultInvoicePath());
     }
@@ -176,7 +202,7 @@ public class MainApp extends Application {
 
         String filePath = Data.getDefaultDatabasePath();
 
-        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultDatabasePath(), Data.getDefaultInvoiceSummaryPath(), Data.getDefaultInvoicePath());
+        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultDatabasePath(), Data.getDefaultLogPath(), Data.getDefaultInvoiceSummaryPath(), Data.getDefaultInvoicePath());
 
         String json = gson.toJson(data);
 
