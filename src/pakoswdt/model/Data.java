@@ -18,6 +18,7 @@ public class Data {
     private static Map<String, BigDecimal> products = new HashMap<>();
     private static Map<String, BigDecimal> packages = new HashMap<>();
     private static ObservableList<Product> tableProducts = FXCollections.observableArrayList();
+    private static String defaultDatabasePath = "";
     private static String defaultInvoicePath = "";
     private static String defaultInvoiceSummaryPath = "";
     private static StringProperty inputFilePath = new SimpleStringProperty("");
@@ -104,6 +105,14 @@ public class Data {
 
     public static void setDefaultInvoiceSummaryPath(String defaultInvoiceSummaryPath) {
         Data.defaultInvoiceSummaryPath = defaultInvoiceSummaryPath;
+    }
+
+    public static String getDefaultDatabasePath() {
+        return defaultDatabasePath;
+    }
+
+    public static void setDefaultDatabasePath(String defaultDatabasePath) {
+        Data.defaultDatabasePath = defaultDatabasePath;
     }
 
     public static StringProperty inputFilePathProperty() {

@@ -10,8 +10,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.hildan.fxgson.FxGson;
 import pakoswdt.model.*;
@@ -19,10 +21,7 @@ import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
 import pakoswdt.model.legacy.LegacySeller;
 import pakoswdt.model.legacy.LegacyVehicle;
-import pakoswdt.view.BuyerOverviewController;
-import pakoswdt.view.ProductsOverviewController;
-import pakoswdt.view.SellerOverviewController;
-import pakoswdt.view.StartingViewController;
+import pakoswdt.view.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class MainApp extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -39,6 +39,8 @@ public class MainApp extends Application {
     private SellerOverviewController sellerOverviewController;
     private BuyerOverviewController buyerOverviewController;
     private ProductsOverviewController productsOverviewController;
+    private String oldDatabaseFilePath = "";
+    private String newDatabaseFilePath = "";
 
 
     @Override
@@ -46,14 +48,34 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("WDT");
 
-        loadData();
-
         initRootLayout();
 
         showStartingView();
+
+        loadData();
     }
 
     private void loadData() {
+        String dataPath = DataFile.getDataFile();
+
+        if ( !dataPath.isEmpty() ) {
+            loadNewData(dataPath);
+        } else {
+            showOldDatabaseFilePath();
+            loadOldData(oldDatabaseFilePath);
+            showNewDatabaseFilePath();
+        }
+
+        /*if ( !Data.getDefaultDatabasePath().isEmpty() ) {
+            loadNewData(Data.getDefaultDatabasePath());
+        } else {
+            showOldDatabaseFilePath();
+            loadOldData(oldDatabaseFilePath);
+            showNewDatabaseFilePath();
+            System.out.println();
+        }*/
+
+        /*
         if ( checkFileExistence("src/resources/New.json")  ) {
             loadNewData("src/resources/New.json");
 
@@ -63,8 +85,57 @@ public class MainApp extends Application {
         } else {
             new Alerts(AlertEnum.NO_FILE_FOUND, this.primaryStage.getOwner()).display();
         }
+
+         */
     }
 
+    private void showOldDatabaseFilePath() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/OldDatabaseFileDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ścieżka do odczytu pliku z danymi");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(this.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        OldDatabaseFileDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(this);
+        dialogStage.showAndWait();
+    }
+
+    private void showNewDatabaseFilePath() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/NewDatabaseFileDialog.fxml"));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Ścieżka do zapisu pliku z danymi");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(this.getPrimaryStage());
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        NewDatabaseFileDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setMainApp(this);
+        dialogStage.showAndWait();
+    }
+
+    //TODO: możliwe że niepotrzebne
     private boolean checkFileExistence(String filePath) {
         File file = new File(filePath);
         return file.exists();
@@ -95,6 +166,7 @@ public class MainApp extends Application {
         Data.setBuyers(FXCollections.observableArrayList(storeData.getBuyers()));
         Data.setProducts(storeData.getProducts());
         Data.setPackages(storeData.getPackages());
+        Data.setDefaultDatabasePath(storeData.getDefaultDatabasePath());
         Data.setDefaultInvoiceSummaryPath(storeData.getDefaultInvoiceSummaryPath());
         Data.setDefaultInvoicePath(storeData.getDefaultInvoicePath());
     }
@@ -102,9 +174,9 @@ public class MainApp extends Application {
     public void saveData() {
         Gson gson = FxGson.coreBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-        String filePath = "src/resources/New.json";
+        String filePath = Data.getDefaultDatabasePath();
 
-        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultInvoiceSummaryPath(), Data.getDefaultInvoicePath());
+        DataStore data = new DataStore(Data.getSeller(), Data.getBuyersAsList(), Data.getProducts(), Data.getPackages(), Data.getDefaultDatabasePath(), Data.getDefaultInvoiceSummaryPath(), Data.getDefaultInvoicePath());
 
         String json = gson.toJson(data);
 
