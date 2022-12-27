@@ -14,7 +14,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class DatabaseFileDialogController {
+public class OldDatabaseFileDialogController {
     @FXML
     private TextField path;
 
@@ -46,15 +46,18 @@ public class DatabaseFileDialogController {
 
         if ( file != null && file.exists() ) {
             Data.setDefaultDatabasePath(file.getPath());
-
+            path.setText(file.getAbsolutePath());
+        } else {
+            new Alerts(AlertEnum.CANNOT_LOAD_FILE, mainApp.getPrimaryStage()).display();
         }
     }
 
     @FXML
     private void handleOK() {
         if (isInputValid(path.textProperty().get()) && isPathValid(path.textProperty().get())) {
-            Data.setDefaultInvoicePath(path.textProperty().get());
-            mainApp.saveData();
+            //Data.setDefaultInvoicePath(path.textProperty().get());
+            //mainApp.saveData();
+            mainApp.setOldDatabaseFilePath(path.textProperty().get());
             dialogStage.close();
         }
     }

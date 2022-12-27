@@ -23,10 +23,13 @@ public enum AlertEnum {
     VEHICLE_NOT_CHOSEN(WARNING, "Brak danych", "Nie wybrano żadnego transportu", "Wybierz transport ze strony sprzedawcy lub nabywcy."),
     INCORRECT_FILE_NAME(WARNING, "Nieprawidłowa nazwa", "Podano niepoprawną nazwę pliku", "Nazwa pliku nie może składać się" + '\n' + "wyłącznie z 'białych znaków'."),
 
+    SUCCESSFUL_DATABASE_FILE_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano nowy plik bazy danych", "Plik wygenerowano w wybranym katalogu."),
     SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano fakturę i podsumowanie", "Pliki wygenerowano we wskazanych katalogach."),
     SUCCESSFUL_REPORT_GENERATION(INFORMATION, "Informacja o wygenerowaniu", "Pomyślnie wygenerowano raport", "Plik wygenerowano w wybranym katalogu."),
 
-    DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'.");
+    DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'."),
+
+    CANNOT_LOAD_FILE(ERROR, "Błąd odczytu", "Nie można odczytać danych.", "Wystąpił błąd podczas próby odczytania pliku.");
 
     private Alert.AlertType type;
     private String alertTitle;
