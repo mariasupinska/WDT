@@ -48,6 +48,9 @@ public class MainApp extends Application {
     private ProductsOverviewController productsOverviewController;
     private String oldDatabaseFilePath = "";
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -68,10 +71,6 @@ public class MainApp extends Application {
             log.error("Unhandled exception: ", ex);
         }
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public void updateLog4jConfiguration(String logFile) {
@@ -96,13 +95,21 @@ public class MainApp extends Application {
     private void loadData() {
         String dataPath = DataFile.getDataFile();
 
-        if ( !dataPath.isEmpty() ) {
+        if ( !dataPath.isEmpty() && isPathValid(dataPath) ) {
             loadNewData(dataPath);
         } else {
             showOldDatabaseFilePath();
             loadOldData(oldDatabaseFilePath);
             showNewDatabaseFilePath();
             showLogFilePath();
+        }
+    }
+
+    private boolean isPathValid(String path) {
+        if ( Files.exists(Paths.get(path)) ) return true;
+        else {
+            new Alerts(AlertEnum.INVALID_PATH, primaryStage).display();
+            return false;
         }
     }
 
