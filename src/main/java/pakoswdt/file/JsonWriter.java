@@ -1,14 +1,15 @@
 package pakoswdt.file;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import pakoswdt.model.Data;
 import pakoswdt.model.InvoiceSummary;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
 
+@Slf4j
 public class JsonWriter {
     private Gson gson = new Gson();
 
@@ -20,8 +21,8 @@ public class JsonWriter {
 
         try(Writer writer = new FileWriter( directory + systemSeparator + performReplacements(invoiceNumber, systemSeparator) + "_invSum" + ".json")) {
             writer.write(json);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("Unhandled exception", e);
         }
     }
 

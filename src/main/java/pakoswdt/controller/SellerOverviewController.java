@@ -4,10 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.AlertEnum;
@@ -15,9 +19,9 @@ import pakoswdt.model.Alerts;
 import pakoswdt.model.Data;
 import pakoswdt.model.Vehicle;
 
-import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 public class SellerOverviewController {
     private MainApp mainApp;
 
@@ -99,8 +103,9 @@ public class SellerOverviewController {
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("Unhandled exception", e);
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
         }
 
         Stage dialogStage = new Stage();
@@ -146,8 +151,9 @@ public class SellerOverviewController {
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("Unhandled exception", e);
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
         }
 
         Stage dialogStage = new Stage();

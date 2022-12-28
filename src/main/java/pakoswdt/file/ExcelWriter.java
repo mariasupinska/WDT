@@ -76,7 +76,8 @@ public class ExcelWriter {
                 new Alerts(AlertEnum.SUCCESSFUL_INVOICE_AND_SUMMARY_GENERATION, mainApp.getPrimaryStage()).display();
                 return;
             } catch (Exception e) {
-                e.printStackTrace();
+                new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+                log.error("Unhandled exception", e);
             }
         }
     }

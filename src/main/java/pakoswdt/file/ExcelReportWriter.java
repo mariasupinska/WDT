@@ -2,6 +2,7 @@ package pakoswdt.file;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class ExcelReportWriter {
     private HSSFWorkbook workbook;
     private HSSFSheet sheet;
@@ -65,13 +67,15 @@ public class ExcelReportWriter {
         try {
             fis = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("Unhandled exception", e);
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
         }
         Optional <HSSFWorkbook> optWorkbook = Optional.empty();
         try {
             optWorkbook = Optional.of(new HSSFWorkbook(fis));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unhandled exception", e);
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
         }
         return optWorkbook;
     }

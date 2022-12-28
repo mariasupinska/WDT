@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
 import pakoswdt.model.AlertEnum;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Slf4j
 public class LogPathDialogController {
     @FXML
     private TextField path;
@@ -47,7 +49,8 @@ public class LogPathDialogController {
                 path.setText(selectedDirectory.getAbsolutePath());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unhandled exception", e);
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
         }
     }
 

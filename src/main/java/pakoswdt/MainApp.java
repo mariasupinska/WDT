@@ -19,15 +19,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.hildan.fxgson.FxGson;
+import pakoswdt.controller.*;
 import pakoswdt.file.DataFile;
 import pakoswdt.model.*;
 import pakoswdt.model.legacy.LegacyBuyer;
 import pakoswdt.model.legacy.LegacyData;
 import pakoswdt.model.legacy.LegacySeller;
 import pakoswdt.model.legacy.LegacyVehicle;
-import pakoswdt.controller.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,17 +52,27 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("WDT");
+        try {
+            this.primaryStage = primaryStage;
+            this.primaryStage.setTitle("WDT");
 
-        initRootLayout();
+            initRootLayout();
 
-        showStartingView();
+            showStartingView();
 
-        loadData();
+            loadData();
 
-        updateLog4jConfiguration(Data.getDefaultLogPath());
-        log.info("Starting application...");
+            updateLog4jConfiguration(Data.getDefaultLogPath());
+            log.info("Starting application...");
+        } catch (Exception ex) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception: ", ex);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     public void updateLog4jConfiguration(String logFile) {
@@ -70,7 +81,7 @@ public class MainApp extends Application {
             InputStream configStream = getClass().getResourceAsStream( "/log4j.properties");
             props.load(configStream);
             configStream.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             new Alerts(AlertEnum.CANNOT_LOAD_FILE, primaryStage).display();
         }
 
@@ -93,28 +104,6 @@ public class MainApp extends Application {
             showNewDatabaseFilePath();
             showLogFilePath();
         }
-
-        /*if ( !Data.getDefaultDatabasePath().isEmpty() ) {
-            loadNewData(Data.getDefaultDatabasePath());
-        } else {
-            showOldDatabaseFilePath();
-            loadOldData(oldDatabaseFilePath);
-            showNewDatabaseFilePath();
-            System.out.println();
-        }*/
-
-        /*
-        if ( checkFileExistence("src/resources/New.json")  ) {
-            loadNewData("src/resources/New.json");
-
-        } else if ( checkFileExistence("src/resources/Old.json") ) {
-            loadOldData("src/resources/Old.json");
-
-        } else {
-            new Alerts(AlertEnum.NO_FILE_FOUND, this.primaryStage.getOwner()).display();
-        }
-
-         */
     }
 
     private void showOldDatabaseFilePath() {
@@ -123,8 +112,9 @@ public class MainApp extends Application {
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();
@@ -146,8 +136,9 @@ public class MainApp extends Application {
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();
@@ -169,8 +160,9 @@ public class MainApp extends Application {
         AnchorPane page = null;
         try {
             page = (AnchorPane) loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();
@@ -184,12 +176,6 @@ public class MainApp extends Application {
         controller.setDialogStage(dialogStage);
         controller.setMainApp(this);
         dialogStage.showAndWait();
-    }
-
-    //TODO: możliwe że niepotrzebne
-    private boolean checkFileExistence(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
     }
 
     private void loadOldData(String filePath) {
@@ -275,8 +261,9 @@ public class MainApp extends Application {
         byte[] encoded = new byte[0];
         try {
             encoded = Files.readAllBytes(Paths.get(path));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
         return new String(encoded, StandardCharsets.UTF_8);
     }
@@ -285,117 +272,97 @@ public class MainApp extends Application {
         File target = new File(path);
         try {
             FileUtils.write(target, content, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
-            // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
     public void showStartingView() {
         try {
-            // Load starting view.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/StartingView.fxml"));
             AnchorPane startingView = (AnchorPane) loader.load();
 
-            // Set starting view into the center of root layout.
             rootLayout.setCenter(startingView);
 
             StartingViewController controller = loader.getController();
             controller.setMainApp(this);
             startingViewController = controller;
-            //rootLayoutController.set...(controller);??? MOŻE BYĆ WAŻNE ALE NIE WIEM CO ROBI
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
     public void showSellerOverview() {
         try {
-            // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/SellerOverview.fxml"));
             AnchorPane sellerOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
             rootLayout.setCenter(sellerOverview);
 
             SellerOverviewController controller = loader.getController();
             controller.setMainApp(this);
             sellerOverviewController = controller;
-            //TO SAMO CO METODĘ WYŻEJ
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
     public void showBuyerOverview() {
         try {
-            // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/BuyerOverview.fxml"));
             AnchorPane buyerOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
-            primaryStage.setMinHeight(530);
-            primaryStage.setHeight(530);
             rootLayout.setCenter(buyerOverview);
 
             BuyerOverviewController controller = loader.getController();
             controller.setMainApp(this);
             buyerOverviewController = controller;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
     public void showProductsOverview() {
         try {
-            // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/ProductsOverview.fxml"));
             AnchorPane productsOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
             primaryStage.setMinHeight(800);
             rootLayout.setCenter(productsOverview);
 
             ProductsOverviewController controller = loader.getController();
             controller.setMainApp(this);
             productsOverviewController = controller;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            new Alerts(AlertEnum.UNKNOWN_ERROR, primaryStage).display();
+            log.error("Unhandled exception", e);
         }
     }
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-
-    public static void main(String[] args) {
-        try {
-            launch(args);
-        } catch (Exception ex) {
-            log.error("UNCAUGHT ERROR! " + ex);
-        }
     }
 }

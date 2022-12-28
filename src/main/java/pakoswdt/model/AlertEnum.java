@@ -29,7 +29,9 @@ public enum AlertEnum {
 
     DATES_IN_INCORRECT_ORDER(WARNING, "Błędne dane", "Niepoprawna kolejność dat", "'Data od' musi być wcześniejsza lub równa polu 'Data do'."),
 
-    CANNOT_LOAD_FILE(ERROR, "Błąd odczytu", "Nie można odczytać danych.", "Wystąpił błąd podczas próby odczytania pliku.");
+    CANNOT_LOAD_FILE(ERROR, "Błąd odczytu", "Nie można odczytać danych.", "Wystąpił błąd podczas próby odczytania pliku."),
+
+    UNKNOWN_ERROR(ERROR, "Błąd w programie", "Niezidentyfikowany błąd", "Przepraszamy, ale wystąpił nieznany błąd." + '\n' + "Prosimy o wysłanie pliku z logami, aby błąd" + '\n' + "mógł zostać zidentyfikowany i naprawiony.");
 
     private Alert.AlertType type;
     private String alertTitle;

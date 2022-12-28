@@ -1,16 +1,16 @@
 package pakoswdt.file;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import pakoswdt.model.AlertEnum;
-import pakoswdt.model.Alerts;
 import pakoswdt.model.InvoiceSummary;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 public class JsonReader {
     private Gson gson = new Gson();
 
@@ -24,7 +24,7 @@ public class JsonReader {
                 invoiceSummary = gson.fromJson(data, InvoiceSummary.class);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unhandled exception", e);
         }
         return invoiceSummary;
     }
