@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import pakoswdt.MainApp;
+import pakoswdt.file.DataFile;
 import pakoswdt.model.AlertEnum;
 import pakoswdt.model.Alerts;
 import pakoswdt.model.Data;
@@ -14,6 +16,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Slf4j
 public class NewDatabaseFileDialogController {
     @FXML
     private TextField path;
@@ -60,22 +63,17 @@ public class NewDatabaseFileDialogController {
                 path.setText(file.getAbsolutePath());
             }
 
-            //FileOutputStream fileOut = new FileOutputStream(file);
-            //fileOut.flush();
-            //fileOut.close();
-
-            //new Alerts(AlertEnum.SUCCESSFUL_DATABASE_FILE_GENERATION, mainApp.getPrimaryStage()).display();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception: ", ex);
         }
     }
 
     @FXML
     private void handleOK() {
         if (isInputValid(path.textProperty().get())) {
-            //DataFile.setDataFilePath(path.textProperty().get());
+            DataFile.setDataFilePath(path.textProperty().get());
             Data.setDefaultDatabasePath(path.textProperty().get());
-            //mainApp.setNewDatabaseFilePath(path.textProperty().get());
             mainApp.saveData();
             dialogStage.close();
         }

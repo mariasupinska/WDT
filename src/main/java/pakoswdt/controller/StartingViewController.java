@@ -38,8 +38,8 @@ public class StartingViewController {
         try {
             page = (AnchorPane) loader.load();
         } catch (Exception e) {
-            log.error("Unhandled exception", e);
             new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();
@@ -63,8 +63,8 @@ public class StartingViewController {
         try {
             page = (AnchorPane) loader.load();
         } catch (Exception e) {
-            log.error("Unhandled exception", e);
             new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();
@@ -89,8 +89,8 @@ public class StartingViewController {
         try {
             page = (AnchorPane) loader.load();
         } catch (Exception e) {
-            log.error("Unhandled exception", e);
             new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception", e);
         }
 
         Stage dialogStage = new Stage();

@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 
 public class StringNumberConverter extends StringConverter<Number> {
     private final int precision;
+
     public StringNumberConverter (int precision) {
         this.precision = precision;
     }

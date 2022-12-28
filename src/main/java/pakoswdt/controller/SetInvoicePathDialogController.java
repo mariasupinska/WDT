@@ -48,8 +48,8 @@ public class SetInvoicePathDialogController {
                 path.setText(selectedDirectory.getAbsolutePath());
             }
         } catch (Exception e) {
-            log.error("Unhandled exception", e);
             new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception", e);
         }
     }
 

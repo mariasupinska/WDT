@@ -106,7 +106,8 @@ public class ExcelReportWriter {
 
             new Alerts(AlertEnum.SUCCESSFUL_REPORT_GENERATION, mainApp.getPrimaryStage()).display();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            new Alerts(AlertEnum.UNKNOWN_ERROR, mainApp.getPrimaryStage()).display();
+            log.error("Unhandled exception: ", ex);
         }
     }
 

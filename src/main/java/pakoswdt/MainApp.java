@@ -47,7 +47,6 @@ public class MainApp extends Application {
     private BuyerOverviewController buyerOverviewController;
     private ProductsOverviewController productsOverviewController;
     private String oldDatabaseFilePath = "";
-    private String newDatabaseFilePath = "";
 
 
     @Override
@@ -81,8 +80,9 @@ public class MainApp extends Application {
             InputStream configStream = getClass().getResourceAsStream( "/log4j.properties");
             props.load(configStream);
             configStream.close();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             new Alerts(AlertEnum.CANNOT_LOAD_FILE, primaryStage).display();
+            log.error("Unhandled exception: ", ex);
         }
 
         String actualProperty = props.getProperty("log4j.appender.FileAppender.rollingPolicy.fileNamePattern");

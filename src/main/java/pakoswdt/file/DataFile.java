@@ -2,13 +2,10 @@ package pakoswdt.file;
 
 import pakoswdt.MainApp;
 
-import java.io.File;
 import java.util.prefs.Preferences;
 
 public class DataFile {
     public static final String PREFS_KEY = "dataFilePath";
-    public static final String DEFAULT_JSON_NAME = "DATABASE.json";
-
 
     public static String getDataFile() {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);

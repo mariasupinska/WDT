@@ -213,7 +213,6 @@ public class ProductsOverviewController {
             ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
 
             Data.setTableProducts(observableProducts);
-            //TODO: zakomentować linię poniżej i sprawdzić czy działa
             Data.setInputFilePath(file.getPath());
 
             productsTableView.setItems(observableProducts);
