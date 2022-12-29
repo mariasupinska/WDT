@@ -340,6 +340,8 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("/view/BuyerOverview.fxml"));
             AnchorPane buyerOverview = (AnchorPane) loader.load();
 
+            primaryStage.setMinHeight(530);
+            primaryStage.setHeight(530);
             rootLayout.setCenter(buyerOverview);
 
             BuyerOverviewController controller = loader.getController();
