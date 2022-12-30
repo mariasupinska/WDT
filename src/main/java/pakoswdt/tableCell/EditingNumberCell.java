@@ -4,9 +4,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import lombok.extern.slf4j.Slf4j;
 import pakoswdt.model.Product;
 import pakoswdt.controller.StringNumberConverter;
 
+@Slf4j
 public class EditingNumberCell extends TableCell<Product, Number> {
     private TextField textField;
 
@@ -95,6 +97,7 @@ public class EditingNumberCell extends TableCell<Product, Number> {
         try {
             d = Double.valueOf(value);
         } catch (Exception e) {
+            log.error("Failed to parse as number", e);
             d = 0.0;
         }
         commitEdit(d);

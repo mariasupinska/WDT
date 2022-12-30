@@ -9,7 +9,7 @@ public class SimpleDoublePropertyConverter extends AbstractBeanField {
     protected Object convert(String s) {
         if ( s == null) return null;
         String replace = s.replace(",", ".");
-        if (!NumberUtils.isParsable(replace)) return null;
-        return new SimpleDoubleProperty(Double.parseDouble(replace));
+        if (!NumberUtils.isParsable(replace.trim())) return null;
+        return new SimpleDoubleProperty(Double.parseDouble(replace.trim()));
     }
 }
