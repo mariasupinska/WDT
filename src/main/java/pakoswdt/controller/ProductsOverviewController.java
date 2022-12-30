@@ -20,8 +20,11 @@ import pakoswdt.tableCell.EditingStringCell;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -200,7 +203,7 @@ public class ProductsOverviewController {
 
         if ( file != null && file.exists() ) {
             filePath.setText(file.getPath());
-            List<Product> products = new CsvToBeanBuilder<Product>(new FileReader(file))
+            List<Product> products = new CsvToBeanBuilder<Product>(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8))
                     .withType(Product.class)
                     .withSkipLines(1)
                     .build()
