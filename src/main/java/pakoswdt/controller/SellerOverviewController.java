@@ -1,5 +1,6 @@
 package pakoswdt.controller;
 
+import com.google.common.collect.Lists;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,8 +60,19 @@ public class SellerOverviewController {
         setValues();
         Data.setInvoiceSeller(Data.getSeller());
 
-        this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
-                "    -fx-text-fill: black;\n");
+        Lists.newArrayList(name, street, city, postalCode, country, nip, invoiceNumber, place)
+                .forEach(textField -> textField.textProperty().addListener((observable, newVal, oldVal) -> flushButton()));
+
+        invoiceCreationDate.valueProperty().addListener((observable, newVal, oldVal) -> flushButton());
+    }
+
+    private void flushButton() {
+        if (isInputValid()) {
+            this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
+                    "    -fx-text-fill: black;\n");
+        } else {
+            this.nextButton.setStyle("");
+        }
     }
 
     private void bind() {
@@ -80,16 +92,13 @@ public class SellerOverviewController {
     private void addListeners() {
         vehicles.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if(newValue != null ) {
                         Data.getInvoice().setTransport(newValue);
-                    }
                 } );
 
         employees.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if(newValue != null ) {
                         Data.getInvoice().setCreator(newValue);
-                    }
+                        flushButton();
                 } );
     }
 
@@ -137,10 +146,7 @@ public class SellerOverviewController {
             Optional<ButtonType> result = new Alerts(AlertEnum.DELETING_PERSON, mainApp.getPrimaryStage()).display();
             if( result.get() == ButtonType.OK ) {
                 employees.getItems().remove(selectedIndex);
-            } else if ( result.get() == ButtonType.CANCEL ) {
-                return;
             }
-
         } else {
             new Alerts(AlertEnum.NO_PERSON_SELECTED, mainApp.getPrimaryStage()).display();
         }

@@ -1,5 +1,6 @@
 package pakoswdt.controller;
 
+import com.google.common.collect.Lists;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -63,7 +64,7 @@ public class BuyerOverviewController {
     @FXML
     public void initialize() {
         buyers.setItems(Data.getBuyers());
-        
+
         cargoDeliveryDate.valueProperty().bindBidirectional(Data.getInvoice().getDeliveryDate());
 
         buyers.getSelectionModel().selectedItemProperty().addListener(
@@ -73,25 +74,28 @@ public class BuyerOverviewController {
                             unbindOldValues(oldValue);
                         }
                         Data.getInvoice().setBuyer(newValue);
-                        
+
                         bindNewValues(newValue);
                     } else {
                         clearBuyerFields();
+                        flushButton();
                     }
                 } );
 
         vehicles.getSelectionModel().selectedItemProperty().addListener(
                 (observableVehicle, oldValueVehicle, newValueVehicle) -> {
-                    if (newValueVehicle != null ) {
-                        Data.getInvoice().setTransport(newValueVehicle);
-                    }
-                } );
+                    Data.getInvoice().setTransport(newValueVehicle);
+                    flushButton();
+                });
 
         buyers.setValue(Data.getInvoice().getBuyer());
         vehicles.setValue(Data.getInvoice().getTransport());
 
-        this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
-                "    -fx-text-fill: black;\n");
+        Lists.newArrayList(name, street, city, postalCode, country, nip, deliveryStreet, deliveryCity, deliveryPostalCode, deliveryCountry).forEach(textField -> textField.textProperty().addListener((observable, newVal, oldVal) -> flushButton()));
+
+        cargoDeliveryDate.valueProperty().addListener((observable, newVal, oldVal) -> flushButton());
+
+        flushButton();
     }
 
     private void clearBuyerFields() {
@@ -146,6 +150,15 @@ public class BuyerOverviewController {
 
         personRetrieving.textProperty().bindBidirectional(buyer.getPersonRetrieving());
         personConfirming.textProperty().bindBidirectional(buyer.getPersonConfirming());
+    }
+
+    private void flushButton() {
+        if (isInputValid() && isTransportValid()) {
+            this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
+                    "    -fx-text-fill: black;\n");
+        } else {
+            this.nextButton.setStyle("");
+        }
     }
 
     @FXML
@@ -242,10 +255,7 @@ public class BuyerOverviewController {
             if( result.get() == ButtonType.OK ) {
                 Data.setTransport(null);
                 vehicles.getItems().remove(selectedIndex);
-            } else if ( result.get() == ButtonType.CANCEL ) {
-                return;
             }
-
         } else {
             new Alerts(AlertEnum.NO_VEHICLE_SELECTED, mainApp.getPrimaryStage()).display();
         }
