@@ -273,7 +273,10 @@ public class ProductsOverviewController {
         } else {
 
             for (Product p : selectedProducts) {
-                p.getProductPackage().getType().setValue(packageName);
+                Package newPackage = new Package();
+                newPackage.getType().setValue(packageName);
+
+                p.setProductPackage(newPackage);
 
                 BigDecimal lastPackageWeight = Data.getPackages().get(p.generateKeyWithPackage());
                 if (lastPackageWeight != null) {
