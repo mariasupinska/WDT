@@ -15,12 +15,21 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.controller.BuyerOverviewController">
    <children>
-      <Label layoutX="72.0" layoutY="42.0" text="Nabywca" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="20.0">
+      <Label layoutX="72.0" layoutY="42.0" text="Nabywca" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="30.0">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <GridPane layoutX="45.0" layoutY="105.0" prefHeight="300.0" prefWidth="425.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="100.0">
+      <ComboBox fx:id="buyers" layoutX="45.0" layoutY="61.0" prefHeight="25.0" prefWidth="425.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="530.0" AnchorPane.topAnchor="70.0" />
+      <ButtonBar layoutX="505.0" layoutY="70.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="70.0">
+         <buttons>
+          <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddCompany" prefHeight="25.0" prefWidth="100.0" text="Dodaj firmę" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteCompany" prefHeight="25.0" prefWidth="100.0" text="Usuń firmę" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddVehicle" prefHeight="25.0" prefWidth="100.0" text="Dodaj pojazd" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteVehicle" prefHeight="25.0" prefWidth="100.0" text="Usuń pojazd" />
+         </buttons>
+      </ButtonBar>
+      <GridPane layoutX="45.0" layoutY="105.0" prefHeight="300.0" prefWidth="425.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="530.0" AnchorPane.topAnchor="110.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
@@ -54,13 +63,7 @@
             <Label text="Transport" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <ButtonBar layoutX="470.0" layoutY="53.0" prefHeight="40.0" prefWidth="270.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="53.0">
-        <buttons>
-          <Button minWidth="100.0" mnemonicParsing="false" onAction="#handleAddCompany" prefWidth="100.0" text="Dodaj firmę" />
-            <Button mnemonicParsing="false" onAction="#handleDeleteCompany" text="Usuń firmę" />
-        </buttons>
-      </ButtonBar>
-      <GridPane layoutX="500.0" layoutY="105.0" prefHeight="300.0" prefWidth="425.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0">
+      <GridPane layoutX="500.0" layoutY="105.0" prefHeight="300.0" prefWidth="425.0" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="110.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
@@ -97,11 +100,8 @@
       <ButtonBar layoutX="700.0" layoutY="423.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="45.0">
         <buttons>
           <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" />
-            <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleNext" text="Dalej" />
+            <Button fx:id="nextButton" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleNext" text="Dalej" />
         </buttons>
       </ButtonBar>
-      <Button layoutX="751.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleAddVehicle" prefHeight="25.0" prefWidth="100.0" text="Dodaj pojazd" />
-      <Button layoutX="859.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleDeleteVehicle" prefHeight="25.0" prefWidth="100.0" text="Usuń pojazd" />
-      <ComboBox fx:id="buyers" layoutX="45.0" layoutY="61.0" prefHeight="25.0" prefWidth="425.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="60.0" />
    </children>
 </AnchorPane>

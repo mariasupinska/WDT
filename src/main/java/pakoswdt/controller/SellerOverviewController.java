@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,6 +45,8 @@ public class SellerOverviewController {
     @FXML
     private ChoiceBox<String> employees;
 
+    @FXML
+    private Button nextButton;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -59,6 +58,9 @@ public class SellerOverviewController {
         addListeners();
         setValues();
         Data.setInvoiceSeller(Data.getSeller());
+
+        this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
+                "    -fx-text-fill: black;\n");
     }
 
     private void bind() {
