@@ -53,6 +53,9 @@ public class BuyerOverviewController {
     @FXML
     private TextField personConfirming;
 
+    @FXML
+    private Button nextButton;
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
@@ -86,6 +89,9 @@ public class BuyerOverviewController {
 
         buyers.setValue(Data.getInvoice().getBuyer());
         vehicles.setValue(Data.getInvoice().getTransport());
+
+        this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
+                "    -fx-text-fill: black;\n");
     }
 
     private void clearBuyerFields() {
