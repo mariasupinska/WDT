@@ -2,6 +2,7 @@ package pakoswdt.model;
 
 import com.opencsv.bean.CsvCustomBindByPosition;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +11,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Objects;
+
+import static pakoswdt.model.SimpleIntegerPropertyConverter.NON_PRODUCT_CSV_ROW_INDICATOR;
 
 @Getter
 @Setter
 @ToString
-
 public class Product {
 
+    @CsvCustomBindByPosition(position = 0, converter = SimpleIntegerPropertyConverter.class)
+    private SimpleIntegerProperty number;
     @CsvCustomBindByPosition(position = 1, converter = SimpleStringPropertyConverter.class)
     private SimpleStringProperty name;
     @CsvCustomBindByPosition(position = 2, converter = SimpleDoublePropertyConverter.class)
@@ -34,7 +39,7 @@ public class Product {
     }
 
     public boolean shouldBeIgnored() {
-        return this.isEmpty() || name.get().trim().equals("Nazwa produktu");
+        return number.get() == NON_PRODUCT_CSV_ROW_INDICATOR || this.isEmpty();
     }
 
     public String generateKey() {
@@ -86,5 +91,27 @@ public class Product {
 
     public double productPackageWeight() {
         return getProductPackage().amount().get();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (number.get() != product.number.get()) return false;
+        if (!Objects.equals(name.get(), product.name.get())) return false;
+        if (amount.get() != product.amount.get()) return false;
+        return unit.get().equals(product.unit.get());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = number.getValue().hashCode();
+        result = 31 * result + name.getValue().hashCode();
+        result = 31 * result + amount.getValue().hashCode();
+        result = 31 * result + unit.getValue().hashCode();
+        return result;
     }
 }
