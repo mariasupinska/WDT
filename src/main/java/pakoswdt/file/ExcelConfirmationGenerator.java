@@ -107,19 +107,12 @@ public class ExcelConfirmationGenerator extends ExcelCommonMethods {
     }
 
     private void setConfirmationTransport(Sheet sheet) {
-        String vehicleOwner;
-        if (invoice.getSeller().getVehicles().contains(invoice.getTransport())) {
-            vehicleOwner = "sprzedawcy";
-        } else {
-            vehicleOwner = "nabywcy";
-        }
-
         Row row = sheet.createRow(sheet.getLastRowNum() + 2);
 
         CellStyle centeredCellStyle = createCenteredCellStyle().build();
 
         sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 11));
-        row.createCell(0).setCellValue("Do miejsca przeznaczenia towary zostały dostarczone samochodem " + vehicleOwner);
+        row.createCell(0).setCellValue("Do miejsca przeznaczenia towary zostały dostarczone samochodem");
         row.getCell(0).setCellStyle(centeredCellStyle);
 
         row = sheet.createRow(sheet.getLastRowNum() + 1);
