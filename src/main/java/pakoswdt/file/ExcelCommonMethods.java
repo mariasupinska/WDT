@@ -29,7 +29,7 @@ public abstract class ExcelCommonMethods {
     static final int SELLER_COL_START = 1;
     static final int BUYER_COL_START = 6;
     static final int LEFT_SUBHEADER_COL_START = 0;
-    static final int RIGHT_SUBHEADER_COL_START = 8;
+    static final int RIGHT_SUBHEADER_COL_START = 6;
 
     static final CellRangeAddress HEADER_REGION = new CellRangeAddress(0, 1, 0, 11);
     static final CellRangeAddress LEFT_SUBHEADER_REGION = new CellRangeAddress(2, 2, LEFT_SUBHEADER_COL_START, RIGHT_SUBHEADER_COL_START - 1);
@@ -76,7 +76,7 @@ public abstract class ExcelCommonMethods {
         //left part
         CellStyle rightAlignCellStyle = createRightAlignedCellStyle();
 
-        String leftText = "Dotyczy wewnątrzwspólnotowej dostawy towarów udokumentowanej fakturą ";
+        String leftText = "Wewnątrzwspólnotowa dostawa towarów - faktura ";
         addMergedRegionContent(sheet, row, LEFT_SUBHEADER_REGION, rightAlignCellStyle, LEFT_SUBHEADER_COL_START, leftText);
 
         //right part
@@ -119,7 +119,7 @@ public abstract class ExcelCommonMethods {
         sellerText = "ul. " + seller.getStreet().get() + ", " + seller.getPostalCode().get() + " " + seller.getCity().get();
         addMergedRegionContent(sheet, row, SELLER_ADDRESS_REGION, cellStyle, SELLER_COL_START, sellerText);
 
-        buyerText = buyer.getCity().get() + ", " + buyer.getPostalCode().get() + " " + buyer.getCity().get();
+        buyerText = buyer.getStreet().get() + ", " + buyer.getPostalCode().get() + " " + buyer.getCity().get();
         addMergedRegionContent(sheet, row, BUYER_ADDRESS_REGION, cellStyle, BUYER_COL_START, buyerText);
 
         row = sheet.createRow(ADDRESS_2_ROW);
