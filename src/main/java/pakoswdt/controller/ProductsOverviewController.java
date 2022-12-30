@@ -379,7 +379,7 @@ public class ProductsOverviewController {
 
     private boolean isInputValid() {
         ObservableList<Product> products = productsTableView.getItems();
-        return products.stream().allMatch(this::isProductInputValid);
+        return !products.isEmpty() && products.stream().allMatch(this::isProductInputValid);
     }
 
     private boolean isProductInputValid(Product product) {
