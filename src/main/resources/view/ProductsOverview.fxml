@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.controller.ProductsOverviewController">
+<AnchorPane minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pakoswdt.controller.ProductsOverviewController">
    <children>
       <Label layoutX="177.0" layoutY="14.0" text="DANE z PLIKU CSV" AnchorPane.topAnchor="20.0">
          <font>
@@ -24,7 +19,7 @@
       <Label layoutX="367.0" layoutY="80.0" text="[kg]" />
       <Button layoutX="602.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleSetMultiPackage" prefWidth="250.0" text="Utwórz nowe opakowanie zbiorcze" />
       <Button layoutX="602.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleSetPackage" prefWidth="250.0" text="Ustaw opakowanie" />
-      <TableView fx:id="productsTableView" editable="true" layoutX="24.0" layoutY="110.0" prefHeight="570.0" prefWidth="970.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
+      <TableView fx:id="productsTableView" editable="true" layoutX="24.0" layoutY="110.0" prefHeight="570.0" prefWidth="970.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
          <columns>
             <TableColumn fx:id="name" minWidth="200.0" prefWidth="241.0" text="Nazwa produktu" />
             <TableColumn fx:id="amount" minWidth="7.0" prefWidth="51.0" text="Ilość" />
@@ -37,7 +32,7 @@
             <TableColumn fx:id="packagesTotalWeight" minWidth="7.0" prefWidth="73.0" text="Razem" />
          </columns>
       </TableView>
-      <Button fx:id="nextButton" layoutX="511.0" layoutY="740.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="30.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="30.0" />
-      <Button layoutX="390.0" layoutY="740.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" AnchorPane.bottomAnchor="30.0" />
+      <Button fx:id="nextButton" layoutX="511.0" layoutY="740.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="30.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="55.0" />
+      <Button layoutX="390.0" layoutY="740.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" AnchorPane.bottomAnchor="55.0" />
    </children>
 </AnchorPane>
