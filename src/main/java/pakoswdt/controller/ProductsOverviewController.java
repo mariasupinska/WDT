@@ -57,6 +57,9 @@ public class ProductsOverviewController {
     @FXML
     private TextField palettesWeight;
 
+    @FXML
+    private Button nextButton;
+
     private ArrayList<String> packageTypes = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
     private ArrayList<String> packageChoices = new ArrayList<String>(Arrays.asList("Brak", "Folia", "Karton", "Papier"));
 
@@ -82,6 +85,7 @@ public class ProductsOverviewController {
         name.setOnEditCommit(
                 event -> {
                     getProduct(event).getName().setValue(event.getNewValue());
+                    flushButton();
                 }
         );
 
@@ -95,6 +99,7 @@ public class ProductsOverviewController {
                     if ( editedProduct.getUnitWeight() != null ) {
                         recalculateNetWeight(editedProduct);
                     }
+                    flushButton();
                 }
         );
 
@@ -103,6 +108,7 @@ public class ProductsOverviewController {
         unit.setOnEditCommit(
                 event -> {
                     getProduct(event).getUnit().setValue(event.getNewValue());
+                    flushButton();
                 }
         );
 
@@ -113,6 +119,7 @@ public class ProductsOverviewController {
                     Product editedProduct = getProduct(event);
                     editedProduct.unitWeight().setValue(event.getNewValue());
                     recalculateNetWeight(editedProduct);
+                    flushButton();
                 }
         );
 
@@ -123,6 +130,7 @@ public class ProductsOverviewController {
                     Product editedProduct = getProduct(event);
                     editedProduct.netWeight().setValue(event.getNewValue());
                     recalculateUnitWeight(editedProduct);
+                    flushButton();
                 }
         );
 
@@ -132,6 +140,7 @@ public class ProductsOverviewController {
         packageType.setOnEditCommit(
                 event -> {
                     getProduct(event).getProductPackage().getType().setValue(event.getNewValue());
+                    flushButton();
                 }
         );
 
@@ -141,6 +150,7 @@ public class ProductsOverviewController {
                 event -> {
                     getProduct(event).getProductPackage().amount().setValue(event.getNewValue());
                     productsTableView.refresh();
+                    flushButton();
                 }
         );
 
@@ -150,6 +160,7 @@ public class ProductsOverviewController {
                 event -> {
                     getProduct(event).getProductPackage().weight().setValue(event.getNewValue());
                     productsTableView.refresh();
+                    flushButton();
                 }
         );
 
@@ -163,6 +174,17 @@ public class ProductsOverviewController {
         palettesWeight.textProperty().bindBidirectional(Data.getInvoice().getPalettes());
 
         productsTableView.setItems(Data.getTableProducts());
+
+        flushButton();
+    }
+
+    private void flushButton() {
+        if (isInputValid()) {
+            this.nextButton.setStyle("-fx-background-color: #4dd922;\n" +
+                    "    -fx-text-fill: black;\n");
+        } else {
+            this.nextButton.setStyle("");
+        }
     }
 
     private Product getProduct(TableColumn.CellEditEvent<Product, ? extends Object> event) {
@@ -265,6 +287,7 @@ public class ProductsOverviewController {
             }
         }
         productsTableView.refresh();
+        flushButton();
     }
 
     private static Optional<String> showChoosePackageDialog(List<String> optionsList) {
@@ -316,6 +339,7 @@ public class ProductsOverviewController {
         }
 
         productsTableView.refresh();
+        flushButton();
     }
 
     private static Optional<String> showMultiPackageWeightDialog() {
@@ -355,11 +379,23 @@ public class ProductsOverviewController {
                 product.getName().get(),
                 product.getUnit().get(),
                 product.productPackageType())
-                && product.getAmount().getValue() != null
-                && product.getUnitWeight().getValue() != null
-                && product.getNetWeight().getValue() != null
-                && product.getProductPackage().getAmount().getValue() != null
-                && product.getProductPackage().getWeight().getValue() != null;
+                && product.getAmount().getValue() != 0
+                && product.getUnitWeight().getValue() != 0
+                && product.getNetWeight().getValue() != 0
+                && isProductPackageValid(product.getProductPackage());
+    }
+
+    private boolean isProductPackageValid(Package productPackage) {
+        if (productPackage == null) return false;
+
+        double amount = productPackage.getAmount() == null ? 0 : productPackage.getAmount().get();
+        double weight = productPackage.getWeight() == null ? 0 : productPackage.getWeight().get();
+
+        if ("Brak".equals(productPackage.getJustType())) {
+            return amount == 0 && weight == 0;
+        }
+
+        return amount != 0 && weight != 0;
     }
 
     private void savePackagesUnitWeightMap() {

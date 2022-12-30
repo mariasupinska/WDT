@@ -37,7 +37,7 @@
             <TableColumn fx:id="packagesTotalWeight" minWidth="7.0" prefWidth="73.0" text="Razem" />
          </columns>
       </TableView>
-      <Button defaultButton="true" layoutX="511.0" layoutY="740.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="30.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="30.0" />
+      <Button fx:id="nextButton" layoutX="511.0" layoutY="740.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="30.0" prefWidth="100.0" text="Generuj" AnchorPane.bottomAnchor="30.0" />
       <Button layoutX="390.0" layoutY="740.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#handlePrevious" text="Wstecz" AnchorPane.bottomAnchor="30.0" />
    </children>
 </AnchorPane>
