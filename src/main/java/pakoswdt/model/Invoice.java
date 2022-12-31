@@ -16,8 +16,8 @@ public class Invoice {
     private String creator;
     private StringProperty number = new SimpleStringProperty("");
     private StringProperty placeOfExtradition = new SimpleStringProperty("Białystok");
-    private ObjectProperty<LocalDate> creationDate = new SimpleObjectProperty<>(LocalDate.now());
-    private ObjectProperty<LocalDate> deliveryDate = new SimpleObjectProperty<>(LocalDate.now());
+    private ObjectProperty<LocalDate> creationDate = new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDate> deliveryDate = new SimpleObjectProperty<>();
     private StringProperty palettes = new SimpleStringProperty("");
     private InvoiceSummary summary;
 }

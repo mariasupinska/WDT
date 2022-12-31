@@ -324,7 +324,10 @@ public class ProductsOverviewController {
         if (!inputWeight.isPresent()) {
             return;
         }
-        String weightResult = inputWeight.filter(val -> !StringUtils.isBlank(val)).orElse("0");
+        String weightResult = inputWeight
+                .filter(val -> !StringUtils.isBlank(val))
+                .map(val -> val.replace(",", "."))
+                .orElse("0");
         BigDecimal weight = BigDecimal.valueOf(Double.parseDouble(weightResult)).setScale(3, RoundingMode.HALF_UP);
 
         int multipackageNumber = 0;

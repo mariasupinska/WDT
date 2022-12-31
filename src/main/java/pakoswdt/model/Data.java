@@ -28,6 +28,8 @@ public class Data {
 
     public static void createNewWDT() {
         Data.invoice = new Invoice();
+        tableProducts.clear();
+        inputFilePath.setValue("");
     }
 
     public static Seller getSeller() {
