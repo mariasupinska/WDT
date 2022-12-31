@@ -5,7 +5,7 @@ import pakoswdt.MainApp;
 import java.util.prefs.Preferences;
 
 public class DataFile {
-    public static final String PREFS_KEY = "dataFilePath";
+    public static final String PREFS_KEY = "jsonDataFilePath";
 
     public static String getDataFile() {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);

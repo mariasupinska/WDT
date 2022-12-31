@@ -12,6 +12,7 @@
         <plugins>
             <!-- https://github.com/javafx-maven-plugin/javafx-maven-plugin -->
             <!-- To create your executable file with JavaFX-magic, call mvn jfx:jar. The jar-file will be placed at target/jfx/app. -->
+            <!-- Remember to copy template.xls file to the same directory where your executable JAR is! -->
             <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
