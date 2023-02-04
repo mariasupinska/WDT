@@ -232,7 +232,6 @@ public class ProductsOverviewController {
                     .stream()
                     .filter(product -> !product.shouldBeIgnored())
                     .map(product -> product.enrich(Data.getProducts()))
-                    //.distinct()
                     .collect(Collectors.toList());
 
             List<Product> mergedProducts = mergeProducts(products);
