@@ -18,7 +18,6 @@ import pakoswdt.tableCell.EditingNumberIntegerCell;
 import pakoswdt.tableCell.EditingStringCell;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -228,16 +227,18 @@ public class ProductsOverviewController {
             filePath.setText(file.getPath());
             List<Product> products = new CsvToBeanBuilder<Product>(new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8))
                     .withType(Product.class)
-                    .withSkipLines(1)
                     .build()
                     .parse()
                     .stream()
                     .filter(product -> !product.shouldBeIgnored())
                     .map(product -> product.enrich(Data.getProducts()))
-                    .distinct()
+                    //.distinct()
                     .collect(Collectors.toList());
 
-            ObservableList<Product> observableProducts = FXCollections.observableArrayList(products);
+            List<Product> mergedProducts = mergeProducts(products);
+            List<Product> distinctProducts = mergedProducts.stream().distinct().collect(Collectors.toList());
+
+            ObservableList<Product> observableProducts = FXCollections.observableArrayList(distinctProducts);
 
             Data.setTableProducts(observableProducts);
             Data.setInputFilePath(file.getPath());
@@ -246,6 +247,33 @@ public class ProductsOverviewController {
 
             filePath.textProperty().bindBidirectional(Data.inputFilePathProperty());
         }
+    }
+
+    private List<Product> mergeProducts(List<Product> products) {
+        List<Product> mergedProducts = new ArrayList<>();
+        mergedProducts.add(products.get(0));
+
+        for ( int i = 1; i < products.size(); i++ ) {
+            Product previous = products.get(i-1);
+            Product current = products.get(i);
+            if ( isSplittedRow(previous, current) ) {
+                mergeProducts(previous, current);
+            } else {
+                mergedProducts.add(current);
+            }
+        }
+
+        return mergedProducts;
+    }
+
+    private boolean isSplittedRow(Product previous, Product current) {
+        return previous.getNumber().getValue().equals(current.getNumber().getValue()) &&
+                previous.getAmount().getValue().equals(current.getAmount().getValue()) &&
+                previous.getUnit().getValue().equals(current.getUnit().getValue());
+    }
+
+    private void mergeProducts(Product toKeep, Product toIgnore) {
+        toKeep.getName().setValue(toKeep.getName().getValue().trim() + toIgnore.getName().getValue().trim());
     }
 
     @FXML
